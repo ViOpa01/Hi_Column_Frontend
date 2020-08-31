@@ -12,7 +12,7 @@ export class SettlementComponent implements OnInit {
     let user = payvueservice.getUser();
     // this.merchant = user..role.merchantcode
 
-    if (user && user.roletoLowerCase() == 'merchant') {
+    if (user && user.role.toLowerCase() == 'merchant') {
 
       this.merchant = true;
     } else {
