@@ -1,37 +1,24 @@
 <div class="col-lg-12">
 <div class="row">
-  <div class="ml-2">
-      <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
+  <div class="ml-2 px-4 pb-4">
+    <h6 class="header-style">Transaction History</h6>
+      <!-- <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
           (click)="exportExcel()" mdbWavesEffect>Export
-      </button>
+      </button> -->
   </div>
 </div>
 
 <div [ngClass]="{'px-4':show}" class="table-responsive">
     <table class="table table-borderless">
         <tr class="row mx-0 no-change">
-            <td class="col-lg-1 col-sm-2 mt-3">
-                <p class="noWrap">No of Records:</p>
-                <select *ngIf="show" (change)="setLimit($event); getTransactionHistory(); getFailureReason()"
-                    class="browser-default custom-select d-block">
-                    <option value="20">20</option>
-                    <option value="50" selected>50</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                </select>
-
-                <select *ngIf="!show" (change)="setLimit($event); getTransactionHistory();"
-                class="browser-default custom-select d-block">
-                <option value="20">20</option>
-                <option value="50" selected>50</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
-            </select>
-            </td>
-            <td class="col-lg-2 col-sm-10 mt-3">
-                <p>Search:</p>
-                <input class="form-control my-0 py-0" name="search" ngDefaultControl [(ngModel)]="search"
-                    type="text" placeholder="Search">
+            <td class="col-lg-7 col-sm-10">
+                <div class="md-form special-div m-0">
+                    <!-- <mdb-icon fas icon="search" class="prefix"> </mdb-icon> -->
+                    <img src="../../../assets/img/Shape.svg" class="prefix py-2 pl-3">
+                    <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="search" ngDefaultControl [(ngModel)]="search"
+                     type="text" placeholder="Search">
+                </div>
+              
             </td>
             <!-- <td *ngIf="!date2" class="col-lg-2 col-sm-2 mt-3">
                 <p class="noWrap">Source:</p>
@@ -42,45 +29,59 @@
                     <option value="POSVAS">POSVAS</option>
                 </select>
             </td> -->
-            <td class="col-lg-2 col-sm-2 col-6 mt-3">
-                    <p>Status:</p>
-                    <select *ngIf="show" ngDefaultControl [(ngModel)]='status' (change)="setPage(); getTransactionHistory(); getFailureReason()"
+            <td class="col-lg-1 col-sm-2 col-6">
+                <select *ngIf="show" ngDefaultControl [(ngModel)]='status'
+                    (change)="setPage(); getTransactionHistory(); getFailureReason()"
                     class="browser-default custom-select d-block">
+                    <option disabled=true value=undefined>Status</option>
                     <option value="">View All</option>
                     <option value="successful">Approved</option>
                     <option value="failed">Declined</option>
-                  </select>
+                </select>
 
-                  <select *ngIf="!show" ngDefaultControl [(ngModel)]='status' (change)="setPage(); getTransactionHistory();"
-                    class="browser-default custom-select d-block">
+                <select *ngIf="!show" ngDefaultControl [(ngModel)]='status'
+                    (change)="setPage(); getTransactionHistory();" class="browser-default custom-select d-block">
+                    <option disabled=true value=undefined>Status</option>
                     <option value="">View All</option>
                     <option value="successful">Approved</option>
                     <option value="failed">Declined</option>
                 </select>
             </td>
 
-            <td *ngIf="!date2" class="col-lg-2 col-sm-4 col-6 datepickers mt-3">
-                <p>From:</p>
-                <div class="md-form">
-                    <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
-                    </mdb-date-picker>
-                </div>
-            </td>
-            <td *ngIf="!date2" class="col-lg-2 col-sm-4 col-6 datepickers mt-3">
-                <p>To:</p>
-                <div class="md-form">
-                    <mdb-date-picker ngDefaultControl [(ngModel)]="to" [placeholder]="'yyyy-mm-dd'" required>
-                    </mdb-date-picker>
-                </div>
-            </td>
             <td class="col-lg-1 col-sm-2">
-                <button *ngIf="show" (click)="setPage(); getTransactionHistory(); getFailureReason()"
-                    class="btn btn-uc waves-light btn-sm mt-2-1" mdbWavesEffect>Search</button>
-                <button  *ngIf="!show" (click)="setPage(); getTransactionHistory();"
-                    class="btn btn-uc waves-light btn-sm mt-2-1" mdbWavesEffect>Search</button>
-                <!-- <button *ngIf="!show" (click)="setPage(); getTransactionHistory();"
-                    class="btn btn-uc waves-light btn-sm mt-2-1" mdbWavesEffect>Search</button> -->
+                <select *ngIf="show" (change)="setLimit($event); getTransactionHistory(); getFailureReason()"
+                    class="browser-default custom-select d-block">
+                    <option disabled=true value="">No of Records</option>
+                    <option value="20">20</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+
+                <select *ngIf="!show" (change)="setLimit($event); getTransactionHistory();" class="browser-default custom-select d-block">
+                    <option disabled=true value="">No of Records</option>
+                    <option value="20">20</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
             </td>
+
+            <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
+                <input type="date" [(ngModel)]="from" (blur)="getTransactionHistory()" [placeholder]="'From:'" id="input"
+                    class="form-control px-0" ngDefaultControl>
+            </td>
+            <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
+                <input type="date" [(ngModel)]="to" (blur)="getTransactionHistory()" [placeholder]="'To:'" id="input"
+                    class="form-control px-0" ngDefaultControl>
+            </td>
+
+            <td class="col-lg-1 col-sm-2">
+                    <button [disabled]="!tableData.length" type="button" class="btn btn-ud btn-sm waves-light"
+                (click)="exportExcel()" mdbWavesEffect>Export
+            </button>
+                   
+                </td>
         </tr>
     </table>
 </div>
@@ -113,167 +114,92 @@
 
               <!--Table head-->
               <thead>
-                  <tr>
-                      <th class="th-md">S/N</th>
-                      <th class="th-md">
-                          <a (click)="sortBy('merchant_name')">Merchant Name
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('merchant_id')">Merchant ID
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('terminal_id')">Terminal ID
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('rrn')">RRN
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('pan')">Card PAN
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('bank')">Card Bank
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('brand')">Card Scheme
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('amount')">Amount (₦)
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('stan')">STAN
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('response_msg')">Status
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('transaction_date')">Date
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md"
-                          mdbTooltip="Transaction status at NIBBS, checks POS failure: P(POS), N(NIBBS) N.B. green for successful and red for error/declined/e.t.c for N, red for timeout,network or poweroff for P"
-                          placement="top">
-                          <div class="row">
-                              <div class="col-12">
-                                  <a>Txn Report</a>
-                              </div>
-                          </div>
-                      </th>
-                      <th class="th-md">
-                          Action
-                      </th>
-                  </tr>
-              </thead>
+                <tr>
+                    <th class="th-md">
+                        <a >S/N
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('supermerchant_name')">Super Merchant
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('supermerchantcode')">Merchant ID
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('transactionID')">Transaction ID
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('name')">Name
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('status')">Status
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                   
+                    <th class="th-md text-center">
+                        <a (click)="sortBy('pan')">Card Pan
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('totaldeliveryfee')">Total Delivery Fee ₦
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                   
+                    <th class="th-md">
+                        <a (click)="sortBy('totalamount')">Total Amount ₦
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('initiatedTime')">Initiated Time
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+
+                </tr>
+            </thead>
               <!--Table head-->
 
               <!--Table body-->
-              <tbody *ngIf="tableData.length > 0">
-                  <tr  [ngClass]="{'error-color':(row.response_code!= '00' && row.response_code) || (row.pos_status != '00' && row.pos_status) || row.response_msg == 'unknown'}"
-                      *ngFor="let row of tableData;let i = index;">
+              <tbody *ngFor="let row of tableData;let i = index;">
+                <tr
+                [ngClass]="{'error-color':(row.status == 'FAILED' && row.status)}">
 
-                      <td>{{(serial1 + i)}}</td>
-                      <td *ngIf="!merchantU"><a href="javascript:;"
-                              [routerLink]="['/merchant', row.merchant_id]">{{ row.merchant_name }}</a>
-                      </td>
-                      <td *ngIf="merchantU">{{ row.merchant_name }}</td>
-                      <td>{{row.merchant_id}}</td>
-                      <td>{{row.terminal_id}}</td>
-                      <td>{{row.rrn}}</td>
-                      <td>{{row.pan}}</td>
-                      <td *ngIf="row.bank && row.bank != 'NIL' && row.bank != '----'"> 
-                          <img *ngIf="bankModel[row.bank.toLowerCase()]"  src="{{bankModel[row.bank.toLowerCase()]}}">
-                          {{!bankModel[row.bank.toLowerCase()] ? row.bank : '' }}
-                      </td>
-                      <td *ngIf="!row.bank || row.bank == 'NIL' || row.bank == '----'"> 
-                          N/A
-                      </td>
-                      <td *ngIf="row.brand && row.brand != 'NIL' && row.brand != '----'"> 
-                              <img *ngIf="brandModel[row.brand.toLowerCase()]"  src="{{brandModel[row.brand.toLowerCase()]}}">
-                              {{!brandModel[row.brand.toLowerCase()] ? row.brand : '' }}
-                          </td>
-                          <td *ngIf="!row.brand || row.brand == 'NIL' || row.brand == '----'"> 
-                              N/A
-                          </td>
-                      <td>{{row.amount / 100 | number : '1.2-2'}}</td>
-                      <td>{{row.stan}}</td>
-                      <td
-                          [ngClass]="{'btn-success':row.response_code == '00', 'btn-warning':row.response_msg == 'Not sufficent funds', 'btn-danger':row.response_msg == 'Declined', 'btn-gc':row.response_code != '00' &&  row.response_msg != 'Declined' &&  row.response_msg != 'Not sufficent funds','btn-sm noWrap btn-anim' : true}">
-                          {{(row.response_code == '00' ? 'Approved' : row.response_msg) || 'Processing...'}}</td>
-                      <td>{{row.transaction_date | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
-                      <td class="text-center">
-                          <span *ngIf="row.pos_status" title="POS"
-                              [ngClass]="{'check-color':row.pos_status == '00',' times-color':row.pos_status!= '00' && row.pos_status}">P
-                          </span>
-                          <span *ngIf="row.response_code || row.response_msg == 'unknown'" title="NIBBS"
-                              [ngClass]="{'check-color':row.response_code == '00',' times-color':row.response_code!= '00' && row.response_code ||row.response_msg == 'unknown'}">N</span>
-                          <span *ngIf="!row.response_msg && !row.response_code" title="Processing"><i class="fa fa-ellipsis-h"></i></span>
-                      </td>
-                      <td>
-                          <button class="btn btn-uc waves-light btn-sm" [disabled]="!row.response_msg && !row.response_code" (click)="getReceipt(row);receiptModal.show()">View</button>
-                      </td>
-                  </tr>
+                <td>{{serial1 + i}}</td>
+                <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement"><a href="javascript:;"
+                        [routerLink]="['/merchant', row.merchant_id]">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</a>
+                </td>
+                <td *ngIf="merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
+                <td *ngIf="!row.paymentdetails.deliverysettlement">{{ row.paymentdetails.supermerchant_name || 'N/A' }}</td>
+                <td>{{row.paymentdetails.supermerchantcode}}</td>
+
+                <td>{{row.transactionID}}</td>
+                <td>{{row.name || 'N/A'}}</td>
+                <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status}}</td>
+                <td class="text-center">{{row.pan || 'N/A'}}</td>
+
+                
+                <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
+                
+
+                <td>{{'₦' + (row.paymentdetails.totalamount | number : '1.2-2')}}</td>
+
+
+                <td>{{row.initiatedTime | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+
+            </tr>
               </tbody>
-
-              <div mdbModal #receiptModal="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop"
-                  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-                  [config]="{backdrop: true, ignoreBackdropClick: true}">
-
-                  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-                      <div class="modal-content">
-                          <!--Header-->
-                          <div class="modal-header d-flex ">
-                              <p class="heading">VIEW RECEIPT</p>
-                              <button type="button" class="close" aria-label="Close" data-dismiss="modal"
-                                  (click)="receiptModal.hide(); receiptView = false" mdbWavesEffect>x</button>
-                          </div>
-                          <!--Body-->
-                          <div class="modal-body">
-                              <div class="row" *ngIf="receiptRowData">
-                                  <div class="col-12" *ngIf="receiptRowData">
-                                      <app-purchase *ngIf="receiptRowData.receiptType == 'purchase'" [isAll]=false
-                          [receiptRowData]=receiptRowData [isTrans]=true></app-purchase>
-                        <app-postpaid *ngIf="receiptRowData.receiptType == 'postpaid'" [isAll]=false
-                          [receiptRowData]=receiptRowData [isTrans]=true></app-postpaid>
-                        <app-token *ngIf="receiptRowData.receiptType == 'token'" [isAll]=false [receiptRowData]=receiptRowData [isTrans]=true>
-                        </app-token>
-                        <app-small *ngIf="receiptRowData.receiptType == 'small'" [isAll]=false [receiptRowData]=receiptRowData [isTrans]=true>
-                        </app-small>
-                                      <p *ngIf="!receiptRowData.response_code">No Receipt Data Found</p>
-                                  </div>
-                              </div>
-                              <div *ngIf="!receiptRowData" style="text-align:center">
-                                  <mdb-spinner spinnerColor="blue"></mdb-spinner>
-                              </div>
-                          </div>
-                          <!--Footer-->
-                          <div class="modal-footer">
-
-                              <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal"
-                                  (click)="receiptModal.hide(); receiptView = false" mdbWavesEffect>Close</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
 
               <!--Table body-->
               <tbody *ngIf="isData == false; else gettingTrans">

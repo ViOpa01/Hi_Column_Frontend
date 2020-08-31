@@ -71,21 +71,21 @@ export class SummaryComponent implements OnInit {
       this.merchantU = true;
     }
     
-    this.socket.on('trans-history-message').subscribe(data => {
-      if (!data) return;
-      if (this.page == 1 && !this.search && !this.mid && !this.source && !this.status &&
-        (
-          ((this.to == this.from) && (this.to == this.date || !this.to)) ||
-          ((!this.to || !this.from) && (this.to == this.date || this.from == this.date))
-        )
-        && !this.receiptView
-      ){
-        this.tableData = data.data;
-        this.isData = true;
-        this.serial1 = 1 + (this.page - 1) * this.limit;
-        // this.failureShow = true;
-      }
-    })
+    // this.socket.on('trans-history-message').subscribe(data => {
+    //   if (!data) return;
+    //   if (this.page == 1 && !this.search && !this.mid && !this.source && !this.status &&
+    //     (
+    //       ((this.to == this.from) && (this.to == this.date || !this.to)) ||
+    //       ((!this.to || !this.from) && (this.to == this.date || this.from == this.date))
+    //     )
+    //     && !this.receiptView
+    //   ){
+    //     this.tableData = data.data;
+    //     this.isData = true;
+    //     this.serial1 = 1 + (this.page - 1) * this.limit;
+    //     // this.failureShow = true;
+    //   }
+    // })
   }
 
   ngOnInit() {
@@ -101,15 +101,15 @@ export class SummaryComponent implements OnInit {
     this.to = this.date;
 
     this.getTransactionHistory();
-    this.getFailureReason();
+    // this.getFailureReason();
 
-    eventsService.getEvent('TransHistoryPage').subscribe(page => {
+    eventsService.getEvent('MerchHistoryPage').subscribe(page => {
       this.page = page;
       this.getTransactionHistory();
       
-      if(this.show) {
-        this.getFailureReason();
-      }
+      // if(this.show) {
+      //   this.getFailureReason();
+      // }
       
     })
   }
@@ -258,8 +258,6 @@ export class SummaryComponent implements OnInit {
   }
 
   checkKey(event){
-
-    console.log('helllooooo')
 
     if(event && event.key == 'Enter'){
       this.getTransactionHistory();

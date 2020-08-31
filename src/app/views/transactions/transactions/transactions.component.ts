@@ -67,21 +67,21 @@ export class TransactionsComponent implements OnInit  {
       this.merchantU = true;
     }
     
-    this.socket.on('trans-history-message').subscribe(data => {
-      if (!data) return;
-      if (this.page == 1 && !this.search && !this.mid && !this.source && !this.status &&
-        (
-          ((this.to == this.from) && (this.to == this.date || !this.to)) ||
-          ((!this.to || !this.from) && (this.to == this.date || this.from == this.date))
-        )
-        && !this.receiptView
-      ){
-        this.tableData = data.data;
-        this.isData = true;
-        this.serial1 = 1 + (this.page - 1) * this.limit;
-        // this.failureShow = true;
-      }
-    })
+    // this.socket.on('trans-history-message').subscribe(data => {
+    //   if (!data) return;
+    //   if (this.page == 1 && !this.search && !this.mid && !this.source && !this.status &&
+    //     (
+    //       ((this.to == this.from) && (this.to == this.date || !this.to)) ||
+    //       ((!this.to || !this.from) && (this.to == this.date || this.from == this.date))
+    //     )
+    //     && !this.receiptView
+    //   ){
+    //     this.tableData = data.data;
+    //     this.isData = true;
+    //     this.serial1 = 1 + (this.page - 1) * this.limit;
+    //     // this.failureShow = true;
+    //   }
+    // })
   }
 
   ngOnInit() {
@@ -97,15 +97,15 @@ export class TransactionsComponent implements OnInit  {
     this.to = this.date;
 
     this.getTransactionHistory();
-    this.getFailureReason();
+    // this.getFailureReason();
 
     eventsService.getEvent('TransHistoryPage').subscribe(page => {
       this.page = page;
       this.getTransactionHistory();
       
-      if(this.show) {
-        this.getFailureReason();
-      }
+      // if(this.show) {
+      //   this.getFailureReason();
+      // }
       
     })
   }
@@ -220,6 +220,13 @@ export class TransactionsComponent implements OnInit  {
     return buf;
   }
 
+  checkKey(event){
+
+    if(event && event.key == 'Enter'){
+      this.getTransactionHistory();
+    }
+  }
+
   getTransactionHistory() {
 
     let page = this.page < 1 ? 1 : this.page
@@ -232,21 +239,13 @@ export class TransactionsComponent implements OnInit  {
       this.to = this.date2
     }
 
-    const apiURL = `transactions/history/?startdate=${this.from}&enddate=${this.to}&search=${this.search}&merchant=${this.mid}&page=${page}&limit=${this.limit}&source=${this.source}&status=${this.status}`;
-    this.payvueservice.apiCall(apiURL).then(data => {
+    const apiURL = `:5010/webpay/v1/journals/gettransactions?startdate=${this.from}&enddate=${this.to}&download=false&issettlement=false&merchantcode=&page=${page}&order=desc&orderBy=transactionID`;
+    this.payvueservice.apiCall(apiURL, 'get', {}, false, false, true).then(data => {
       if (data.status === 200) {
         if (data.data.length > 0) {
           this.serial1 = 1 + (page - 1) * this.limit;
           this.tableData = JSON.parse(JSON.stringify(data.data));
 
-          for(let i = 0; i < this.tableData.length; i++){
-            if(this.tableData[i].brand.toLowerCase().includes('mastercard')){
-              this.tableData[i].brand = 'mastercard'
-            } 
-            else if(this.tableData[i].brand.toLowerCase().includes('visa')) {
-              this.tableData[i].brand = 'visa'
-            }
-          }
           this.isData = true;
           console.log(this.isData)
           this.page = page;

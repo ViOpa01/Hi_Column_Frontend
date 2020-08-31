@@ -1,7 +1,7 @@
 <div class="col-lg-12">
     <div class="row">
         <div class="ml-2 px-4 pb-4">
-            <h6 class="header-style">Transaction Summary</h6>
+            <h6 class="header-style">Merchant Summary</h6>
             <!-- <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
                 (click)="exportExcel()" mdbWavesEffect>Export
             </button> -->
@@ -71,30 +71,16 @@
                 <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
                     <input type="date" [(ngModel)]="from" (blur)="getTransactionHistory()" [placeholder]="'From:'" id="input"
                         class="form-control px-0" ngDefaultControl>
-                    <!-- <div class="md-form">
-                        
-                    
-                        <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'From:'" required>
-                        </mdb-date-picker>
-                    </div> -->
                 </td>
                 <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
                     <input type="date" [(ngModel)]="to" (blur)="getTransactionHistory()" [placeholder]="'To:'" id="input"
                         class="form-control px-0" ngDefaultControl>
-                    <!-- <div class="md-form">
-                        
-                        <mdb-date-picker ngDefaultControl [(ngModel)]="to" [placeholder]="'To:'" required>
-                        </mdb-date-picker>
-                    </div> -->
                 </td>
                 <td class="col-lg-1 col-sm-2">
                     <button [disabled]="!tableData.length" type="button" class="btn btn-ud btn-sm waves-light"
                 (click)="exportExcel()" mdbWavesEffect>Export
             </button>
-                    <!-- <button *ngIf="show" (click)="setPage(); getTransactionHistory(); getFailureReason()"
-                        class="btn btn-ud waves-light btn-sm" mdbWavesEffect>Search</button>
-                    <button *ngIf="!show" (click)="setPage(); getTransactionHistory();"
-                        class="btn btn-ud waves-light btn-sm" mdbWavesEffect>Search</button> -->
+                   
                 </td>
             </tr>
         </table>
@@ -213,7 +199,7 @@
                     <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status}}</td>
                     <td class="text-center">{{row.pan || 'N/A'}}</td>
 
-                    <td class="text-center">{{'₦' + (row.paymentdetails.submerchantpaymentdetails.length | number : '1.0')}}</td>
+                    <td class="text-center">{{row.paymentdetails.submerchantpaymentdetails.length | number : '1.0'}}</td>
 
                     
                     <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
@@ -311,7 +297,7 @@
                         <img *ngIf="bankModel[row2.submerchant_bankname.toLowerCase()]" src="{{bankModel[row2.submerchant_bankname.toLowerCase()]}}">
                         {{!bankModel[row2.submerchant_bankname.toLowerCase()] ? row2.bank : '' }}
                     </td> -->
-                    <td>{{row2.bank }}</td>
+                    <td>{{row2.submerchant_bankname || N/A}}</td>
                     <td></td>
                     <td colspan=2 *ngIf="!row2.submerchant_bankname || row2.submerchant_bankname == 'NIL' || row2.submerchant_bankname == '----'">
                         N/A
@@ -334,50 +320,6 @@
                 </ng-container >  
 
             </tbody>
-
-            <div mdbModal #receiptModal="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop"
-                tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-                [config]="{backdrop: true, ignoreBackdropClick: true}">
-
-                <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-                    <div class="modal-content">
-                        <!--Header-->
-                        <div class="modal-header d-flex ">
-                            <p class="heading">VIEW RECEIPT</p>
-                            <button type="button" class="close" aria-label="Close" data-dismiss="modal"
-                                (click)="receiptModal.hide(); receiptView = false" mdbWavesEffect>x</button>
-                        </div>
-                        <!--Body-->
-                        <div class="modal-body">
-                            <div class="row" *ngIf="receiptRowData">
-                                <div class="col-12" *ngIf="receiptRowData">
-                                    <app-purchase *ngIf="receiptRowData.receiptType == 'purchase'" [isAll]=false
-                                        [receiptRowData]=receiptRowData [isTrans]=true></app-purchase>
-                                    <app-postpaid *ngIf="receiptRowData.receiptType == 'postpaid'" [isAll]=false
-                                        [receiptRowData]=receiptRowData [isTrans]=true></app-postpaid>
-                                    <app-token *ngIf="receiptRowData.receiptType == 'token'" [isAll]=false
-                                        [receiptRowData]=receiptRowData [isTrans]=true>
-                                    </app-token>
-                                    <app-small *ngIf="receiptRowData.receiptType == 'small'" [isAll]=false
-                                        [receiptRowData]=receiptRowData [isTrans]=true>
-                                    </app-small>
-                                    <p *ngIf="!receiptRowData.response_code">No Receipt Data Found</p>
-                                </div>
-                            </div>
-                            <div *ngIf="!receiptRowData" style="text-align:center">
-                                <mdb-spinner spinnerColor="blue"></mdb-spinner>
-                            </div>
-                        </div>
-                        <!--Footer-->
-                        <div class="modal-footer">
-
-                            <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal"
-                                (click)="receiptModal.hide(); receiptView = false" mdbWavesEffect>Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
 
             <!--Table body-->
             <tbody *ngIf="isData == false; else gettingTrans">
@@ -404,7 +346,7 @@
 
 
 
-        <app-pagination *ngIf="page" [event]="'TransHistoryPage'" [page]=page></app-pagination>
+        <app-pagination *ngIf="page" [event]="'MerchHistoryPage'" [page]=page></app-pagination>
     </div>
 
 </div>

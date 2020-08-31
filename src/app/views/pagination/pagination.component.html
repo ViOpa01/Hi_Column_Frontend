@@ -8,7 +8,7 @@
                           <td>
                                   <button [disabled]="page <= 1"
                                   (click)="page = page - 1; changePage()"
-                                  class="btn btn-uc waves-light btn-sm mt-2-1" mdbWavesEffect>Previous</button>
+                                  class="btn btn-ud waves-light btn-sm mt-2-1" mdbWavesEffect>Previous</button>
                           </td>
                           <td class="col-lg-4 col-sm-4">
                                   <input (blur)="changePage()" (keyup)="changePage($event)" class="form-control my-0 py-0"
@@ -16,7 +16,7 @@
                           </td>
                           <td>
                                   <button (click)="page = page + 1; changePage();"
-                                  class="btn btn-uc waves-light btn-sm mt-2-1" mdbWavesEffect>Next</button>
+                                  class="btn btn-ud waves-light btn-sm mt-2-1" mdbWavesEffect>Next</button>
                           </td>
                       </tr>
               </table>  

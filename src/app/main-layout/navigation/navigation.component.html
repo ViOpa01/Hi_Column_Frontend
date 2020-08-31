@@ -44,17 +44,17 @@
 
                             <mdb-item *ngIf='user ||admin || super || merchant'>
                                 <mdb-item-head [ngClass]="{'active':(tranLink || {}).isActive || (tranLink2 || {}).isActive}">
-                                   Transaction History
+                                   Transactions
                                 </mdb-item-head>
                                 <mdb-item-body>
                                     <ul>
                                         <li>
                                             <a #tranLink="routerLinkActive" routerLink="transaction/history"
-                                                routerLinkActive="active">Transactions</a>
+                                                routerLinkActive="active">Transaction History</a>
                                         </li>
                                         <li>
                                             <a #tranLink2="routerLinkActive" routerLink="transaction/summary"
-                                                routerLinkActive="active">Summary</a>
+                                                routerLinkActive="active">Merchant Summary</a>
                                             
                                         </li>
                                     </ul>
