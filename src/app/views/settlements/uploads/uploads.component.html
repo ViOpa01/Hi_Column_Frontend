@@ -1,0 +1,260 @@
+<div class="col-lg-12 col-md-12">
+  <div [ngClass]="{
+          'card card-cascade narrower': true,
+          'z-depth-0': !shadows,
+          'mt-0 px-4': true
+        }">
+
+    <div class="table-responsive">
+      <div>
+        <h5 class="mb-0 mt-3"><strong>Upload File</strong></h5>
+      </div>
+      <div class="col-lg-2 col-sm-4 p-0 my-3">
+        <select [(ngModel)]="switchName" (change)="reset()" class="browser-default custom-select d-block">
+          <option value="" selected>Select switch</option>
+          <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-4 p-0">
+      <div class="alert alert-info p-2">
+        Excel File should not exceed <strong>5MB</strong> <br> Total number of rows should not exceed
+        <strong>10,000</strong>
+      </div>
+      <input [(ngModel)]="fileModel" [disabled]="readingFile || uploadingFile || validatingFile || !switchName" type="file"
+        (change)="readExcel($event)" #settlements />
+      <br> <br>
+      <p *ngIf="readingFile"><i class="spinner-border spinner-border-md"></i> Reading File</p>
+    </div>
+
+    <div *ngIf="sheetNames && sheetNames.length > 0" class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>
+            Sheet Name
+          </th>
+          <th>
+            Row Count
+          </th>
+          <th>
+            Actions
+          </th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sheet of sheetNames">
+            <td>{{ sheet.sheetName }}</td>
+            <td>{{sheet.rowCount | number : '1.0'}}</td>
+            <td><button class="btn btn-uc btn-sm" (click)="validate(sheet.sheetName)"
+                *ngIf="(sheet.validatingStatus == undefined || sheet.validatingStatus==true) &&totalRowCount<=10000">{{sheet.validatingStatus ? "Validating" : "Validate"}}
+                <i class="fa "
+                  [ngClass]="{'spinner-border spinner-border-sm':sheet.validatingStatus==true, 'fa-check':sheet.validatingStatus==false}"></i></button>
+
+              <button *ngIf="sheet.validatingStatus == false && sheet.invalid.length > 0" class="btn btn-warning btn-sm"
+                data-toggle="modal" (click)="setTitle('Invalid', sheet.sheetName); pageSet(); basicModal.show()"
+                mdbWavesEffect>Invalid Rows
+                {{sheet.invalid.length | number : '1.0'}}</button>
+
+              <button *ngIf="sheet.validatingStatus == false && sheet.invalid.length > 0 && sheet.valid.length > 0"
+                class="btn btn-success btn-sm" data-toggle="modal"
+                (click)="setTitle('Valid', sheet.sheetName); pageSet(); basicModal.show()" mdbWavesEffect>Valid Rows
+                {{sheet.valid.length | number : '1.0'}}</button>
+
+              <button *ngIf="sheet.validatingStatus == false && sheet.valid.length > 0" class="btn btn-uc btn-sm"
+                (click)="setThreshold(); uploadSheet(sheet.sheetName)"
+                [disabled]="sheet.uploadingStatus || sheet.uploadingStatus==false && !switchName">{{sheet.uploadingStatus ? 'Uploading' : 'Upload Valid Rows' }}<i
+                  class="fa "
+                  [ngClass]="{'spinner-border spinner-border-sm':sheet.uploadingStatus==true, 'fa-check':sheet.uploadingStatus==false}"></i></button>
+              <mdb-progress-bar *ngIf="sheet.uploadingStatus==true" class="progress primary-color-dark"
+                mode="indeterminate"></mdb-progress-bar>
+              <p *ngIf="sheet.validatingStatus == false && sheet.valid.length == 0 && sheet.invalid.length == 0">
+                No Entries in Sheet</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="alert p-2" [ngClass]="{'alert-success':totalRowCount<=10000, 'alert-danger':totalRowCount>10000}">
+        Total number of rows: <strong>{{totalRowCount | number : '1.0'}}</strong>
+      </div>
+    </div>
+
+    <ng-template *ngIf="correct == false">
+      <div>
+        Please make sure the file is correct. I accept only Interswitch files.
+      </div>
+    </ng-template>
+
+    <h5 *ngIf="reading === false">
+      {{ filename | uppercase }} loaded
+    </h5>
+
+    <div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+      aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+      <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">{{title}} Rows</h4>
+            <button type="button" class="close unset-close" aria-label="Close" data-dismiss="modal"
+              (click)="basicModal.hide()" mdbWavesEffect>x</button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover mb-0 border-space">
+                <!--Table head-->
+                <thead>
+                  <th class="th-md">S/N</th>
+                  <th *ngFor="let header of headers" class="th-md">
+                    {{header}}
+                  </th>
+                </thead>
+                <!--Table head-->
+
+                <!--Table body-->
+                <tbody *ngIf="returnedArray.length > 0">
+                  <tr *ngFor="let row of returnedArray; let i = index">
+                    <td>{{ serial2 + i }}</td>
+                    <td *ngFor="let header of headers; let j = index">
+                     {{row[header]}}</td>
+                  </tr>
+                </tbody>
+                <!--Table body-->
+              </table>
+            </div>
+            <hr class="my-0" />
+
+            <!--Bottom Table UI-->
+            <div class="d-flex justify-content-between" style="overflow:auto;">
+              <!--Pagination -->
+              <nav class="my-4">
+                <div class="row">
+                  <div class="col-xs-12 col-12">
+                    <pagination [totalItems]="contentArray.length" [maxSize]='maxSize' [itemsPerPage]="limit"
+                      (pageChanged)="pageChanged3($event)"></pagination>
+                  </div>
+                </div>
+              </nav>
+              <!--/Pagination -->
+            </div>
+            <!--Bottom Table UI-->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ud btn-sm waves-light" (click)="exportExcel(title)"
+              mdbWavesEffect>Export</button>
+            <button type="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+              (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div>
+
+      <div>
+        <h5 class="mb-0"><strong>Upload History</strong></h5>
+      </div>
+      <div class="col-lg-2 col-sm-4 p-0 my-3">
+        <select ngDefaultControl [(ngModel)]='processor' (change)="setPage(1); getHistory()"
+          class="browser-default custom-select d-block">
+          <option value="">View All</option>
+          <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <!--Table-->
+        <table class="table table-striped table-hover mb-0 border-space">
+          <!--Table head-->
+          <thead>
+            <tr>
+              <th class="th-md">S/N</th>
+              <th class="th-md">
+                <a (click)="sortBy('filename')">Filename
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('count')">Row Count
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('proccessor')">Processor
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('createdAt')">Created at
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('updatedAt')">Updated at
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('download_link')">Download
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+
+
+            </tr>
+          </thead>
+          <!--Table head-->
+
+          <!--Table body-->
+          <tbody *ngIf="uploadHistory.length > 0">
+            <tr *ngFor="let row of uploadHistory; let i = index">
+              <td>{{ serial + i }}</td>
+              <td>{{ row.filename }}</td>
+              <td>{{ row.count | number : '1.0'}}</td>
+              <td>{{ row.processor }}</td>
+              <td>{{ row.createdAt | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td>{{ row.updatedAt | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td><a target="_blank" href="{{row.download_link}}">Download file</a></td>
+
+            </tr>
+          </tbody>
+          <!--Table body-->
+          <tbody *ngIf="isHistory == false; else gettingData">
+            <tr>
+              <td colspan="7" style="text-align:center;padding: 5% 20%">
+                <strong>No Data Available</strong>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #gettingData>
+            <tbody *ngIf="isHistory == undefined">
+              <tr>
+                <td colspan="7" style="text-align:center;padding: 5% 20%">
+                  <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+        <!--Table-->
+      </div>
+
+      <hr class="my-0" />
+
+      <!--Bottom Table UI-->
+      <div class="d-flex justify-content-between" style="overflow:auto;">
+        <!--Pagination -->
+        <nav class="my-4">
+          <div class="row">
+            <div class="col-xs-12 col-12">
+              <pagination [totalItems]="itemCount2" [rotate]="rotate" [maxSize]="maxSize" [itemsPerPage]="limit2"
+                (pageChanged)="pageChanged2($event)" ngDefaultControl [(ngModel)]="page2"></pagination>
+            </div>
+          </div>
+        </nav>
+        <!--/Pagination -->
+      </div>
+      <!--Bottom Table UI-->
+    </div>
+
+  </div>
+</div>

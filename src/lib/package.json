@@ -1,0 +1,21 @@
+{
+  "name": "ng-uikit-pro-standard",
+  "version": "6.2.6",
+  "repository": {
+    "type": "git",
+    "url": "url"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "license": "SEE LICENSE IN <license.pdf>",
+  "main": "./bundles/ng-uikit-pro-standard.umd.js",
+  "es2015": "./esm2015/ng-uikit-pro-standard.js",
+  "module": "./esm5/ng-uikit-pro-standard.es5.js",
+  "typings": "./ng-uikit-pro-standard.d.ts",
+  "peerDependencies": {
+    "@angular/core": "^6.0.0",
+    "@angular/common": "^6.0.0",
+    "@angular/http": "^6.0.0"
+  }
+}

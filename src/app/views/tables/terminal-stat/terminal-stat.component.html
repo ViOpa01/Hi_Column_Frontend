@@ -1,0 +1,613 @@
+<mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-3 mb-30'" class='tabs-wrapper' *ngIf="show">
+  <mdb-tab heading="Terminal Status Details">
+    <div [ngClass]="{ 'card card-cascade narrower mt-4': true, 'z-depth-0': !shadows,'px-4':show}">
+      <div class="table-responsive mt-3">
+        <p *ngIf="isData != false && show" class="change">
+          <strong>{{itemCount ? (itemCount | number: '1.0') : 'Loading...'}}
+            {{itemCount == 1 ? 'Terminal' : 'Terminals'}}</strong></p>
+        <p *ngIf="isData == false && show" class="change"><strong>Terminals Not Available</strong></p>
+        <table class="table table-borderless table2">
+          <tr class="row mx-0 no-change">
+            <td class="col-lg-1 col-sm-2 col-6">
+              <p class="noWrap">No of Records:</p>
+              <select (change)="setLimit($event); getTerminalStat()" class="browser-default custom-select d-block">
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+
+            </td>
+            <td class="col-lg-4 col-sm-8">
+              <p>Search:</p>
+              <input class="form-control my-0 py-0" name="search" ngDefaultControl [(ngModel)]="search" type="text"
+                placeholder="Search">
+            </td>
+            <td class="col-lg-1 col-sm-2">
+              <button (click)="getTerminalStat(); getTerminalCount(); setPage();"
+                class="btn btn-uc waves-light btn-sm mt-1-2" mdbWavesEffect>Search</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="table-responsive table-wrapper">
+        <!--Table-->
+        <table class="table table-striped table-hover mb-0 border-space">
+
+          <!--Table head-->
+          <thead>
+            <tr>
+              <th class="th-md">S/N</th>
+              <th class="th-md">
+                <a (click)="sortBy('terminal_id')">Terminal ID
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('merchant_id')">Merchant ID
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('printer_status')">Printer
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('charging_status')">Power
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('battery_level')">Battery Level (%)
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('network')">Network
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('signal')">Signal (%)
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('last_connect_date')">Last Seen
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('active')">Active
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md text-center">Action</th>
+            </tr>
+          </thead>
+          <!--Table head-->
+
+          <!--Table body-->
+          <tbody *ngIf="stat.length > 0">
+            <tr  *ngFor="let row of stat;let i = index;">
+
+              <td>{{(serial + i)}}</td>
+              <td>{{row.terminal_id}}</td>
+              <td *ngIf="row.merchant_id"><a href="javascript:;" [routerLink]="['/merchant', row.merchant_id]">{{ row.merchant_id}}</a></td>
+              <td *ngIf="!row.merchant_id">Not Available</td>
+              <td>{{row.printer_status || 'Not Available'}}</td>
+              <td>{{row.charging_status || 'Not Available'}}</td>
+              <td>{{row.battery_level || 'Not Available'}}</td>
+              <td>{{row.network || 'Not Available'}}</td>
+              <td>{{row.signal || 'Not Available'}}</td>
+              <td>{{(row.last_connect_date | date : 'yyyy-MM-dd HH:mm:ss') || 'Not Available'}}</td>
+              <td class="capsText">{{row.active}}</td>
+              <td class="text-center">
+                <button class="btn btn-elegant waves-light btn-sm m-0" (click)="setDetails(row); basicModal.show()"
+                  mdbWavesEffect>View</button>
+              </td>
+            </tr>
+          </tbody>
+
+          <!--Table body-->
+          <tbody *ngIf="isData == false; else gettingData">
+            <tr >
+              <td colspan="11" style="text-align:center;padding: 5% 20%">
+                <strong>No Data Available</strong>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #gettingData>
+            <tbody *ngIf="isData == undefined">
+              <tr >
+                <td colspan="11" style="text-align:center;padding: 5% 20%">
+                  <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+
+        </table>
+        <!--Table-->
+        <table class="mt-2 table no-header border-space" style="min-width: 1097px;">
+
+          <tbody *ngFor="let row of stat;let i = index;">
+            <tr >
+              <td class="row p-2 term-style">
+                <div class="col-3">
+                  <p><span>Terminal ID:</span> {{row.terminal_id}}</p>
+                  <p *ngIf="row.merchant_id"><span>Merchant ID:</span><a href="javascript:;"
+                      [routerLink]="['/merchant', row.merchant_id]">{{ row.merchant_id}}</a></p>
+                      <p *ngIf="!row.merchant_id"><span>Merchant ID:</span>Not Available</p>
+                  <p><span>Printer Status:</span> {{row.printer_status || 'Not Available'}}</p>
+                  <button class="btn btn-elegant waves-light btn-sm m-0" mdbWavesEffect
+                    (click)="terminal = row.terminal_id; messageModal.show();">Request Support</button>
+                </div>
+                <div class="col-3">
+                  <p><span>Status:</span> {{row.charging_status || 'Not Available'}}</p>
+                  <p><span>Network:</span> {{row.network || 'Not Available'}}</p>
+                  <p><span>Last Seen:</span>
+                    {{(row.last_connect_date | date : 'yyyy-MM-dd HH:mm:ss') || 'Not Available'}}
+                  </p>
+                  <p class="capsText"><span>Active:</span> {{row.active}}</p>
+
+                </div>
+                <div class="col-3" style="overflow: hidden">
+                  <p><span>Type:</span> {{row.type || 'Not Available'}}</p>
+                  <p><span>Model:</span> {{row.model || 'Not Available'}}</p>
+                  <p><span>Software:</span> {{row.software_version || 'Not Available'}}</p>
+                  <p><span>Serial No:</span> {{row.serial_no || 'Not Available'}}</p>
+                </div>
+                <div class="col-3">
+                  <div class="progress-wrapper" style="width: auto; display: inline-block; position: relative">
+                    <div class="current circle-style">{{ row.battery_level }}%</div>
+
+                    <round-progress [current]="row.battery_level" [max]="100" [color]="row.bat_color"
+                      [background]="'#eaeaea'" [radius]="50" [stroke]="5" [semicircle]="false" [rounded]="true"
+                      [clockwise]="true" [responsive]="false" [duration]="800" [animation]="'easeInOutQuart'"
+                      [animationDelay]="0">{{row.battery_level}}</round-progress>
+
+                    <div class="text-center">Battery Level</div>
+                  </div>
+
+                  <div class="progress-wrapper ml-5" style="width: auto; display: inline-block; position: relative">
+                    <div class="current circle-style">{{ row.signal }}%</div>
+
+                    <round-progress [current]="row.signal" [max]="100" [color]="row.sig_color"
+                      [background]="'#eaeaea'" [radius]="50" [stroke]="5" [semicircle]="false" [rounded]="true"
+                      [clockwise]="true" [responsive]="false" [duration]="800" [animation]="'easeInOutQuart'"
+                      [animationDelay]="0">
+                      {{row.signal}}</round-progress>
+
+                    <div class="text-center">Signal Level</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="row.lat && row.lon">
+              <td class="col-12">
+                <agm-map [latitude]="row.lat" [longitude]="row.lon" [mapTypeId]="'roadmap'" [scrollwheel]="null"
+                  [zoom]="15" style="height: 300px">
+                  <agm-marker [latitude]="row.lat" [longitude]="row.lon">
+                    <agm-info-window> {{row.geo_address ? row.terminal_id + ' at '+ row.geo_address : row.terminal_id }}</agm-info-window>
+                  </agm-marker>
+                </agm-map>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+        <!-- <div class="table-wrapper mt-2" style="max-height: unset !important">
+         
+        </div> -->
+      </div>
+
+      <hr class="my-0">
+
+      <app-pagination *ngIf="page" [event]="'TerminalStat'" [page]=page></app-pagination>
+    </div>
+
+
+  </mdb-tab>
+  <mdb-tab heading="Terminal Map Overview">
+    <div *ngIf="!isData2" [ngClass]="{ 'card card-cascade narrower mt-4': true, 'z-depth-0': !shadows}">
+      <div style="text-align:center;padding: 5% 20%">
+        <strong *ngIf="isData2 == false">No Data Available</strong>
+        <mdb-spinner *ngIf="isData2 == undefined" spinnerColor="blue"></mdb-spinner>
+      </div>
+    </div>
+
+    <div *ngIf="isData2" [ngClass]="{ 'card card-cascade narrower mt-4': true, 'z-depth-0': !shadows}">
+      <div class="p-4 ">
+        <agm-map #agmMap [latitude]="lat" [longitude]="lng" [mapTypeId]="'roadmap'" [scrollwheel]="null" [zoom]="zoom"
+          (zoomChange)="zoomChange(agmMap)" style="height: 700px;">
+          <agm-marker-cluster [minimumClusterSize]="3"
+            imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"
+            [zoomOnClick]="true">
+            <agm-marker #agmMarker *ngFor="let row of worldStat" [latitude]="row.lat" [longitude]="row.lon"
+              (markerClick)="markerClick(agmMap,row,infoWindow)">
+              <agm-info-window #infoWindow>
+                {{row.geo_address ? row.terminal_id + ' at '+ row.geo_address : row.terminal_id }}</agm-info-window>
+            </agm-marker>
+          </agm-marker-cluster>
+        </agm-map>
+      </div>
+    </div>
+
+
+  </mdb-tab>
+  <mdb-tab heading="Terminal Status Analysis">
+    <div *ngIf="isData3" [ngClass]="{ 'card card-cascade narrower mt-4': true, 'z-depth-0': !shadows}">
+      <div *ngIf="chartDatasets.length" class="card-body card-body-cascade pb-0">
+        <div style="width: 95%; overflow: auto;">
+          <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chart1Labels"
+            [options]="chartOptions" [legend]="true" [colors]="chartColors"> </canvas>
+        </div>
+      </div>
+    </div>
+
+      <div *ngIf="!isData3" [ngClass]="{ 'card card-cascade narrower mt-4': true, 'z-depth-0': !shadows}">
+        <div style="text-align:center;padding: 5% 20%">
+          <strong *ngIf="isData3 == false">No Data Available</strong>
+          <mdb-spinner *ngIf="isData3 == undefined" spinnerColor="blue"></mdb-spinner>
+        </div>
+      </div>
+   
+  </mdb-tab>
+</mdb-tabset>
+
+
+<div *ngIf="!show">
+  <div class="table-responsive">
+    <p *ngIf="isData != false && show" class="change">
+      <strong>{{itemCount ? (itemCount | number: '1.0') : 'Loading...'}}
+        {{itemCount == 1 ? 'Terminal' : 'Terminals'}}</strong></p>
+    <p *ngIf="isData == false && show" class="change"><strong>Terminals Not Available</strong></p>
+    <table class="table table-borderless table2">
+      <tr class="row mx-0 no-change">
+        <td class="col-lg-1 col-sm-2 col-6">
+          <p class="noWrap">No of Records:</p>
+          <select (change)="setLimit($event); getTerminalStat()" class="browser-default custom-select d-block">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+          </select>
+
+        </td>
+        <td class="col-lg-4 col-sm-8">
+          <p>Search:</p>
+          <input class="form-control my-0 py-0" name="search" ngDefaultControl [(ngModel)]="search" type="text"
+            placeholder="Search">
+        </td>
+        <td class="col-lg-1 col-sm-2">
+          <button (click)="getTerminalStat(); getTerminalCount(); setPage();"
+            class="btn btn-uc waves-light btn-sm mt-1-2" mdbWavesEffect>Search</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="table-responsive table-wrapper">
+    <!--Table-->
+    <table class="table table-striped table-hover mb-0 border-space">
+
+      <!--Table head-->
+      <thead>
+        <tr>
+          <th class="th-md">S/N</th>
+          <th class="th-md">
+            <a (click)="sortBy('terminal_id')">Terminal ID
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('merchant_id')">Merchant ID
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('printer_status')">Printer
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('charging_status')">Power
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('battery_level')">Battery Level (%)
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('network')">Network
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('signal')">Signal (%)
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('last_connect_date')">Last Seen
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('active')">Active
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md text-center">Action</th>
+        </tr>
+      </thead>
+      <!--Table head-->
+
+      <!--Table body-->
+      <tbody *ngIf="stat.length > 0">
+        <tr  *ngFor="let row of stat;let i = index;">
+
+          <td>{{(serial + i)}}</td>
+          <td>{{row.terminal_id}}</td>
+          <td *ngIf="!merchantU && row.merchant_id"><a href="javascript:;" [routerLink]="['/merchant', row.merchant_id]">{{ row.merchant_id}}</a></td>
+          <td *ngIf="merchantU || !row.merchant_id">{{row.merchant_id || 'Not Available'}}</td>
+          <td>{{row.printer_status || 'Not Available'}}</td>
+          <td>{{row.charging_status || 'Not Available'}}</td>
+          <td>{{row.battery_level || 'Not Available'}}</td>
+          <td>{{row.network || 'Not Available'}}</td>
+          <td>{{row.signal || 'Not Available'}}</td>
+          <td>{{(row.last_connect_date | date : 'yyyy-MM-dd HH:mm:ss') || 'Not Available'}}</td>
+          <td class="capsText">{{row.active}}</td>
+          <td class="text-center">
+            <button class="btn btn-elegant waves-light btn-sm m-0" (click)="setDetails(row); basicModal.show()"
+              mdbWavesEffect>View</button>
+          </td>
+        </tr>
+      </tbody>
+
+      <!--Table body-->
+      <tbody *ngIf="isData == false; else gettingData">
+        <tr >
+          <td colspan="11" style="text-align:center;padding: 5% 20%">
+            <strong>No Data Available</strong>
+          </td>
+        </tr>
+      </tbody>
+      <ng-template #gettingData>
+        <tbody *ngIf="isData == undefined">
+          <tr >
+            <td colspan="11" style="text-align:center;padding: 5% 20%">
+              <mdb-spinner spinnerColor="blue"></mdb-spinner>
+            </td>
+          </tr>
+        </tbody>
+      </ng-template>
+
+    </table>
+    <!--Table-->
+    <table class="table mt-2 no-header border-space" style="min-width: 1097px;">
+
+      <tbody *ngFor="let row of stat;let i = index;">
+        <tr >
+          <td class="row p-2 term-style">
+            <div class="col-3">
+              <p><span>Terminal ID:</span> {{row.terminal_id}}</p>
+              <p *ngIf="!merchantU && row.merchant_id"><span>Merchant ID:</span><a href="javascript:;"
+                  [routerLink]="['/merchant', row.merchant_id]">{{ row.merchant_id}}</a></p>
+              <p *ngIf="merchantU || !row.merchant_id"><span>Merchant ID:</span>{{row.merchant_id || 'Not Available'}}</p>
+              <p><span>Printer Status:</span> {{row.printer_status || 'Not Available'}}</p>
+              <button class="btn btn-elegant waves-light btn-sm m-0" mdbWavesEffect
+                (click)="terminal = row.terminal_id; messageModal.show()">Request Support</button>
+            </div>
+            <div class="col-3">
+              <p><span>Status:</span> {{row.charging_status || 'Not Available'}}</p>
+              <p><span>Network:</span> {{row.network || 'Not Available'}}</p>
+              <p><span>Last Seen:</span>
+                {{(row.last_connect_date | date : 'yyyy-MM-dd HH:mm:ss') || 'Not Available'}}
+              </p>
+              <p class="capsText"><span>Active:</span> {{row.active}}</p>
+
+            </div>
+            <div class="col-3" style="overflow: hidden">
+              <p><span>Type:</span> {{row.type || 'Not Available'}}</p>
+              <p><span>Model:</span> {{row.model || 'Not Available'}}</p>
+              <p><span>Software:</span> {{row.software_version || 'Not Available'}}</p>
+              <p><span>Serial No:</span> {{row.serial_no || 'Not Available'}}</p>
+            </div>
+            <div class="col-3">
+              <div class="progress-wrapper" style="width: auto; display: inline-block; position: relative">
+                <div class="current circle-style">{{ row.battery_level }}%</div>
+
+                <round-progress [current]="row.battery_level" [max]="100" [color]="row.bat_color"
+                  [background]="'#eaeaea'" [radius]="50" [stroke]="5" [semicircle]="false" [rounded]="true"
+                  [clockwise]="true" [responsive]="false" [duration]="800" [animation]="'easeInOutQuart'"
+                  [animationDelay]="0">{{row.battery_level}}</round-progress>
+
+                <div class="text-center">Battery Level</div>
+              </div>
+
+              <div class="progress-wrapper ml-5" style="width: auto; display: inline-block; position: relative">
+                <div class="current circle-style">{{ row.signal }}%</div>
+
+                <round-progress [current]="row.signal" [max]="100" [color]="row.sig_color" [background]="'#eaeaea'"
+                  [radius]="50" [stroke]="5" [semicircle]="false" [rounded]="true" [clockwise]="true"
+                  [responsive]="false" [duration]="800" [animation]="'easeInOutQuart'" [animationDelay]="0">
+                  {{row.signal}}</round-progress>
+
+                <div class="text-center">Signal Level</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="row.lat && row.lon">
+          <td class="col-12">
+            <agm-map [latitude]="row.lat" [longitude]="row.lon" [mapTypeId]="'roadmap'" [scrollwheel]="null"
+              [zoom]="15" style="height: 300px">
+              <agm-marker [latitude]="row.lat" [longitude]="row.lon">
+                <agm-info-window> {{row.geo_address ? row.terminal_id + ' at '+ row.geo_address : row.terminal_id }}</agm-info-window>
+              </agm-marker>
+            </agm-map>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+    <!-- <div class="table-wrapper mt-2" style="max-height: unset !important">
+     
+    </div> -->
+  </div>
+
+  <hr class="my-0">
+
+  <app-pagination *ngIf="page" [event]="'TerminalStat'" [page]=page></app-pagination>
+  
+  <div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+  aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+  <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Terminal Details</h4>
+        <button type="button" class="close unset-close" aria-label="Close" data-dismiss="modal"
+          (click)="basicModal.hide()" mdbWavesEffect>x</button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover mb-0 border-space">
+
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th class="th-md">
+                  <a>Type
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a>Model
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a>Software
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a>Serial
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody *ngIf="details">
+              <tr >
+                <td>{{details.type || 'Not Available'}}</td>
+                <td>{{details.model || 'Not Available'}}</td>
+                <td>{{details.software_version || 'Not Available'}}</td>
+                <td>{{details.serial_no || 'Not Available'}}</td>
+
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ty pe="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+          (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+<div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title w-100" id="myModalLabel">Terminal Details</h4>
+      <button type="button" class="close unset-close" aria-label="Close" data-dismiss="modal"
+        (click)="basicModal.hide()" mdbWavesEffect>x</button>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover mb-0 border-space">
+
+          <!--Table head-->
+          <thead>
+            <tr>
+              <th class="th-md">
+                <a>Type
+                </a>
+              </th>
+              <th class="th-md">
+                <a>Model
+                </a>
+              </th>
+              <th class="th-md">
+                <a>Software
+                </a>
+              </th>
+              <th class="th-md">
+                <a>Serial
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <!--Table head-->
+
+          <!--Table body-->
+          <tbody *ngIf="details">
+            <tr >
+              <td>{{details.type || 'Not Available'}}</td>
+              <td>{{details.model || 'Not Available'}}</td>
+              <td>{{details.software_version || 'Not Available'}}</td>
+              <td>{{details.serial_no || 'Not Available'}}</td>
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button ty pe="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+        (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div mdbModal #messageModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+  aria-labelledby="mymessageModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: true}">
+  <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Terminal Details</h4>
+        <button type="button" class="close unset-close" aria-label="Close" data-dismiss="modal"
+          (click)="messageModal.hide(); note = ''; terminal = '';" mdbWavesEffect>x</button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <textarea class="w-100 form-control" rows="8" ngDefaultControl [(ngModel)]="note" placeholder="Provide a note"
+            name="note"></textarea>
+          <button [disabled]="!note || isSending" type="button" class="btn btn-uc btn-sm waves-light"
+            data-dismiss="modal" (click)="sendSupport(note,terminal,messageModal)" mdbWavesEffect><i class="fa ">
+            </i>{{isSending? 'Sending' : 'Send' }}</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ty pe="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+          (click)="messageModal.hide(); note = ''; terminal = '';" mdbWavesEffect>Close</button>
+      </div>
+    </div>
+  </div>
+</div>

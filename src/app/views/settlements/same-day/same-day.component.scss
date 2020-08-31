@@ -1,0 +1,39 @@
+.table-wrapper {
+    display: block;
+    max-height: 186em;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    white-space: nowrap;
+}
+
+.blue-gradient {
+    background: -webkit-linear-gradient(50deg, #45cafc, #303f9f);
+    background: linear-gradient(40deg, #45cafc, #4285f4);
+}
+
+.table-ui {
+    border: 1px solid #e0e0e9;
+}
+
+
+.modal-dialog.cascading-modal.modal-avatar .modal-header img {
+    width: 130px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-dialog.cascading-modal.modal-avatar .modal-header {
+    margin: -6rem 2rem -1rem 2rem;
+}
+
+.capsText {
+    text-transform: capitalize;
+}
+
+.paidColor {
+    background: #cff3b5 !important;
+}
+
+.space-side {
+    padding-right: 2% !important
+}

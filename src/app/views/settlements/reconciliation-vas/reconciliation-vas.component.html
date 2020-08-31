@@ -1,0 +1,280 @@
+<div class="row">
+  <div class="ml-2">
+    <button [disabled]="!reconciliationRecords.length" type="button" class="btn btn-uc btn-sm waves-light"
+      (click)="exportExcel()" mdbWavesEffect>Export</button>
+  </div>
+
+  <button [disabled]="!reconciliationRecords.length || isDownload == true" type="button" class="btn btn-ud btn-sm waves-light"
+  (click)="download()" mdbWavesEffect>Download<i class="fa "
+  [ngClass]="{'spinner-border spinner-border-sm':isDownload==true}"></i>
+</button>
+
+</div>
+
+
+<div [ngClass]="{
+        'card card-cascade narrower': true,
+        'z-depth-0': !shadows,
+        'mt-0': true
+      }">
+
+  <div class="table-responsive px-4 pt-3">
+    <table class="table table-borderless table2">
+      <tr class="row mx-0 no-change">
+        <td class="col-lg-1 col-sm-2">
+          <p class="noWrap">No of Records:</p>
+          <select (change)="setLimit($event); getReconciliation(); getValues();" class="browser-default custom-select d-block">
+            <option value="20">20</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+          </select>
+          
+
+        </td>
+        <td class="col-lg-2 col-sm-2">
+          <p class="noWrap">Status:</p>
+          <select ngDefaultControl [(ngModel)]='status2'  (change)="filterStatus()" class="browser-default custom-select d-block">
+            <option value='' selected>View All</option>
+            <option value=true>True</option>
+            <option value=false>False</option>
+          </select>
+
+        </td>
+        <td class="col-lg-2 col-sm-2">
+          <p class="noWrap">Beta Status:</p>
+          <select ngDefaultControl [(ngModel)]='status3'  (change)="setPage(1); getReconciliation(); getValues();" class="browser-default custom-select d-block">
+            <option value='' selected>View All</option>
+            <option value=true>True</option>
+            <option value=false>False</option>
+          </select>
+
+        </td>
+        <td class="col-lg-2 col-sm-2">
+            <p class="noWrap">Processor:</p>
+          <select ngDefaultControl [(ngModel)]='processor' (change)="setPage(1); getReconciliation(); getValues();"
+          class="browser-default custom-select d-block">
+          <option value="">View All</option>
+          <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+        </select>
+        </td>
+        <!-- <td class="col-lg-6 col-sm-10">
+          <p>Search:</p>
+          <input class="form-control my-0 py-0" name="search" ngDefaultControl [(ngModel)]="search" type="text"
+            placeholder="Search">
+        </td> -->
+        <td *ngIf="show" class="col-lg-2 col-sm-4 col-6 datepickers">
+          <p>From:</p>
+          <div class="md-form">
+            <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+            </mdb-date-picker>
+          </div>
+        </td>
+        <td *ngIf="show" class="col-lg-2 col-sm-4 col-6 datepickers">
+          <p>To:</p>
+          <div class="md-form">
+            <mdb-date-picker ngDefaultControl [(ngModel)]="to" [placeholder]="'yyyy-mm-dd'" required>
+            </mdb-date-picker>
+          </div>
+        </td>
+        <td class="col-lg-1 col-sm-2">
+          <button (click)="getReconciliation(); getValues(); setPage(1);" class="btn btn-uc waves-light btn-sm mt-1-2"
+            mdbWavesEffect>Search</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="isData2 || isData2 == false" class="row px-2">
+    <div class="width-min mb-2">
+        <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card px-3 need-border">
+            <div class="admin-up">
+                <div class="data pb-2">
+                    <p class="new-head no-change noWrap">Total VAS</p>
+                    <p class="new-font">
+                        <strong>₦{{(values.totalVasTrans || 0) | number : '1.2-2'}}</strong>
+                    </p>
+                    <!-- <p *ngIf="isData2 == false" class="new-font"><strong>No Data available</strong></p>
+                    <p *ngIf="isData2 == undefined">
+                        <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                    </p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="width-min mb-2">
+      <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card px-3 need-border">
+          <div class="admin-up">
+              <div class="data pb-2">
+                  <p class="new-head no-change noWrap">Total VAS Settlement</p>
+                  <p class="new-font">
+                      <strong>₦{{(values.totalVasTransSettled || 0)  | number : '1.2-2'}}</strong>
+                  </p>
+                  <!-- <p *ngIf="isData2 == false" class="new-font"><strong>No Data available</strong></p>
+                  <p *ngIf="isData2 == undefined">
+                      <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </p> -->
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="width-min mb-2">
+    <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card px-3 need-border">
+        <div class="admin-up">
+            <div class="data pb-2">
+                <p class="new-head no-change noWrap">Under Settlement Value</p>
+                <p class="new-font">
+                    <strong [ngClass]="{'text-danger':values.diffrenceValue < 0, 'text-success':values.diffrenceValue > 0}" >{{(values.diffrenceValue || 0)  | number : '1.2-2'}}</strong>
+                </p>
+                <!-- <p *ngIf="isData2 == false" class="new-font"><strong>No Data available</strong></p>
+                <p *ngIf="isData2 == undefined">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                </p> -->
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="width-min mb-2">
+            <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card px-3 need-border">
+                <div class="admin-up">
+                    <div class="data pb-2">
+                        <p class="new-head no-change noWrap">Total VAS Count</p>
+                        <p class="new-font">
+                            <strong>{{(values.totalVasCount || 0) | number : '1.0'}}</strong>
+                        </p>
+                        <!-- <p *ngIf="isData2 == false" class="new-font"><strong>No Data available</strong></p>
+                        <p *ngIf="isData2 == undefined">
+                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                        </p> -->
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="width-min mb-2">
+      <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card px-3 need-border">
+          <div class="admin-up">
+              <div class="data pb-2">
+                  <p class="new-head no-change noWrap">Total VAS Settlement Count</p>
+                  <p class="new-font">
+                      <strong>{{(values.totalVasSettledCount || 0) | number : '1.0'}}</strong>
+                  </p>
+                  <!-- <p *ngIf="isData2 == false" class="new-font"><strong>No Data available</strong></p>
+                  <p *ngIf="isData2 == undefined">
+                      <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </p> -->
+              </div>
+          </div>
+      </div>
+</div>
+
+<div class="width-min mb-2">
+  <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card px-3 need-border">
+      <div class="admin-up">
+          <div class="data pb-2">
+              <p class="new-head no-change noWrap">Under Settlement Count</p>
+              <p class="new-font">
+                  <strong [ngClass]="{'text-danger':values.diffrenceCount < 0, 'text-success':values.diffrenceCount > 0}">{{(values.diffrenceCount || 0)  | number : '1.0'}}</strong>
+              </p>
+              <!-- <p *ngIf="isData2 == false" class="new-font"><strong>No Data available</strong></p>
+              <p *ngIf="isData2 == undefined">
+                  <mdb-spinner spinnerColor="blue"></mdb-spinner>
+              </p> -->
+          </div>
+      </div>
+  </div>
+</div>
+</div>
+
+
+  <div class="px-4">
+    <div class="table-wrapper">
+      <!--Table-->
+      <table class="table table-striped table-hover mb-0 border-space ">
+        <!--Table head-->
+        <thead>
+          <tr>
+            <th class="th-md">S/N</th>
+            <th class="th-md">
+              <a (click)="sortBy('terminal')">Terminal ID
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('virtualTID')">Virtual TID
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('rrn')">RRN
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('amount')">Transaction Amount (₦)
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('settledTrxAmount')">Amount in File (₦)
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('SettlementAmount')">Settled Value (₦)
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('settled')">Status
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('dateTime')">Transaction Date
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <!--Table head-->
+
+        <!--Table body-->
+        <tbody *ngIf="reconciliationRecords.length > 0">
+          <tr   [ngClass]="{'error-color': row.settled == false }" *ngFor="let row of reconciliationRecords; let i = index">
+            <td>{{ serial + i }}</td>
+            <td>{{ row.terminal }}</td>
+            <td>{{ row.virtualTID || 'N/A' }}</td>
+            <td>{{ row.rrn }}</td>
+            <td>{{ (row.amount / 100 | number: "1.2-2") || 'N/A'}}</td>
+            <td>{{ (row.settledTrxAmount | number: "1.2-2") || 'N/A'}}</td>
+            <td>{{ (row.SettlementAmount | number: "1.2-2") || 'N/A'}}</td>
+            <td class="capsText">{{ row.settled }}</td>
+            <td>{{ row.dateTime | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+          </tr>
+        </tbody>
+        <!--Table body-->
+        <tbody *ngIf="isData == false; else gettingData">
+          <tr >
+            <td colspan="10" style="text-align:center;padding: 5% 20%">
+              <strong>No Data Available</strong>
+            </td>
+          </tr>
+        </tbody>
+        <ng-template #gettingData>
+          <tbody *ngIf="isData == undefined">
+            <tr >
+              <td colspan="10" style="text-align:center;padding: 5% 20%">
+                <mdb-spinner spinnerColor="blue"></mdb-spinner>
+              </td>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+      <!--Table-->
+    </div>
+
+    <hr class="my-0" />
+
+    <app-pagination *ngIf="page" [event]="'ReconciliationVasPage'" [page]=page></app-pagination>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+//change this to change theme of footer
+// access and default
+$base-color: #153C5B;
+
+//uba 
+// $base-color: #911111;
+.new-color{
+    background-color: $base-color;
+}
+
+footer.page-footer .footer-copyright {
+    background-color: unset !important;
+}

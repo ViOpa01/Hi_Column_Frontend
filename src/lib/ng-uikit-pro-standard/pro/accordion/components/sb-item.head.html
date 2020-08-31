@@ -1,0 +1,8 @@
+<div class="card-header {{ customClass }}" [ngClass]="{ 'item-disabled': isDisabled }" (click)="toggleClick($event)">
+  <a role="button">
+    <h5 class="mb-0">
+    <ng-content></ng-content>
+    <i *ngIf="indicator" class="fa fa-angle-down rotate-icon"></i>
+    </h5>
+  </a>
+</div>

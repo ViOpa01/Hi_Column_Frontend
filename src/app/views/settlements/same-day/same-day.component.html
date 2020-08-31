@@ -1,0 +1,314 @@
+<div class="col-lg-12 col-md-12">
+  <div class="row">
+    <div class="ml-2">
+      <!-- <button type="button" class="btn btn-elegant btn-sm waves-light" data-toggle="modal" data-target="#search"
+          (click)="search.show()" mdbWavesEffect>ADVANCED SEARCH</button> -->
+
+      <button [disabled]="!sameDayRecords.length" type="button" class="btn btn-uc btn-sm waves-light" (click)="exportExcel('sameDay')"
+        mdbWavesEffect>Export</button>
+    </div>
+  </div>
+
+  <div [ngClass]="{
+          'card card-cascade narrower': true,
+          'z-depth-0': !shadows,
+          'mt-0': true
+        }">
+    <!--Card image-->
+    <div
+      class="view view-cascade gradient-card-header blue-gradient narrower py-2 mt-4 mx-4 mb-3 d-flex justify-content-between align-items-center">
+
+
+      <p class="white-text mx-3">SAME-DAY SETTLEMENT</p>
+
+
+    </div>
+    <!--/Card image-->
+
+    <div class="table-responsive px-4">
+      <table class="table table-borderless table2">
+        <tr class="row mx-0 no-change">
+          <td class="col-lg-1 col-sm-2">
+            <p class="noWrap">No of Records:</p>
+            <select (change)="setLimit($event); getSameDay();" class="browser-default custom-select d-block">
+              <option value="20">20</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+              <option value="200">200</option>
+            </select>
+
+          </td>
+          <td class="col-lg-2 col-sm-4 datepickers">
+            <p>From:</p>
+            <div class="md-form">
+              <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+              </mdb-date-picker>
+            </div>
+          </td>
+          <td class="col-sm-1">
+            <button (click)="setPage(1); getSameDay();" class="btn btn-uc waves-light btn-sm mt-1-2"
+              mdbWavesEffect>Search</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="px-4">
+      <div class="table-wrapper">
+        <!--Table-->
+        <table class="table table-striped table-hover mb-0 border-space ">
+          <!--Table head-->
+          <thead>
+            <tr>
+              <th class="th-md">S/N</th>
+              <th class="th-md text-center">Action</th>
+              <th class="th-md">
+                <a (click)="sortBy('paid', 'sameDay')">Paid
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('merchant_name', 'sameDay')">Merchant Name
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('merchant_id', 'sameDay')">Merchant ID
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('total_value', 'sameDay')">Total Value (₦)
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('total_volume', 'sameDay')">Total Volume
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('successful_value', 'sameDay')">Successful Value (₦)
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('successful_volume', 'sameDay')">Successful Volume
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('interval', 'sameDay')">Time/Frequency
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-md">
+                <a (click)="sortBy('transaction_date', 'sameDay')">Date
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              
+            </tr>
+          </thead>
+          <!--Table head-->
+
+          <!--Table body-->
+          <tbody *ngIf="sameDayRecords.length > 0">
+            <tr  [ngClass]="{paidColor: row.paid}" *ngFor="let row of sameDayRecords; let i = index">
+              <td>{{ serial + i }}</td>
+              <td class="space-side text-center">
+                <button *ngIf="!row.paid && row.total_value > 0 && (admin || super)" class="btn btn-uc waves-light btn-sm"
+                  (click)="addSameDay($event, row._id)" mdbWavesEffect>Confirm Paid</button>
+                <button *ngIf="row.total_value > 0" class="btn btn-elegant waves-light btn-sm"
+                  (click)="getDetails(row._id); basicModal.show(); name = row.merchant_name; id = row._id"
+                  mdbWavesEffect>View</button>
+                <p *ngIf="row.total_value == 0">No Transactions Done</p>
+              </td>
+              <td class="capsText">{{row.paid}}</td>
+              <td><a href="javascript:;" [routerLink]="['/merchant', row.merchant_id]">{{ row.merchant_name }}</a></td>
+              <td>{{ row.merchant_id }}</td>
+              <td>{{ row.total_value | number: '1.2-2'}}</td>
+              <td>{{ row.total_volume | number: '1.0'}}</td>
+              <td>{{ row.successful_value | number: '1.2-2'}}</td>
+              <td>{{ row.successful_volume | number: '1.0'}}</td>
+              <td *ngIf="row.interval > 1">Every {{row.interval}} hours</td>
+              <td *ngIf="row.interval == 1">Every {{row.interval}} hour</td>
+              <td>{{ row.transaction_date | date: "'yyyy-MM-dd" }}</td>
+            </tr>
+          </tbody>
+          <!--Table body-->
+          <tbody *ngIf="isData == false; else gettingData">
+            <tr >
+              <td colspan="11" style="text-align:center;padding: 5% 20%">
+                <strong>No Data Available</strong>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #gettingData>
+            <tbody *ngIf="isData == undefined">
+              <tr >
+                <td colspan="11" style="text-align:center;padding: 5% 20%">
+                  <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+        <!--Table-->
+      </div>
+
+      <hr class="my-0" />
+
+      <app-pagination *ngIf="page" [event]="'SameDay'" [page]=page></app-pagination>
+    </div>
+  </div>
+</div>
+
+<div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+  aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+  <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">{{ name }}</h4>
+        <button type="button" class="close unset-close" aria-label="Close" data-dismiss="modal"
+          (click)="basicModal.hide()" mdbWavesEffect>x</button>
+      </div>
+      <div class="modal-body">
+          <div class="ml-2">
+              <!-- <button type="button" class="btn btn-elegant btn-sm waves-light" data-toggle="modal" data-target="#search"
+                  (click)="search.show()" mdbWavesEffect>ADVANCED SEARCH</button> -->
+        
+              <button [disabled]="!details.length" type="button" class="btn btn-uc btn-sm waves-light" (click)="exportExcel('details')"
+                mdbWavesEffect>Export</button>
+            </div>
+            <div class="table-responsive px-4">
+                <table class="table table-borderless table2">
+                  <tr class="row mx-0 no-change">
+                    <td class="col-lg-1 col-sm-2">
+                      <p class="noWrap">No of Records:</p>
+                      <select (change)="setLimit2($event); getDetails(id);" class="browser-default custom-select d-block">
+                        <option value="20">20</option>
+                        <option value="50" selected>50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                      </select>
+                    </td>
+                    <td class="col-lg-6 col-sm-10">
+                        <p>Search:</p>
+                        <input class="form-control my-0 py-0" name="search" ngDefaultControl [(ngModel)]="search" type="text"
+                        placeholder="Search">
+                    </td>
+                    <td class="col-lg-2 col-sm-2 col-6">
+                        <p>Status:</p>
+                        <select ngDefaultControl [(ngModel)]='status' (change)="setPage(2); getDetails(id)"
+                        class="browser-default custom-select d-block">
+                        <option value="">View All</option>
+                        <option value="successful">Approved</option>
+                        <option value="failed">Declined</option>
+                      </select>
+                      </td>
+                    <td class="col-sm-1">
+                      <button (click)="setPage(2); getDetails(id);" class="btn btn-uc waves-light btn-sm mt-1-2"
+                        mdbWavesEffect>Search</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover mb-0 border-space">
+
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th class="th-md">S/N</th>
+                <th class="th-md">
+                  <a (click)="sortBy('merchant_id', 'details')">Merchant ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('terminal_id', 'details')">Terminal ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('rrn', 'details')">RRN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('pan', 'details')">Card PAN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('amount', 'details')">Amount (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('stan', 'details')">STAN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('status', 'details')">Status
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('trans_date', 'details')">Date
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody *ngIf="details.length > 0">
+              <tr  *ngFor="let row of details;let i = index;">
+
+                <td>{{(serialR + i)}}</td>
+                <td>{{row.merchant_id}}</td>
+                <td>{{row.terminal_id}}</td>
+                <td>{{row.rrn}}</td>
+                <td>{{row.pan}}</td>
+                <td>{{row.amount / 100 | number : '1.2-2'}}</td>
+                <td>{{row.stan}}</td>
+                <td [ngClass]="{'btn-success':row.status == 'Approved', 'btn-warning':row.status == 'Not sufficent funds', 'btn-danger':row.status == 'Declined', 'btn-gc':row.status != 'Approved' &&  row.status != 'Declined' &&  row.status != 'Not sufficent funds','btn-sm noWrap btn-anim' : true}">{{row.status || 'Not Available'}}</td>
+                <td>{{row.trans_date | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+              </tr>
+            </tbody>
+
+            <!--Table body-->
+            <tbody *ngIf="isDataR == false; else gettingHello">
+              <tr >
+                <td colspan="9" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #gettingHello>
+              <tbody *ngIf="isDataR == undefined">
+                <tr >
+                  <td colspan="9" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+
+          </table>
+        </div>
+        <hr class="my-0" />
+
+        <app-pagination *ngIf="pageR" [event]="'Details'" [page]=page></app-pagination>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+          (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+      </div>
+    </div>
+  </div>
+</div>

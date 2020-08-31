@@ -1,0 +1,2018 @@
+<p class="p-style">Configuration</p>
+<mdb-tabset #staticTabss [vertical]="true" [buttonClass]="'flex-column tabs-3 mb-30'"
+  class="icon-changer mt-less new-size">
+
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Dashboard">
+    <div class="row">
+      <div class="col-12 p-0">
+        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+        'mb-4 mt-0 pt-4': true}">
+          <div class="px-4">
+            <h5><strong>Online Terminal Configuration</strong></h5>
+            <span class="text-danger">{{errorOnline}}</span>
+          </div>
+
+          <div class="table-responsive px-4">
+            <form #form=ngForm (submit)="saveOnline()">
+              <table class="table table-borderless">
+                <tr class="row mx-0 no-change">
+                  <td class="col-lg-4">
+                    <p class="noWrap">Hours:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
+                      max="23" placeholder="HH" [(ngModel)]="hours">
+                  </td>
+                  <td class="col-lg-4">
+                    <p class="noWrap">Minutes:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
+                      max="59" placeholder="mm" [(ngModel)]="minutes">
+                  </td>
+                  <td class="col-lg-4">
+                    <p class="noWrap">Seconds:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
+                      max="59" placeholder="ss" [(ngModel)]="seconds">
+                  </td>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+        'mt-0 pt-4': true}">
+
+          <div class="px-4">
+            <h5><strong>Active Terminal Configuration</strong></h5>
+            <span class="text-danger">{{errorActive}}</span>
+          </div>
+
+          <div class="table-responsive px-4">
+            <form #form=ngForm (submit)="saveActive()">
+              <table class="table table-borderless">
+                <tr class="row mx-0 no-change">
+                  <td class="col-lg-3">
+                    <p class="noWrap">Days:</p>
+                    <input class="form-control my-0 py-0" type="number" min="0" max="7" placeholder="dd"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="daysActive">
+                  </td>
+                  <td class="col-lg-3">
+                    <p class="noWrap">Hours:</p>
+                    <input class="form-control my-0 py-0" type="number" min="0" max="23" placeholder="HH"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="hoursActive">
+                  </td>
+                  <td class="col-lg-3">
+                    <p class="noWrap">Minutes:</p>
+                    <input class="form-control my-0 py-0" type="number" min="0" max="59" placeholder="mm"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="minutesActive">
+                  </td>
+                  <td class="col-lg-3">
+                    <p class="noWrap">Seconds:</p>
+                    <input class="form-control my-0 py-0" type="number" min="0" max="59" placeholder="ss"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="secondsActive">
+                  </td>
+
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="activeSaving==true || (!daysActive && !hoursActive && !minutesActive && !secondsActive)">{{activeSaving? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':activeSaving==true}"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Support">
+    <div class="row">
+      <div class="col-12 p-0">
+        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mb-4 mt-0 pt-4': true}">
+          <div class="px-4">
+            <h5><strong>POS Support Email Configuration</strong></h5>
+          </div>
+
+          <div class="table-responsive px-4">
+            <table class="table table-borderless">
+              <tr class="row mx-0 no-change">
+                <td [ngClass]="{'col-lg-11 col-sm-9': admin || super, 'col-lg-12': user}">
+                  <p>Email:</p>
+                  <input [disabled]="user" class="form-control my-0 py-0" name="email"
+                    [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="email[2]" type="email"
+                    placeholder="Email(s) separated by comma">
+                </td>
+
+                <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="saveEmail('support')"
+                    [disabled]="emailSaving[2]==true || !email[2]">{{emailSaving[2]? 'Saving' : 'Save' }}<i class="fa "
+                      [ngClass]="{'spinner-border spinner-border-sm':emailSaving[2]==true}"></i></button>
+                </td>
+
+              </tr>
+            </table>
+
+            <div class="table-responsive" *ngIf="(emailArray[2] || {}).length">
+              <table class="table no-header border-space">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  *ngFor="let email of emails">
+                    <td *ngIf="email.type == 'support'">{{email.email}}</td>
+                    <td *ngIf="(admin || super) && email.type == 'support'"><button
+                        class="btn btn-sm btn-ud waves-light m-0" (click)="deleteEmail(email.email,'support')"
+                        [disabled]="email.deletingStatus==true">{{email.deletingStatus? 'Deleting' : 'Delete' }}<i
+                          class="fa "
+                          [ngClass]="{'spinner-border spinner-border-sm':email.deletingStatus==true}"></i></button></td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+        'mb-4 mt-0 pt-4': true}">
+          <div class="px-4">
+            <h5><strong>Auto POS Support Configuration</strong></h5>
+          </div>
+
+          <div class="table-responsive px-4">
+            <table class="table table-borderless">
+              <tr class="row mx-0 no-change">
+                <td class="col-lg-12">
+                  <p class="noWrap">Faulty Printer<i title="Send auto support on faulty printer"
+                      class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                  <div class="switch mt-2">
+                    <label (change)="setStatus($event,'printer')">
+                      Off
+                      <input type="checkbox" [checked]=printer>
+                      <span class="lever"></span> On
+                    </label>
+                  </div>
+                </td>
+                <td class="col-lg-12 row mt-3">
+                  <div>
+                    <p class="noWrap">Last Seen<i
+                        title="Send auto support terminals are not seen after specified no of days"
+                        class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                    <div class="switch mt-2">
+                      <label (change)="setStatus($event,'lastSeen')">
+                        Off
+                        <input type="checkbox" [checked]=lastSeen>
+                        <span class="lever"></span> On
+
+                      </label>
+
+                    </div>
+                  </div>
+                  <div *ngIf="lastSeen" class="ml-3">
+                    <p class="noWrap">No of Days:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
+                      placeholder="No of Days" [(ngModel)]="nDays">
+                  </div>
+                </td>
+                <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <button class="btn btn-sm btn-uc waves-light mt-1" (click)="autoSupport()"
+                    [disabled]="this.supportSave==true || (lastSeen && !nDays)">{{this.supportSave ? 'Saving' : 'Save' }}<i
+                      class="fa " [ngClass]="{'spinner-border spinner-border-sm':this.supportSave==true}"></i></button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Same-Day">
+    <div class="row">
+      <div class="col-12 p-0">
+
+        <section>
+          <!--Top Table UI-->
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mb-4 mt-0 pt-4': true}">
+            <div class="px-4">
+              <h5><strong>Account Configuration</strong></h5>
+            </div>
+
+            <div class="table-responsive px-4">
+              <form #form=ngForm (submit)="saveAccount()">
+                <table class="table table-borderless">
+                  <tr class="row mx-0 no-change">
+                    <td [ngClass]="{'col-lg-11 col-sm-9': admin || super, 'col-lg-12': user}">
+                      <p>Account No:</p>
+                      <input [disabled]="user" class="form-control my-0 py-0" name="account"
+                        [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="account" type="text"
+                        placeholder="{{config ? config.settlement_bank_account_no : 'Provide account no'}}">
+                    </td>
+
+                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                      <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                        [disabled]="accountSaving==true || !account">{{accountSaving? 'Saving' : 'Save' }}<i class="fa "
+                          [ngClass]="{'spinner-border spinner-border-sm':accountSaving==true}"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </div>
+
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mb-4 mt-0 pt-4': true}">
+            <div class="px-4">
+              <h5><strong>Advise Email Configuration</strong></h5>
+            </div>
+
+            <div class="table-responsive px-4">
+              <table class="table table-borderless">
+                <tr class="row mx-0 no-change">
+                  <td [ngClass]="{'col-lg-11 col-sm-9': admin || super, 'col-lg-12': user}">
+                    <p>Email:</p>
+                    <input [disabled]="user" class="form-control my-0 py-0" name="email"
+                      [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="email[0]" type="email"
+                      placeholder="Email(s) separated by comma">
+                  </td>
+
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="saveEmail('same-day')"
+                      [disabled]="emailSaving[0]==true || !email[0]">{{emailSaving[0]? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':emailSaving[0]==true}"></i></button>
+                  </td>
+
+                </tr>
+              </table>
+
+              <div class="table-responsive" *ngIf="(emailArray[0] || {}).length">
+                <table class="table no-header border-space">
+                  <thead>
+                    <tr>
+                      <th>Email</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr  *ngFor="let email of emails">
+
+                      <td *ngIf="email.type == 'same-day'">{{email.email}}</td>
+                      <td *ngIf="(admin || super) && email.type == 'same-day'"><button
+                          class="btn btn-sm btn-ud waves-light m-0" (click)="deleteEmail(email.email, 'same-day')"
+                          [disabled]="email.deletingStatus==true">{{email.deletingStatus? 'Deleting' : 'Delete' }}<i
+                            class="fa "
+                            [ngClass]="{'spinner-border spinner-border-sm':email.deletingStatus==true}"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mt-0 pt-4': true}">
+            <div class="px-4">
+              <h5><strong>Merchant Same-Day Configuration</strong></h5>
+            </div>
+
+            <!-- Nav tabs -->
+            <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'">
+              <!--Panel 1-->
+              <mdb-tab heading="Merchant Same-Day Configuration">
+                <div class="table-responsive">
+                  <table class="table no-header border-space">
+                    <thead>
+                      <tr>
+                        <th>Merchant ID</th>
+                        <th>Account No</th>
+                        <th>Time/Frequency</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  *ngFor="let notice of notification">
+                        <td>{{notice.merchant_id}}</td>
+                        <td>{{notice.account_no || 'No New Account Number'}}</td>
+                        <td *ngIf="notice.interval > 1">Every {{notice.interval}} hours</td>
+                        <td *ngIf="notice.interval == 1">Every {{notice.interval}} hour</td>
+                      </tr>
+                      <tr *ngIf="isData == undefined">
+                        <td colspan="3" style="text-align:center">
+                          <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                        </td>
+                      </tr>
+                      <tr *ngIf="isData == false">
+                        <td colspan="3" style="text-align:center">
+                          <strong>No Data Available</strong>
+                        </td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+                </div>
+                <hr class="my-0 smaller-width">
+
+                <!--Bottom Table UI-->
+                <div class="d-flex justify-content-between px-4" style="overflow:auto;">
+                  <!--Pagination -->
+                  <nav class="my-4">
+                    <div class="row">
+                      <div class="col-xs-12 col-12">
+                        <pagination [totalItems]="itemCount" [rotate]="rotate" [maxSize]="maxSize"
+                          [itemsPerPage]="limit" (pageChanged)="pageChanged($event)" ngDefaultControl
+                          [(ngModel)]="page"></pagination>
+                      </div>
+                    </div>
+                  </nav>
+                  <!--/Pagination -->
+                </div>
+                <!--Bottom Table UI-->
+              </mdb-tab>
+              <!--Panel 2-->
+              <mdb-tab *ngIf='admin || super' heading="New Configuation">
+                <div>
+                  <table class="table table-borderless">
+                    <tr class="row mx-0 no-change">
+                      <td class="col-lg-5">
+                        <p>Merchant ID:</p>
+                        <input class="form-control my-0 py-0" name="merchant" [ngModelOptions]="{standalone: true}"
+                          ngDefaultControl [(ngModel)]="merchant" type="text"
+                          placeholder="Merchant ID(s) separated by space">
+                      </td>
+                      <td class="col-lg-4">
+                        <p>Account No (optional):</p>
+                        <input [disabled]="user" class="form-control my-0 py-0" name="mAccount"
+                          [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="mAccount" type="text"
+                          placeholder="Provide account no">
+                      </td>
+                      <td class="col-lg-2 no-wrap">
+                        <p class="noWrap">Frequency:</p>
+                        <select ngDefaultControl [(ngModel)]="frequency" [ngModelOptions]="{standalone: true}"
+                          class="browser-default custom-select d-block" mdbTooltip="How many times in a 24hr period"
+                          placement="top">
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="6">6</option>
+                        </select>
+                      </td>
+
+                      <td class="mt-4">
+                        <a class="new-style" (click)="isMore = true; addMore()" mdbWavesEffect>
+                          <mdb-icon fas icon="plus"></mdb-icon>
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="table-responsive" *ngIf="isMore && organisedArray.length">
+                  <table class="table no-header border-space">
+                    <thead>
+                      <tr>
+                        <th>Merchant ID</th>
+                        <th>Account</th>
+                        <th>Time/Frequency</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  *ngFor="let row of organisedArray; let i = index">
+                        <td>{{row.merchant_id.join(', ')}}</td>
+                        <td>{{row.account}}</td>
+                        <td>{{row.frequency}}</td>
+                        <td><button class="btn btn-sm btn-ud waves-light m-0"
+                          (click)="delete(i)">Delete</button></td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+                </div>
+
+                <div class="mt-2">
+                  <button class="btn btn-sm btn-ud waves-light" (click)="addMore(); saveNotification()"
+                    [disabled]="isSaving==true || !organisedArray">{{isSaving? 'Saving' : 'Save' }}<i class="fa "
+                      [ngClass]="{'spinner-border spinner-border-sm':isSaving==true}"></i></button>
+
+                  <button data-toggle="modal" data-target="#frame" (click)="frame.show()"
+                    class="btn btn-sm btn-uc waves-light" mdbWavesEffect>
+                    Upload
+                  </button>
+                </div>
+              </mdb-tab>
+            </mdb-tabset>
+          </div>
+        </section>
+      </div>
+    </div>
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Settlement Switch">
+    <div class="row">
+      <div class="col-12 p-0">
+        <section>
+          <!--Top Table UI-->
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mt-0 pt-4': true}">
+            <div class="px-4">
+              <h5><strong>Settlement Switch Configuration</strong></h5>
+            </div>
+
+            <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'">
+              <mdb-tab heading="New Switch Configuation">
+                <span class="text-danger">{{errorSwitch}}</span>
+
+                <div class="table-responsive">
+                  <form #form=ngForm (submit)="saveSwitch()">
+                    <table class="table table-borderless">
+                      <tr class="row mx-0 no-change">
+                        <td class="col-lg-3">
+                          <p>Switch Name:<span class='text-danger'>*</span></p>
+                          <input [disabled]="user" class="form-control my-0 py-0" name="switchName"
+                            [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchName" type="text"
+                            placeholder="Provide Switch Name">
+                        </td>
+
+                        <td class="col-lg-2">
+                          <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                              title="Row Number where headers start" class="fa fa-question-circle ml-05"
+                              aria-hidden="true"></i></p>
+                          <input [disabled]="user" class="form-control my-0 py-0" name="switchStart"
+                            [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchStart"
+                            type="number">
+                        </td>
+
+                        <td class="col-12">
+                          <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                            ngDefaultControl [(ngModel)]="switchHeaders" placeholder="Seperated by comma"
+                            name="switchHeaders" (keyup)="headersArray = splitHeaders(switchHeaders)"></textarea>
+
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='merchantHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='terminalHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='dateHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <select [(ngModel)]='rrnHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Merchant Name:</p>
+                          <select [(ngModel)]='nameHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Merchant Acct No:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='accountHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <select [(ngModel)]='panHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='transHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Settlement Amount:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='settlementHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Charge:</p>
+                          <select [(ngModel)]='chargeHeader' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                          <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                            [disabled]="switchSaving==true">{{switchSaving? 'Saving' : 'Save' }}<i class="fa "
+                              [ngClass]="{'spinner-border spinner-border-sm':switchSaving==true}"></i></button>
+                        </td>
+                      </tr>
+                    </table>
+                  </form>
+                </div>
+
+                <span>NB:(<span class="text-danger">*</span>) required field</span>
+              </mdb-tab>
+              <mdb-tab heading="Edit Switch Configuation">
+                <span class="text-danger">{{errorSwitchEdit}}</span>
+
+                <div class="table-responsive">
+                  <table class="table table-borderless">
+                    <tr class="row mx-0 no-change">
+                      <td class="col-lg-3">
+                        <p>Switch Name:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]="switchNameEdit" class="browser-default custom-select d-block"
+                          (change)="getSwitchDetails(switchNameEdit);headersArrayEdit = splitHeaders(switchHeadersEdit)">
+                          <option value="" selected>Select switch</option>
+                          <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-2">
+                        <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                            title="Row Number where headers start" class="fa fa-question-circle ml-05"
+                            aria-hidden="true"></i></p>
+                        <input [disabled]="user" class="form-control my-0 py-0" name="switchStartEdit" ngDefaultControl
+                          [(ngModel)]="switchStartEdit" type="number">
+                      </td>
+
+                      <td class="col-12">
+                        <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <textarea class="form-control my-0 py-0" rows="5" ngDefaultControl
+                          [(ngModel)]="switchHeadersEdit" placeholder="Seperated by comma" name="switchHeaders"
+                          (keyup)="headersArrayEdit = splitHeaders(switchHeadersEdit)"></textarea>
+
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='merchantHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='terminalHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='dateHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <select [(ngModel)]='rrnHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Merchant Name:</p>
+                        <select [(ngModel)]='nameHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Merchant Acct No:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='accountHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <select [(ngModel)]='panHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='transHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Settlement Amount:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='settlementHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Charge:</p>
+                        <select [(ngModel)]='chargeHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td *ngIf='admin || super'>
+                        <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateSwitch()"
+                          [disabled]="switchUpdating==true">{{switchUpdating? 'Updating' : 'Update' }}<i class="fa "
+                            [ngClass]="{'spinner-border spinner-border-sm':switchUpdating==true}"></i></button>
+                      </td>
+                      <td *ngIf='admin || super'>
+                        <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteSwitch()"
+                          [disabled]="switchDeleting==true">{{switchDeleting? 'Deleting' : 'Delete' }}<i class="fa "
+                            [ngClass]="{'spinner-border spinner-border-sm':switchDeleting==true}"></i></button>
+                      </td>
+
+                    </tr>
+                  </table>
+                </div>
+
+                <span>NB:(<span class="text-danger">*</span>) required field</span>
+              </mdb-tab>
+            </mdb-tabset>
+
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Dispute Switch">
+    <div class="row">
+      <div class="col-12 p-0">
+        <section>
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mt-0 pt-4': true}">
+            <div class="px-4">
+              <h5><strong>Dispute Switch Configuration</strong></h5>
+            </div>
+
+            <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'">
+              <mdb-tab heading="New Switch Configuation">
+                <span class="text-danger">{{errorSwitchDispute}}</span>
+
+                <div class="table-responsive">
+                  <form #form=ngForm (submit)="saveDisputeSwitch()">
+                    <table class="table table-borderless">
+                      <tr class="row mx-0 no-change">
+                        <td class="col-lg-3">
+                          <p>Switch Name:<span class='text-danger'>*</span></p>
+                          <input [disabled]="user" class="form-control my-0 py-0" name="switchNameDispute"
+                            [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchNameDispute"
+                            type="text" placeholder="Provide Switch Name">
+                        </td>
+
+                        <td class="col-lg-2">
+                          <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                              title="Row Number where headers start" class="fa fa-question-circle ml-05"
+                              aria-hidden="true"></i></p>
+                          <input [disabled]="user" class="form-control my-0 py-0" name="switchStartDispute"
+                            [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchStartDispute"
+                            type="number">
+                        </td>
+
+                        <td class="col-12">
+                          <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                            ngDefaultControl [(ngModel)]="switchHeadersDispute" placeholder="Seperated by comma"
+                            name="switchHeadersDispute"
+                            (keyup)="headersArrayDispute = splitHeaders(switchHeadersDispute)"></textarea>
+
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Merchant ID:</p>
+                          <select [(ngModel)]='merchantHeaderDispute' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='terminalHeaderDispute' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='dateHeaderDispute' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <select [(ngModel)]='rrnHeaderDispute' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">STAN:</p>
+                          <select [(ngModel)]='stanHeaderDispute' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <select [(ngModel)]='panHeaderDispute' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='transHeaderDispute' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                          <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                            [disabled]="switchSavingDispute==true">{{switchSavingDispute? 'Saving' : 'Save' }}<i
+                              class="fa "
+                              [ngClass]="{'spinner-border spinner-border-sm':switchSavingDispute==true}"></i></button>
+                        </td>
+                      </tr>
+                    </table>
+                  </form>
+                </div>
+
+                <span>NB:(<span class="text-danger">*</span>) required field</span>
+              </mdb-tab>
+              <mdb-tab heading="Edit Switch Configuation">
+                <span class="text-danger">{{errorSwitchEditDispute}}</span>
+
+                <div class="table-responsive">
+                  <table class="table table-borderless">
+                    <tr class="row mx-0 no-change">
+                      <td class="col-lg-3">
+                        <p>Switch Name:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]="switchNameEditDispute" class="browser-default custom-select d-block"
+                          (change)="getDisputeSwitchDetails(switchNameEditDispute);headersArrayEditDispute = splitHeaders(switchHeadersEditDispute)">
+                          <option value="" selected>Select switch</option>
+                          <option *ngFor="let name of switchesDisputeData" [value]="name.name">{{name.name}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-2">
+                        <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                            title="Row Number where headers start" class="fa fa-question-circle ml-05"
+                            aria-hidden="true"></i></p>
+                        <input [disabled]="user" class="form-control my-0 py-0" name="switchStartEditDispute"
+                          ngDefaultControl [(ngModel)]="switchStartEditDispute" type="number">
+                      </td>
+
+                      <td class="col-12">
+                        <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <textarea class="form-control my-0 py-0" rows="5" ngDefaultControl
+                          [(ngModel)]="switchHeadersEditDispute" placeholder="Seperated by comma" name="switchHeaders"
+                          (keyup)="headersArrayEditDispute = splitHeaders(switchHeadersEditDispute)"></textarea>
+
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Merchant ID:</p>
+                        <select [(ngModel)]='merchantHeaderEditDispute' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='terminalHeaderEditDispute' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='dateHeaderEditDispute' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <select [(ngModel)]='rrnHeaderEditDispute' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">STAN:</p>
+                        <select [(ngModel)]='stanHeaderEditDispute' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <select [(ngModel)]='panHeaderEditDispute' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='transHeaderEditDispute' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td *ngIf='admin || super'>
+                        <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateDisputeSwitch()"
+                          [disabled]="switchUpdatingDispute==true">{{switchUpdatingDispute? 'Updating' : 'Update' }}<i
+                            class="fa "
+                            [ngClass]="{'spinner-border spinner-border-sm':switchUpdatingDispute==true}"></i></button>
+                      </td>
+                      <td *ngIf='admin || super'>
+                        <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteDisputeSwitch()"
+                          [disabled]="switchDisputeDeleting==true">{{switchDisputeDeleting? 'Deleting' : 'Delete' }}<i
+                            class="fa "
+                            [ngClass]="{'spinner-border spinner-border-sm':switchDisputeDeleting==true}"></i></button>
+                      </td>
+
+                    </tr>
+                  </table>
+                </div>
+
+                <span>NB:(<span class="text-danger">*</span>) required field</span>
+              </mdb-tab>
+            </mdb-tabset>
+
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </mdb-tab>
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Transaction">
+    <div class="row">
+      <div class="col-12 p-0">
+        <section>
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mt-0 pt-4': true}">
+            <div class="px-4">
+              <h5><strong>Transaction Configuration</strong></h5>
+            </div>
+
+            <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'">
+              <mdb-tab heading="New Switch Configuation">
+                <span class="text-danger">{{errorSwitch}}</span>
+
+                <div class="table-responsive">
+                  <form #form=ngForm (submit)="saveSwitch()">
+                    <table class="table table-borderless">
+                      <tr class="row mx-0 no-change">
+                        <td class="col-lg-3">
+                          <p>Switch Name:<span class='text-danger'>*</span></p>
+                          <input [disabled]="user" class="form-control my-0 py-0" name="switchNameTrans"
+                            [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchNameTrans"
+                            type="text" placeholder="Provide Switch Name">
+                        </td>
+
+                        <td class="col-lg-2">
+                          <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                              title="Row Number where headers start" class="fa fa-question-circle ml-05"
+                              aria-hidden="true"></i></p>
+                          <input [disabled]="user" class="form-control my-0 py-0" name="switchStartTrans"
+                            [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchStartTrans"
+                            type="number">
+                        </td>
+
+                        <td class="col-12">
+                          <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                            ngDefaultControl [(ngModel)]="switchHeadersTrans" placeholder="Seperated by comma"
+                            name="switchHeadersTrans"
+                            (keyup)="headersArrayTrans = splitHeaders(switchHeadersTrans)"></textarea>
+
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='merchantHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='terminalHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='dateHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <select [(ngModel)]='rrnHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Merchant Name:</p>
+                          <select [(ngModel)]='nameHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
+                              class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                          <select [(ngModel)]='panHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='transHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Stan:<span class='text-danger'>*</span></p>
+                          <select [(ngModel)]='stanHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Reason Message:</p>
+                          <select [(ngModel)]='reasonHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Responce Code:</p>
+                          <select [(ngModel)]='responseHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-4">
+                          <p class="noWrap">Address:</p>
+                          <select [(ngModel)]='addressHeaderTrans' class="browser-default custom-select d-block"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>Select header</option>
+                            <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
+                          </select>
+                        </td>
+
+                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                          <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                            [disabled]="switchSaving==true">{{switchSaving? 'Saving' : 'Save' }}<i class="fa "
+                              [ngClass]="{'spinner-border spinner-border-sm':switchSaving==true}"></i></button>
+                        </td>
+                      </tr>
+                    </table>
+                  </form>
+                </div>
+
+                <span>NB:(<span class="text-danger">*</span>) required field</span>
+              </mdb-tab>
+              <mdb-tab heading="Edit Switch Configuation">
+                <span class="text-danger">{{errorSwitchEdit}}</span>
+
+                <div class="table-responsive">
+                  <table class="table table-borderless">
+                    <tr class="row mx-0 no-change">
+                      <td class="col-lg-3">
+                        <p>Switch Name:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]="switchNameEdit" class="browser-default custom-select d-block"
+                          (change)="getSwitchDetails(switchNameEdit);headersArrayEdit = splitHeaders(switchHeadersEdit)">
+                          <option value="" selected>Select switch</option>
+                          <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-2">
+                        <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                            title="Row Number where headers start" class="fa fa-question-circle ml-05"
+                            aria-hidden="true"></i></p>
+                        <input [disabled]="user" class="form-control my-0 py-0" name="switchStartEdit" ngDefaultControl
+                          [(ngModel)]="switchStartEdit" type="number">
+                      </td>
+
+                      <td class="col-12">
+                        <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <textarea class="form-control my-0 py-0" rows="5" ngDefaultControl
+                          [(ngModel)]="switchHeadersEdit" placeholder="Seperated by comma" name="switchHeaders"
+                          (keyup)="headersArrayEdit = splitHeaders(switchHeadersEdit)"></textarea>
+
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='merchantHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='terminalHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='dateHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <select [(ngModel)]='rrnHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Merchant Name:</p>
+                        <select [(ngModel)]='nameHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Merchant Acct No:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='accountHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
+                            class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                        <select [(ngModel)]='panHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='transHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Settlement Amount:<span class='text-danger'>*</span></p>
+                        <select [(ngModel)]='settlementHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td class="col-lg-4">
+                        <p class="noWrap">Charge:</p>
+                        <select [(ngModel)]='chargeHeaderEdit' class="browser-default custom-select d-block">
+                          <option value="" selected>Select header</option>
+                          <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
+                        </select>
+                      </td>
+
+                      <td *ngIf='admin || super'>
+                        <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateSwitch()"
+                          [disabled]="switchUpdating==true">{{switchUpdating? 'Updating' : 'Update' }}<i class="fa "
+                            [ngClass]="{'spinner-border spinner-border-sm':switchUpdating==true}"></i></button>
+                      </td>
+                      <td *ngIf='admin || super'>
+                        <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteSwitch()"
+                          [disabled]="switchDeleting==true">{{switchDeleting? 'Deleting' : 'Delete' }}<i class="fa "
+                            [ngClass]="{'spinner-border spinner-border-sm':switchDeleting==true}"></i></button>
+                      </td>
+
+                    </tr>
+                  </table>
+                </div>
+
+                <span>NB:(<span class="text-danger">*</span>) required field</span>
+              </mdb-tab>
+            </mdb-tabset>
+
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </mdb-tab> -->
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> POS Analysis">
+    <div class="row">
+      <div class="col-12 p-0">
+        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mb-4 mt-0 pt-4': true}">
+          <div class="px-4">
+            <h5><strong>Battery Level Configuration</strong></h5>
+            <span class="text-danger">{{errorPOS[0]}}</span>
+
+          </div>
+
+          <div class="table-responsive px-4">
+            <form #form=ngForm (submit)="savePOS('battery')">
+              <table class="table table-borderless">
+                <tr class="row mx-0 no-change">
+                  <td class="col-lg-6">
+                    <p class="noWrap">Less Than or Equal To (%):</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
+                      max="99" placeholder="%" [(ngModel)]="bLess">
+                  </td>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="this.savingPOS[0]==true || !bLess">{{this.savingPOS[0]? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':this.savingPOS[0]==true}"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mb-4 mt-0 pt-4': true}">
+          <div class="px-4">
+            <h5><strong>Network Level Configuration</strong></h5>
+            <span class="text-danger">{{errorPOS[1]}}</span>
+
+          </div>
+
+          <div class="table-responsive px-4">
+            <form #form=ngForm (submit)="savePOS('network')">
+              <table class="table table-borderless">
+                <tr class="row mx-0 no-change">
+                  <td class="col-lg-6">
+                    <p class="noWrap">Less Than or Equal To (%):</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
+                      max="99" placeholder="%" [(ngModel)]="nLess">
+                  </td>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="this.savingPOS[1]==true || !nLess">{{this.savingPOS[1]? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':this.savingPOS[1]==true}"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Terminal">
+    <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+    'mt-0 pt-4 px-4': true}">
+      <div>
+        <h5><strong>Upload Terminal File</strong></h5>
+      </div>
+
+      <form #form=ngForm>
+        <div class="col-lg-3 col-sm-3 p-0 file-path-wrapper">
+          <input [ngModelOptions]="{standalone: true}" [(ngModel)]="fileModel" [disabled]="uploading" type="file"
+            (change)="check($event);" />
+          <br> <br>
+        </div>
+
+        <div class="col-lg-3 col-sm-4 p-0 mb-3 pl-1">
+          <p>Terminal File Name:</p>
+          <select [disabled]="isUploading || !fileModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="fileType"
+            class="browser-default custom-select d-block">
+            <option value="" selected>Select Terminal File Name</option>
+            <option *ngFor="let name of terminalFilesData" [value]="name.name">{{name.name}}</option>
+          </select>
+        </div>
+
+        <div class="pb-4">
+          <mdb-progress class="mb-3" *ngIf="uploadPercent >= 0" value="{{uploadPercent}}" min="0" max="100"
+            type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100">{{uploadPercent}}%
+          </mdb-progress>
+
+          <button class="btn btn-uc btn-sm" [disabled]="isUploading || !fileType"
+            (click)="doUpload2(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i class="fa "
+              [ngClass]="{'spinner-border spinner-border-sm':isUploading==true}"></i></button>
+        </div>
+      </form>
+    </div>
+
+    <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+    'mt-4 pt-4': true}">
+      <div class="px-4">
+        <h5><strong>Terminal File Configuration</strong></h5>
+      </div>
+      <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'">
+        <mdb-tab heading="New Terminal Configuation">
+          <span class="text-danger">{{errorTerminal}}</span>
+
+          <div class="table-responsive">
+            <form #form=ngForm (submit)="saveTerminalFile()">
+              <table class="table table-borderless">
+                <tr class="row mx-0 no-change">
+                  <td class="col-lg-3">
+                    <p>Terminal File Name:<span class='text-danger'>*</span></p>
+                    <input [disabled]="user" class="form-control my-0 py-0" name="terminalFile"
+                      [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="terminalFile" type="text"
+                      placeholder="Merchant File Name">
+                  </td>
+
+                  <td class="col-lg-2">
+                    <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                        title="Row Number where headers start" class="fa fa-question-circle ml-05"
+                        aria-hidden="true"></i></p>
+                    <input [disabled]="user" class="form-control my-0 py-0" name="terminalFileStart"
+                      [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="terminalFileStart"
+                      type="number">
+                  </td>
+
+                  <td class="col-12">
+                    <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                        class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                    <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                      ngDefaultControl [(ngModel)]="terminalFileHeaders" placeholder="Seperated by comma"
+                      name="terminalFileHeaders"
+                      (keyup)="terminalFileHeadersArray = splitHeaders(terminalFileHeaders)"></textarea>
+
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='merchantHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Merchant Name:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='nameHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='terminalHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Contact:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='contactHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Phone:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='phoneHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Email:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='emailHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Address:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='addressHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Account No:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='accountHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Account Name:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='accountNameHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">PTSP:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='ptspHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Device Type:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='dTypeHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Device Name:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='dNameHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Device Serial:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='dSerialHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">App Name:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='appNameHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">App Version:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='appVersionHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Network Type:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='networkHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Bank Code:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='bankCodeHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Bank Branch:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='branchHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">MCC:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='mccHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">State Code:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='stateCodeHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">LGA:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='lgaHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-4">
+                    <p class="noWrap">Category:<span class='text-danger'>*</span></p>
+                    <select [(ngModel)]='categoryHeaderTerminalFile' class="browser-default custom-select d-block"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="" selected>Select header</option>
+                      <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
+                    </select>
+                  </td>
+
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="terminalSaving==true">{{terminalSaving? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':terminalSaving==true}"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+
+          <span>NB:(<span class="text-danger">*</span>) required field</span>
+        </mdb-tab>
+        <mdb-tab heading="Edit Terminal Configuation">
+          <span class="text-danger">{{errorTerminalEdit}}</span>
+
+          <div class="table-responsive">
+            <table class="table table-borderless">
+              <tr class="row mx-0 no-change">
+                <td class="col-lg-3">
+                  <p>Terminal File Name:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]="terminalFileEdit" class="browser-default custom-select d-block"
+                    (change)="getTerminalsDetails(terminalFileEdit);terminalFileHeadersArrayEdit = splitHeaders(terminalFileHeadersEdit)">
+                    <option value="" selected>Select Terminal File Name</option>
+                    <option *ngFor="let name of terminalFilesData" [value]="name.name">{{name.name}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-2">
+                  <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
+                      title="Row Number where headers start" class="fa fa-question-circle ml-05" aria-hidden="true"></i>
+                  </p>
+                  <input [disabled]="user" class="form-control my-0 py-0" name="terminalFileStartEdit"
+                    [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="terminalFileStartEdit"
+                    type="number">
+                </td>
+
+                <td class="col-12">
+                  <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
+                      class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
+                  <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                    ngDefaultControl [(ngModel)]="terminalFileHeadersEdit" placeholder="Seperated by comma"
+                    name="terminalFileHeadersEdit"
+                    (keyup)="terminalFileHeadersArrayEdit = splitHeaders(terminalFileHeadersEdit)"></textarea>
+
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='merchantHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Merchant Name:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='nameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='terminalHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Contact:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='contactHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Phone:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='phoneHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Email:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='emailHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Address:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='addressHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Account No:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='accountHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Account Name:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='accountNameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">PTSP:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='ptspHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Device Type:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='dTypeHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Device Name:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='dNameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Device Serial:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='dSerialHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">App Name:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='appNameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">App Version:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='appVersionHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Network Type:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='networkHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Bank Code:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='bankCodeHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Bank Branch:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='branchHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">MCC:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='mccHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">State Code:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='stateCodeHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">LGA:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='lgaHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td class="col-lg-4">
+                  <p class="noWrap">Category:<span class='text-danger'>*</span></p>
+                  <select [(ngModel)]='categoryHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="" selected>Select header</option>
+                    <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
+                  </select>
+                </td>
+
+                <td *ngIf='admin || super'>
+                  <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateTerminalFile()"
+                    [disabled]="terminalUpdating==true">{{terminalUpdating? 'Updating' : 'Update' }}<i class="fa "
+                      [ngClass]="{'spinner-border spinner-border-sm':terminalUpdating==true}"></i></button>
+                </td>
+                <td *ngIf='admin || super'>
+                  <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteTerminalFile()"
+                    [disabled]="terminalDeleting==true">{{terminalDeleting? 'Deleting' : 'Delete' }}<i class="fa "
+                      [ngClass]="{'spinner-border spinner-border-sm':terminalDeleting==true}"></i></button>
+                </td>
+
+              </tr>
+            </table>
+          </div>
+
+          <span>NB:(<span class="text-danger">*</span>) required field</span>
+        </mdb-tab>
+      </mdb-tabset>
+    </div>
+  </mdb-tab>
+</mdb-tabset>
+
+<div mdbModal #frame="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  [config]="{backdrop: true, ignoreBackdropClick: false}">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header d-flex ">
+        <p class="heading">UPLOAD MERCHANT CONFIGURATION</p>
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="frame.hide()"
+          mdbWavesEffect>x</button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <form #form="ngForm">
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-12 col-md-12">
+              <!--Card-->
+              <div class="card card-cascade narrower">
+                <!--Card content-->
+                <div class="card-body card-body-cascade">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-4">
+                      <div class="md-form">
+                        <div class="alert alert-info p-2">
+                          Excel File should not exceed <strong>5MB</strong> <br> Total number of rows should not
+                          exceed <strong>10,000</strong>
+                        </div>
+                        <input [disabled]="readingFile" type="file" (change)="readExcel($event)" #settlements />
+                        <br> <br>
+                        <p *ngIf="readingFile"><i class="spinner-border spinner-border-md"></i> Reading File</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngIf="sheetNames && sheetNames.length > 0" class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <th>
+                            Sheet Name
+                          </th>
+                          <th>
+                            Row Count
+                          </th>
+                          <th>
+                            Actions
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr  *ngFor="let sheet of sheetNames">
+                            <td>{{ sheet.sheetName }}</td>
+                            <td>{{sheet.rowCount | number : '1.0'}}</td>
+                            <td><button class="btn btn-uc btn-sm" (click)="validate(sheet.sheetName)"
+                                *ngIf="(sheet.validatingStatus == undefined || sheet.validatingStatus==true) &&totalRowCount<=10000 && sheet.rowCount > 0">{{sheet.validatingStatus ? "Validating" : "Validate"}}
+                                <i class="fa "
+                                  [ngClass]="{'spinner-border spinner-border-sm':sheet.validatingStatus==true, 'fa-check':sheet.validatingStatus==false}"></i></button>
+
+                              <button *ngIf="sheet.validatingStatus == false && sheet.invalid.length > 0"
+                                class="btn btn-warning btn-sm" data-toggle="modal"
+                                (click)="setTitle('Invalid', sheet.sheetName); pageSet(); basicModal.show()"
+                                mdbWavesEffect>Invalid Rows
+                                {{sheet.invalid.length | number : '1.0'}}</button>
+
+                              <button
+                                *ngIf="sheet.validatingStatus == false && sheet.invalid.length > 0 && sheet.valid.length > 0"
+                                class="btn btn-success btn-sm" data-toggle="modal"
+                                (click)="setTitle('Valid', sheet.sheetName); pageSet(); basicModal.show()"
+                                mdbWavesEffect>Valid Rows
+                                {{sheet.valid.length | number : '1.0'}}</button>
+
+                              <button *ngIf="sheet.validatingStatus == false && sheet.valid.length > 0"
+                                class="btn btn-uc btn-sm" (click)="setThreshold(); uploadSheet(sheet.sheetName)"
+                                [disabled]="sheet.uploadingStatus || sheet.uploadingStatus==false">{{sheet.uploadingStatus ? 'Uploading' : 'Upload Valid Rows' }}<i
+                                  class="fa "
+                                  [ngClass]="{'spinner-border spinner-border-sm':sheet.uploadingStatus==true, 'fa-check':sheet.uploadingStatus==false}"></i></button>
+                              <mdb-progress-bar *ngIf="sheet.uploadingStatus==true" class="progress primary-color-dark"
+                                mode="indeterminate"></mdb-progress-bar>
+                              <p *ngIf="sheet.rowCount == 0">
+                                No Entries in Sheet</p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="alert p-2"
+                        [ngClass]="{'alert-success':totalRowCount<=10000, 'alert-danger':totalRowCount>10000}">
+                        Total number of rows: <strong>{{totalRowCount | number : '1.0'}}</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ng-template *ngIf="correct == false">
+                    <div>
+                      Please make sure the file is correct. I accept only Interswitch files.
+                    </div>
+                  </ng-template>
+
+
+                  <h5 *ngIf="reading === false">
+                    {{ filename | uppercase }} loaded
+                  </h5>
+                </div>
+                <!--/.Card content-->
+              </div>
+              <!--/.Card-->
+            </div>
+            <!--Grid column-->
+          </div>
+        </form>
+      </div>
+
+
+      <!--Footer-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal" (click)="frame.hide()"
+          mdbWavesEffect>Close</button>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+
+<div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+  aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+  <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">{{title}} Rows</h4>
+        <div>
+          <button type="button" class="close mr-1 unset-close" aria-label="Close" data-dismiss="modal"
+            (click)="basicModal.hide()" mdbWavesEffect>x</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover mb-0 border-space">
+            <thead>
+              <tr>
+                <th class="th-md">S/N</th>
+                <th *ngFor="let header of headers" class="th-md">
+                  {{header}}
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="returnedArray.length > 0;">
+              <tr  *ngFor="let row of returnedArray; let i = index">
+                <td>{{ serialR + i }}</td>
+                <td *ngFor="let header of headers;">
+                  {{row[header]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="my-0" />
+
+        <!--Bottom Table UI-->
+        <div class="d-flex justify-content-between" style="overflow:auto;">
+          <!--Pagination -->
+          <nav class="my-4">
+            <div class="row">
+              <div class="col-xs-12 col-12">
+                <pagination [totalItems]="contentArray.length" [maxSize]='maxSize' [itemsPerPage]="limitR"
+                  (pageChanged)="pageChangedSimple($event)"></pagination>
+              </div>
+            </div>
+          </nav>
+          <!--/Pagination -->
+        </div>
+        <!--Bottom Table UI-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ud btn-sm waves-light" (click)="exportExcel(title)"
+          mdbWavesEffect>Export</button>
+        <button type="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+          (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+<div class="row">
+    <div class="ml-2">
+      <button  [disabled]="!reconciliationSummaryRecords.length" type="button" class="btn btn-uc btn-sm waves-light" (click)="exportExcel()" mdbWavesEffect>Export</button>
+    </div>
+</div>
+
+
+<div [ngClass]="{
+  'card card-cascade narrower': true,
+  'z-depth-0': !shadows,
+  'mt-0': true
+}">
+
+<div class="table-responsive px-4 pt-3">
+  <table class="table table-borderless table2">
+      <tr class="row mx-0 no-change">
+          <td class="col-lg-1 col-sm-2">
+              <button (click)="daily()" class="btn btn-uc waves-light btn-sm"
+                  mdbWavesEffect>Day</button>
+          </td>
+          <td class="col-lg-1 col-sm-2">
+              <button (click)="weekly()" class="btn btn-uc waves-light btn-sm"
+                  mdbWavesEffect>Week</button>
+          </td>
+          <td class="col-lg-1 col-sm-2">
+            <button (click)="monthly()" class="btn btn-uc waves-light btn-sm"
+                mdbWavesEffect>Month</button>
+        </td>
+        <td class="col-lg-2 col-sm-4 datepickers">
+          <div class="md-form">
+              <mdb-date-picker (change)="getReconciliationSummary()" ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+              </mdb-date-picker>
+          </div>
+      </tr>
+  </table>
+</div>
+
+
+
+<div class="px-4">
+  <div class="table-wrapper">
+    <!--Table-->
+    <table class="table table-striped table-hover mb-0 border-space ">
+      <!--Table head-->
+      <thead>
+        <tr>
+          <th class="th-md">S/N</th>
+          <!-- <th class="th-md" [ngClass]="{'text-center' : !merchantU}">Action</th> -->
+          <th class="th-md">
+            <a (click)="sortBy('day')">Day
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th *ngIf="week || month" class="th-md">
+              <a (click)="sortBy('date')">Date
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+          <th class="th-md">
+            <a (click)="sortBy('transaction_value')">{{merchantU ? 'Transactions (₦)' : 'ITEX Transactions (₦)'}}
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th *ngIf="!merchantU" class="th-md">
+              <a (click)="sortBy('uba_settlement')">UBA Settlements (₦)
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th *ngIf="!merchantU" class="th-md">
+                <a (click)="sortBy('gtb_settlement')">GTB Settlements (₦)
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th *ngIf="!merchantU" class="th-md">
+                  <a (click)="sortBy('providus_settlement')">Providus Settlements (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th *ngIf="!merchantU" class="th-md">
+                  <a (click)="sortBy('polaris_settlement')">Polaris Settlements (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th *ngIf="!merchantU" class="th-md">
+                  <a (click)="sortBy('fidelity_settlement')">Fidelity Settlements (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th *ngIf="!merchantU" class="th-md">
+                  <a (click)="sortBy('zennith_settlement')">Zenith Settlements (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+          <th class="th-md">
+            <a (click)="sortBy('settlement_value')">Total Settlements (₦)
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+          <th class="th-md">
+            <a (click)="sortBy('differential')">Under/Over Settlements (₦)
+              <i class="fa fa-sort ml-1"></i>
+            </a>
+          </th>
+        </tr>
+      </thead>
+      <!--Table head-->
+
+      <!--Table body-->
+      <tbody *ngIf="reconciliationSummaryRecords.length > 0">
+        <tr  *ngFor="let row of reconciliationSummaryRecords; let i = index">
+          <td>{{ serial + i }}</td>
+          <!-- <td>
+              <button class="btn btn-elegant waves-light btn-sm"
+                (click)="merchant = row.merchant_id; basicModal.show(); name = row.merchant_name; dateSet(row.date)"
+                mdbWavesEffect>View</button>
+            </td> -->
+          <td>{{ row.day }}</td>
+          <td *ngIf="week || month">{{ row.date }}</td>
+          <td>{{ row.transaction_value | number: "1.2-2" }}</td>
+          <td *ngIf="!merchantU">{{ row.uba_settlement | number: "1.2-2" }}</td>
+          <td *ngIf="!merchantU">{{ row.gtb_settlement | number: "1.2-2" }}</td>
+          <td *ngIf="!merchantU">{{ row.providus_settlement | number: "1.2-2" }}</td>
+          <td *ngIf="!merchantU">{{ row.polaris_settlement | number: "1.2-2" }}</td>
+          <td *ngIf="!merchantU">{{ row.fidelity_settlement | number: "1.2-2" }}</td>
+          <td *ngIf="!merchantU">{{ row.zennith_settlement | number: "1.2-2" }}</td>
+          <td>{{ row.settlement_value | number: "1.2-2" }}</td>
+          <td [ngClass]="{'text-danger':row.differential < 0, 'text-success':row.differential > 0}">{{row.differential | number: "1.2-2"}}</td>
+        </tr>
+      </tbody>
+      <!--Table body-->
+      <tbody *ngIf="isData == false; else gettingData">
+        <tr >
+          <td colspan="13" style="text-align:center;padding: 5% 20%">
+            <strong>No Data Available</strong>
+          </td>
+        </tr>
+      </tbody>
+      <ng-template #gettingData>
+        <tbody *ngIf="isData == undefined">
+          <tr >
+            <td colspan="13" style="text-align:center;padding: 5% 20%">
+              <mdb-spinner spinnerColor="blue"></mdb-spinner>
+            </td>
+          </tr>
+        </tbody>
+      </ng-template>
+    </table>
+    <!--Table-->
+  </div>
+
+  <hr class="mb-4 mt-0" />
+
+  <app-pagination *ngIf="week && page" [event]="'ReconciliationSummaryVasPage'" [page]=page></app-pagination>
+
+  <!--Bottom Table UI-->
+  <!-- <div class="d-flex justify-content-between" style="overflow:auto;"> -->
+    <!--Pagination -->
+    <!-- <nav class="my-4">
+      <div class="row">
+        <div class="col-xs-12 col-12">
+          <pagination [totalItems]="itemCount" [rotate]="rotate" [maxSize]="maxSize" [itemsPerPage]="limit"
+            (pageChanged)="pageChanged($event)" ngDefaultControl [(ngModel)]="page"></pagination>
+        </div>
+      </div>
+    </nav> -->
+    <!--/Pagination -->
+  <!-- </div> -->
+  <!--Bottom Table UI-->
+</div>
+</div>
+
+<div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+  aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: true}">
+  <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Reconciliation Transactions</h4>
+        <button type="button" class="close unset-close" aria-label="Close" data-dismiss="modal"
+          (click)="basicModal.hide();  merchant = ''; date2 = ''" mdbWavesEffect>x</button>
+      </div>
+      <div *ngIf="date2" class="modal-body">
+          <app-reconciliation [from]='date2' [to]='date2' [show]='false'>
+          </app-reconciliation>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+          (click)="basicModal.hide(); merchant = ''; date2 = ''" mdbWavesEffect>Close</button>
+      </div>
+    </div>
+  </div>
+</div>

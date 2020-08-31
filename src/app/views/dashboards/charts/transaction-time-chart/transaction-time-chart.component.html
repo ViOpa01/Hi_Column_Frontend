@@ -1,0 +1,33 @@
+<div class="table-responsive px-4 pt-3">
+    <p *ngIf="totalValue > -1" class="new-font pt-3 d-none"><strong>{{totalValue / 100 | currency : '₦'}}</strong></p>
+    <table class="table table-borderless">
+        <tr class="row mx-0 no-change">
+            <td class="col-lg-4 col-sm-8 datepickers">
+                <div class="md-form">
+                    <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+                    </mdb-date-picker>
+                </div>
+            </td>
+            <td class="col-lg-1 col-sm-2">
+                <button (click)="getTransactionTime()" class="btn btn-uc waves-light btn-sm"
+                    mdbWavesEffect>Generate</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="chartDatasets.length" class="card-body card-body-cascade pb-0">
+    <div style="width: 100%; overflow: auto;">
+        <!-- Chart -->
+        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chart1Labels"
+            [options]="chartOptions" [legend]="true" [colors]="chartColors"> </canvas>
+    </div>
+</div>
+
+<div *ngIf="isData == false; else gettingData" class="col-12 text-center">No Data available</div>
+<ng-template #gettingData>
+    <div *ngIf="isData == undefined" class="col-12 text-center">
+        <mdb-spinner spinnerColor="blue"></mdb-spinner>
+    </div>
+</ng-template>
+
+<!-- Card image-->

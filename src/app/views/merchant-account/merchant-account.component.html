@@ -1,0 +1,95 @@
+<div class="col-lg-12 col-md-12">
+
+  <div [ngClass]="{
+  'card card-cascade narrower': true,
+  'z-depth-0': !shadows,
+  'mt-0 px-4': true
+  }">
+
+    <div class="mt-3 mb-2">
+      <p class="mb-0 style-new" *ngIf="isData == undefined">Merchant Loading...<p>
+          <p class="mb-0 style-new" *ngIf="isData != undefined">{{(details.merchant_name) || 'Merchant Not Found'}}</p>
+    </div>
+        <!--Card image-->
+        <!--/Card image-->
+
+        <div class="row my-3">
+          <div class="col-lg-6">
+
+            <div class="card-body card-body-cascade p-0 table-wrapper">
+              <table class="table no-header nd-height table-hover big-size tb-border">
+                <tbody *ngIf="isData == true" class="no-change">
+                  <tr>
+                    <td>Merchant ID: </td>
+                    <td>{{(details.merchant_id) || "Not Available"}}</td>
+                  </tr>
+                  <tr>
+                    <td>Contact Person: </td>
+                    <td>{{(details.merchant_contact) || "Not Available"}}</td>
+                  </tr>
+                  <tr>
+                    <td>Bank:</td>
+                    <td>{{bank || "Not Available"}}</td>
+                  </tr>
+                  <tr>
+                    <td>Account:</td>
+                    <td>{{(details.merchant_account_nr) || "Not Available"}}</td>
+                  </tr>
+                  <tr>
+                    <td>Address:</td>
+                    <td>{{(details.merchant_address) || "Not Available"}}</td>
+                  </tr>
+                  <tr>
+                    <td>Email:</td>
+                    <td>{{(details.merchant_email) || "Not Available"}}</td>
+                  </tr>
+                  <tr>
+                    <td>Phone:</td>
+                    <td>{{(details.merchant_phone) || "Not Available"}}</td>
+                  </tr>
+                  <tr>
+                    <td>No of Terminals:</td>
+                    <td>{{details.terminals_count || "Not Available"}}</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="isData == undefined">
+                  <td class="text-center">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tbody>
+                <tbody *ngIf="isData == false">
+                  <td class="text-center n-font"><strong>No Data Available</strong></td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card-body card-body-cascade p-0">
+
+
+              <div class="need-less nd-height tb-border">
+                <div *ngIf=isData class="big weight new-ch">
+                  <p>Terminals</p>
+                </div>
+                <span class="d-inline-block need-space big-size big-weight new-ct"
+                  *ngFor="let terminal of terminals">{{terminal}}</span>
+                <span *ngIf="isData == undefined" class="d-block text-center">
+                  <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                </span>
+                <span class="d-block text-center n-font"
+                  *ngIf="(!terminals.length && isData != undefined) || isData == false"><strong>No Data
+                    Available</strong></span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div>
+          <h5 class="mb-0"><strong>Terminal Stats</strong></h5>
+        </div>
+        <app-terminal-stat [shadows]="false" [show]="false" [merchant]="merchant"></app-terminal-stat>
+  </div>
+</div>

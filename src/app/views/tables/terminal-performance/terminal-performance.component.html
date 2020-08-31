@@ -1,0 +1,161 @@
+
+<div [ngClass]="{'px-4':show}" class="table-responsive">
+    <table class="table table-borderless">
+        <tr class="row mx-0 no-change">
+            <td class="col-lg-1 col-sm-2">
+                    <p class="noWrap">No of Records:</p>
+                <select ngDefaultControl [(ngModel)]='limit' (change)=" getTerminalSummary()"
+                    class="browser-default custom-select d-block">
+                    <option value="20">20</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                </select>
+            </td>
+            <!-- <td class="col-lg-2">
+                <p class="noWrap">Terminal ID:</p>
+            <select [(ngModel)]='terminal'(change)="setPage(); getTerminalSummary()"
+                class="browser-default custom-select d-block">
+                <option value="">View All</option>
+                <option *ngFor="let id of terminals" value={{id.terminal_id}}>{{id.terminal_id}}</option>
+            </select>
+        </td> -->
+            <td class="col-lg-2 col-sm-4 datepickers col-6">
+                    <p>From:</p>
+                    <div class="md-form">
+                        <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+                        </mdb-date-picker>
+                    </div>
+                </td>
+                <td class="col-lg-2 col-sm-4 datepickers col-6">
+                    <p>To:</p>
+                    <div class="md-form">
+                        <mdb-date-picker ngDefaultControl [(ngModel)]="to" [placeholder]="'yyyy-mm-dd'" required>
+                        </mdb-date-picker>
+                    </div>
+                </td>
+                <td class="col-lg-1 col-sm-2">
+                    <button (click)="setPage(); getTerminalSummary()" class="btn btn-sm btn-uc waves-light mt-1-2" mdbWavesEffect>Search</button>
+                </td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="isData" class="row">
+        <div class="width-min mb-2">
+            <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card pr-3 need-border">
+                <div class="admin-up">
+                    <div class="data pb-2">
+                        <p class="new-head no-change noWrap">Total Value</p>
+                        <p *ngIf="isData" class="new-font">
+                            <strong>₦{{value/100 | number : '1.2-2'}}</strong>
+                        </p>
+                        <p *ngIf="isData == false" class="new-font"><strong>No Data available</strong></p>
+                        <p *ngIf="isData == undefined">
+                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="width-min mb-2">
+                <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card pr-3 need-border">
+                    <div class="admin-up">
+                        <div class="data pb-2">
+                            <p class="new-head no-change noWrap">Total Volume</p>
+                            <p *ngIf="isData == true" class="new-font">
+                                <strong>{{volume | number : '1.0'}}</strong>
+                            </p>
+                            <p *ngIf="isData == false" class="new-font"><strong>No Data available</strong></p>
+                            <p *ngIf="isData == undefined">
+                                <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+</div>
+
+<div [ngClass]="{'px-4':show}" >
+
+    <div class="table-responsive table-wrapper">
+        <!--Table-->
+        <table class="table table-striped table-hover mb-0 border-space">
+
+            <!--Table head-->
+            <thead>
+                <tr>
+                    <th class="th-md">S/N</th>  
+                    <th class="th-md">
+                        <a (click)="sortBy('terminal_id')">Terminal ID
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('trans_value')">Value (₦)
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                    </th>
+                    <th class="th-sm" mdbTooltip="difference comapared to previous range i.e today vs yesterday"
+                            placement="top">
+                            <a (click)="sortBy('value_change')">Value change (₦)
+                                <i class="fa fa-sort ml-1"></i>
+                            </a>
+                        </th>
+                    <th class="th-md">
+                        <a (click)="sortBy('trans_volume')">Volume
+                            <i class="fa fa-sort ml-1"></i>
+                        </a>
+                      </th>
+                      <th class="th-sm" mdbTooltip="difference comapared to previous range i.e today vs yesterday"
+                            placement="top">
+                            <a (click)="sortBy('volume_change')">Volume Change
+                                <i class="fa fa-sort ml-1"></i>
+                            </a>
+                        </th>
+                </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody *ngIf="terminals.length > 0">
+                <tr  *ngFor="let row of terminals;let i = index;">
+
+                    <td>{{(serial + i)}}</td>
+                    <td>{{row.terminal_id}}</td>
+                    <td>{{row.trans_value/100 | number : '1.2-2'}}</td>
+                    <td [ngClass]="{'text-danger':row.value_change < 0, 'text-success':row.value_change > 0}">
+                            {{(row.value_change / 100 | number : '1.2-2') || 'N/A'}}</td>
+                    <td>{{row.trans_volume | number : '1.0'}}</td>
+                    <td [ngClass]="{'text-danger':row.volume_change < 0, 'text-success':row.volume_change > 0}">
+                            {{ (row.volume_change | number : '1.0') || 'N/A'}}</td>
+                </tr>
+            </tbody>
+
+            <!--Table body-->
+            <tbody *ngIf="isData == false; else gettingData">
+                <tr >
+                    <td colspan="6" style="text-align:center;padding: 5% 20%">
+                        <strong>No Data Available</strong>
+                    </td>
+                </tr>
+            </tbody>
+            <ng-template #gettingData>
+                <tbody *ngIf="isData == undefined">
+                    <tr >
+                        <td colspan="6" style="text-align:center;padding: 5% 20%">
+                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                        </td>
+                    </tr>
+                </tbody>
+            </ng-template>
+
+        </table>
+        <!--Table-->
+    </div>
+
+    <hr class="my-0">
+
+    <app-pagination *ngIf="page" [event]="'TerminalSummary'" [page]=page></app-pagination>
+
+</div>
+

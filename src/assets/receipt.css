@@ -1,0 +1,135 @@
+
+@font-face {
+    font-family: "Cambria";
+    src: url("/assets/fonts/Cambria.ttf") format("ttf");
+  }
+  @font-face {
+    font-family: "Helvetica Neue";
+    src: url("/assets/fonts/HelveticaNeue.ttf") format("ttf");
+  }
+  .invoice-box {
+    max-width: 186px;
+    margin: 0 auto;
+    border: 1px solid #eee;
+    font-size: 9px;
+    line-height: 13px;
+    font-family: "Cambria", "Helvetica Neue", "Helvetica", Helvetica, Arial,
+      sans-serif;
+    color: #000000;
+  }
+  
+  .invoice-box table {
+    background: #fff;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .invoice-box table td {
+    padding: 0px 6px;
+    vertical-align: top;
+  }
+  
+  .invoice-box table tr td:nth-child(2) {
+    text-align: right;
+  }
+  
+  .invoice-box table tr.top table td {
+    padding-bottom: 0px;
+  }
+  
+  .invoice-box table tr.top table td.title {
+    font-size: 45px;
+    line-height: 0px;
+    color: #333;
+  }
+  
+  /* tr.information td {
+    padding-bottom: 0px;
+    border-bottom: 1px dashed #333;
+  } */
+  
+  
+  .invoice-box table tr.heading td {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+  }
+  
+  .invoice-box table tr.details td {
+    padding-bottom: 0px;
+  }
+  
+  .invoice-box table tr.item td {
+    border-bottom: 1px solid #eee;
+  }
+  
+  .invoice-box table tr.item.last td {
+    border-bottom: none;
+  }
+  
+  .invoice-box table tr.total td:nth-child(2) {
+    border-top: 2px solid #eee;
+    font-weight: bold;
+  }
+  .seperator{
+    border-bottom: 1px dashed #333;
+  }
+  .seperatorc {
+    border-bottom: 1px dashed #333;
+    width: 40%;
+    display: block;
+    margin: auto;
+    margin-top: -7px;
+  }
+  .seperatorb {
+    height: 10px;
+    border-bottom: 1px dashed #333;
+  }
+  .seperatord {
+    height: 10px;
+    border-bottom: 1px dashed #333;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .invoice-box table tr.top table td {
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+  
+    .invoice-box table tr.information table td {
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+  }
+  
+  .rtl {
+    direction: rtl;
+    font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial,
+      sans-serif;
+  }
+  
+  .rtl table {
+    text-align: right;
+  }
+  
+  .rtl table tr td:nth-child(2) {
+    text-align: left;
+  }
+  .invoice-box table td {
+    font-size: 9px !important;
+    white-space: pre-line;
+  }
+  .invoice-box table td .strongText {
+      font-size: 13px !important;
+      font-weight: 600 !important;
+    }
+
+  .details .ref {
+    float: right
+  }
+  
+  table.border-space tbody:not(.no-change) > tr td:last-child,table.border-space tbody:not(.no-change) > tr td:first-child,table.border-space tbody > tr:not(.no-change) td {
+    border: unset !important
+  }

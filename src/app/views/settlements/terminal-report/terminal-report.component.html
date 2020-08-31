@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="ml-2">
+    <!-- <button type="button" class="btn btn-elegant btn-sm waves-light" data-toggle="modal" data-target="#search"
+    (click)="search.show()" mdbWavesEffect>ADVANCED SEARCH</button> -->
+
+    <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light" (click)="exportExcel('terminal')"
+            mdbWavesEffect>Export</button>
+            
+    </div>
+</div>
+<div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows,
+'mt-0': true}">
+
+  <div class="table-responsive px-4 pt-3">
+    <table class="table table-borderless">
+      <tr class="row mx-0 no-change">
+        <td class="col-lg-1 col-sm-2">
+          <p class="noWrap">No of Records:</p>
+          <select (change)="setLimit($event); getTerminalPerformance()"
+            class="browser-default custom-select d-block">
+            <option value="20">20</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+          </select>
+        </td>
+        <td class="col-lg-3 col-sm-10 col-6">
+            <p>Terminal ID:</p>
+            <input class="form-control my-0 py-0" ngDefaultControl [(ngModel)]="terminal" placeholder="Search Terminal ID" name="terminal"
+            type="text" />
+          </td>
+        <td class="col-lg-3 col-sm-12 col-6">
+            <p>Merchant ID:</p>
+            <input class="form-control my-0 py-0" ngDefaultControl [(ngModel)]="merchant" placeholder="Search Merhcant ID" name="merchant"
+            type="text" />
+          </td>  
+        <td class="col-lg-2 col-sm-4 col-6 datepickers">
+          <p>From:</p>
+          <div class="md-form">
+            <mdb-date-picker ngDefaultControl [(ngModel)]="from" required [placeholder]="'yyyy-mm-dd'">
+            </mdb-date-picker>
+          </div>
+        </td>
+        <td class="col-lg-2 col-sm-4 col-6 datepickers">
+          <p>To:</p>
+          <div class="md-form">
+            <mdb-date-picker ngDefaultControl [(ngModel)]="to" required [placeholder]="'yyyy-mm-dd'">
+            </mdb-date-picker>
+          </div>
+        </td>
+        <td class="col-lg-1 col-sm-2">
+          <button (click)="setPage(1); getTerminalPerformance()" class="btn btn-uc waves-light btn-sm mt-1-2"
+            mdbWavesEffect>Search</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="px-4">
+    <div class="table-wrapper">
+      <!--Table-->
+      <table class="table table-striped table-hover mb-0 border-space">
+        <!--Table head-->
+        <thead>
+          <tr>
+            <th class="th-md">S/N</th>
+            <th class="th-md">
+              <a (click)="sortBy('terminal_id')">Terminal ID
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('merchant_id')">Merchant ID
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+                <a (click)="sortBy('merchant_name')">Merchant Name
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+            <th class="th-md">
+              <a (click)="sortBy('merchant_acc_number')">Account No
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+                <a (click)="sortBy('settled_value')">Settled Value(₦)
+                  <i class="fa fa-sort ml-1"></i>
+                </a>
+              </th>
+            <th class="th-md">
+              <a (click)="sortBy('total_value')">Total Value (₦)
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('total_volume')">Total Volume
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+            <th class="th-md">
+              <a (click)="sortBy('charge')">Charge (₦)
+                <i class="fa fa-sort ml-1"></i>
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <!--Table head-->
+
+        <!--Table body-->
+        <tbody *ngIf="tableData.length > 0">
+          <tr  *ngFor="let row of tableData; let i = index">
+            <td>{{ serial + i }}</td>
+            <td>{{ row.terminal_id}}</td>
+            <td>{{ row.merchant_id}}</td>
+            <td *ngIf="row.merchant_name"><a href="javascript:;"
+              [routerLink]="['/merchant', row.merchant_id]">{{ row.merchant_name }}</a></td>
+          <td *ngIf="!row.merchant_name">Not Available</td>
+            <td>{{ row.merchant_acc_number}}</td>
+            <td>{{ row.settled_value | number : '1.2-2'}}</td>
+            <td>{{ row.total_value | number : '1.2-2'}}</td>
+            <td>{{ row.total_volume | number : '1.0'}}</td>
+            <td>{{ row.charge | number : '1.2-2'}}</td>
+          </tr>
+        </tbody>
+        <!--Table body-->
+        <tbody *ngIf="isData == false; else gettingData">
+          <tr >
+            <td colspan="9" style="text-align:center;padding: 5% 20%">
+              <strong>No Data Available</strong>
+            </td>
+          </tr>
+        </tbody>
+        <ng-template #gettingData>
+          <tbody *ngIf="isData == undefined">
+            <tr >
+              <td colspan="9" style="text-align:center;padding: 5% 20%">
+                <mdb-spinner spinnerColor="blue"></mdb-spinner>
+              </td>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+      <!--Table-->
+    </div>
+
+    <hr class="my-0" />
+
+    <app-pagination *ngIf="page" [event]="'TerminalReportPage'" [page]=page></app-pagination>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-3 mb-30'" class='tabs-wrapper'>
+    <mdb-tab heading="Transactions">
+        <app-reconciliation></app-reconciliation>
+    </mdb-tab>
+    <mdb-tab heading="Summary">
+        <app-reconciliation-summary></app-reconciliation-summary>
+    </mdb-tab>
+    <mdb-tab *ngIf="!merchant" heading="Summary Beta">
+            <app-reconciliation-summary-duo></app-reconciliation-summary-duo>
+        </mdb-tab>
+    <mdb-tab *ngIf="!merchant" heading="Merchants">
+        <app-reconciliation-merchant></app-reconciliation-merchant>
+    </mdb-tab>
+</mdb-tabset>

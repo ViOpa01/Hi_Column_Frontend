@@ -1,0 +1,121 @@
+.table-wrapper {
+    display: block;
+    max-height: 186em;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    white-space: nowrap;
+}
+
+.blue-gradient {
+    background: -webkit-linear-gradient(50deg, #45cafc, #303f9f);
+    background: linear-gradient(40deg, #45cafc, #4285f4);
+}
+
+.table-ui {
+    border: 1px solid #e0e0e9;
+}
+
+
+.modal-dialog.cascading-modal.modal-avatar .modal-header img {
+    width: 130px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-dialog.cascading-modal.modal-avatar .modal-header {
+    margin: -6rem 2rem -1rem 2rem;
+}
+
+
+.change {
+    
+    font-size: 32px;
+    color: #304b9a;
+}
+
+// .noChange td{
+//     font-size: 1rem !important;
+//     font-weight: 300 !important;
+//     padding: 0.3rem !important;
+// }
+
+// .noChange th{
+//     font-size: 1rem !important;
+//     font-weight: 400 !important;
+//     padding: 0.3rem !important;
+// }
+
+
+.need-space{
+    margin: 0.3rem 1rem 0.3rem 0;
+}
+
+.need-less{
+    max-height: 220px;
+    overflow: auto;
+    padding: 0.4rem;
+    
+}
+
+.nd-height {
+    min-height: 75.2px;
+}
+
+
+.need-header h5 {
+    margin: 0;
+}
+
+.big-size td:nth-child(2){
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+.big-size {
+    font-size: 12px !important;
+    // font-weight: 600px !important;
+}
+
+.big-weight {
+    font-weight: 600 !important;
+}
+
+// .noChange { 
+//     box-shadow: 1px 1px 2px 1px #cccccc9c;
+// }
+
+.tb-border {
+    border: 1px solid #E0E0E0;
+}
+
+.tb-border > tbody > tr {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+.n-font {
+    font-size: 12px !important;
+    font-weight: 400 !important
+}
+
+.md-small-tabs {
+    margin-right: 1.4rem !important;
+    margin-left: 1.4rem !important;
+}
+
+.tab-content { 
+    padding: 0 !important;
+}
+
+.style-new {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
+
+.new-ct {
+    color: #4F4F4F !important
+}
+
+.new-ch {
+    color: #000 !important
+}

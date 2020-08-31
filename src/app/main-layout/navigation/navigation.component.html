@@ -1,0 +1,267 @@
+<!--Double navigation-->
+<header>
+
+    <!-- Sidebar navigation -->
+    <mdb-sidenav #sidenav class="fixed" [fixed]="false">
+
+
+
+        <links class="bottom-fix">
+            <div>
+                <div class="breadcrumbs breadcrumb-dn mr-auto mt-3 p-relative">
+                    <div>
+                        <a href="/" class="m-0 p-0"><img src="../../../assets/img/trackmoney.png" class="img-fluid"></a>
+                    </div>
+                </div>
+                <!--Search Form-->
+                <!-- <li>
+                <form class="search-form" role="search">
+                    <div class="form-group md-form waves-light" mdbWavesEffect>
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                </form>
+            </li> -->
+                <!--/.Search Form-->
+                <!-- Side navigation links -->
+                <li>
+                    <ul class="collapsible collapsible-accordion">
+                        <mdb-squeezebox [multiple]="false" aria-multiselectable="false">
+
+                            <mdb-item *ngIf='admin || super || user || merchant' class="no-collase">
+                                <mdb-item-head routerLinkActive="active" routerLink="dashboard"> Dashboard
+                                </mdb-item-head>
+                                <mdb-item-body>
+
+                                </mdb-item-body>
+                            </mdb-item>
+                            <mdb-item *ngIf='merchant' class="no-collase">
+                                <mdb-item-head routerLinkActive="active" routerLink="account"> Account
+                                </mdb-item-head>
+                                <mdb-item-body>
+
+                                </mdb-item-body>
+                            </mdb-item>
+
+                            <mdb-item *ngIf='user ||admin || super || merchant'>
+                                <mdb-item-head [ngClass]="{'active':(tranLink || {}).isActive || (tranLink2 || {}).isActive}">
+                                   Transaction History
+                                </mdb-item-head>
+                                <mdb-item-body>
+                                    <ul>
+                                        <li>
+                                            <a #tranLink="routerLinkActive" routerLink="transaction/history"
+                                                routerLinkActive="active">Transactions</a>
+                                        </li>
+                                        <li>
+                                            <a #tranLink2="routerLinkActive" routerLink="transaction/summary"
+                                                routerLinkActive="active">Summary</a>
+                                            
+                                        </li>
+                                    </ul>
+                                </mdb-item-body>
+                            </mdb-item>
+
+                            <!-- <mdb-item>
+                            <mdb-item-head mdbWavesEffect>
+                                <i class="fa fa-group"></i> Merchant
+                            </mdb-item-head>
+                            <mdb-item-body></mdb-item-body>
+                        </mdb-item> -->
+
+                            <!-- <mdb-item>
+                            <mdb-item-head mdbWavesEffect>
+                                <i class="fa fa-credit-card"></i> Terminals
+                            </mdb-item-head>
+                            <mdb-item-body></mdb-item-body>
+                        </mdb-item> -->
+
+                            <mdb-item *ngIf='user ||admin || super'>
+                                <mdb-item-head [ngClass]="{'active':(merchantsLink || {}).isActive || (merchantsLink2 || {}).isActive || (merchantsLink3 || {}).isActive || (merchantsLink4 || {}).isActive}">
+                                    Merchant Management
+                                </mdb-item-head>
+                                <mdb-item-body>
+                                    <ul>
+                                        <!-- <li>
+                                            <a #merchantsLink="routerLinkActive" routerLink="onboarding"
+                                                routerLinkActive="active">Onboarding</a>
+                                        </li> -->
+                                        <li>
+                                            <a #merchantsLink2="routerLinkActive" routerLink="merchant"
+                                                routerLinkActive="active">View Merchants</a>
+                                        </li>
+                                        <li>
+                                            <a #merchantsLink3="routerLinkActive" routerLink="terminal"
+                                                routerLinkActive="active">View Terminals</a>
+                                            
+                                        </li>
+                                        <!-- <li>
+                                                <a #merchantsLink4="routerLinkActive" routerLink="terminal-inventory"
+                                                    routerLinkActive="active">Terminal Inventory</a>
+                                            </li> -->
+
+
+                                    </ul>
+                                </mdb-item-body>
+                            </mdb-item>
+
+
+
+                            <mdb-item *ngIf='user || admin || super || merchant'>
+                                <mdb-item-head
+                                    [ngClass]="{'active': (sLink1 || {}).isActive ||  (sLink2 || {}).isActive || (sLink3 || {}).isActive || sLink4.isActive || (sLink5 || {}).isActive}">
+                                    Settlements
+                                </mdb-item-head>
+                                <mdb-item-body>
+                                    <ul>
+                                        <li *ngIf='!merchant'>
+                                            <a #sLink1="routerLinkActive" routerLink="settlements/uploads"
+                                                routerLinkActive="active">Uploads</a>
+
+                                        </li>
+
+                                        <li>
+                                            <a #sLink2="routerLinkActive" [routerLinkActiveOptions]="{exact:
+                                            true}" routerLink="settlements" class="waves-effect"
+                                                routerLinkActive="active">Settlement Report</a>
+
+                                        </li>
+                                        <li *ngIf='!merchant'>
+                                                <a #sLink1="routerLinkActive" routerLink="settlements/same-day"
+                                                    routerLinkActive="active">Same-Day</a>
+    
+                                            </li>
+                                        <li *ngIf='merchant'>
+                                            <a #sLink5="routerLinkActive" routerLink="settlements/settlement-expectations"
+                                                routerLinkActive="active">Settlement Expectations</a>
+                                        </li>
+                                        <li>
+                                            <a #sLink4="routerLinkActive"
+                                                routerLink="settlements/settlement-reconciliation"
+                                                routerLinkActive="active">Reconciliation</a>
+                                        </li>
+                                        <!-- Only for Itex -->
+                                        <!-- <li *ngIf='!merchant'>
+                                            <a #sLink4="routerLinkActive"
+                                                routerLink="settlements/settlement-reconciliation-vas"
+                                                routerLinkActive="active">VAS Reconciliation</a>
+                                        </li> -->
+                                    </ul>
+                                </mdb-item-body>
+                            </mdb-item>
+
+                            <!-- <mdb-item>
+                            <mdb-item-head mdbWavesEffect>
+                                <i class="fa fa-credit-card"></i> Transaction Receipt
+                            </mdb-item-head>
+                            <mdb-item-body></mdb-item-body>
+                        </mdb-item> -->
+
+                            <mdb-item *ngIf='user || admin || user' class="no-collase">
+                                <mdb-item-head routerLinkActive="active" routerLink="dispute"> Dispute Resolution
+                                </mdb-item-head>
+                                <mdb-item-body>
+
+                                </mdb-item-body>
+                            </mdb-item>
+
+                            <mdb-item *ngIf='admin || super' class="no-collase">
+                                <mdb-item-head routerLinkActive="active" routerLink="configuration">Configuration
+                                </mdb-item-head>
+                                <mdb-item-body>
+
+                                </mdb-item-body>
+                            </mdb-item>
+
+                            <mdb-item *ngIf='merchant' class="no-collase">
+                                <mdb-item-head routerLinkActive="active" routerLink="dispute/merchant"> Merchant Dispute
+                                </mdb-item-head>
+                                <mdb-item-body>
+
+                                </mdb-item-body>
+                            </mdb-item>
+
+                            <!-- <mdb-item>
+                            <mdb-item-head mdbWavesEffect>
+                                <i class="fa fa-tachometer"></i> Entities
+                            </mdb-item-head>
+                            <mdb-item-body></mdb-item-body>
+                        </mdb-item> -->
+
+                            <!-- <mdb-item>
+                            <mdb-item-head mdbWavesEffect>
+                                <i class="fa fa-tachometer"></i> Acquirer Settings
+                            </mdb-item-head>
+                            <mdb-item-body></mdb-item-body>
+                        </mdb-item> -->
+
+                        </mdb-squeezebox>
+                    </ul>
+                </li>
+                <div>
+
+                </div>
+            </div>
+            <!--/. Side navigation links -->
+
+            <!--Social-->
+
+            <div class="breadcrumbs breadcrumb-dn mr-auto fixed-bottom mt-5 p-relative">
+                <div>
+                    <p class="foot-p">Powered By</p>
+                    <!-- uba-light -->
+                    <img src="../../../assets/img/itex2.png" class="img-fluid new-width">
+                </div>
+            </div>
+
+            <!--/Social-->
+
+        </links>
+
+    </mdb-sidenav>
+    <!--/. Sidebar navigation -->
+
+
+
+    <!-- Navbar -->
+    <mdb-navbar SideClass="navbar double-nav fixed-top" [containerInside]="false">
+        <navlinks class="navbar-container navbar-style px-4">
+            <!-- SideNav slide-out button -->
+            <div class="bar-style">
+                <a (click)="sidenav.show()" class="button-collapse">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+            <!--/. SideNav slide-out button -->
+        </navlinks>
+        <!-- <logo>
+            <div class="breadcrumbs breadcrumb-dn mr-auto">
+                <img src="../../../assets/img/payvue.JPG" height="50" width="50" class="img-fluid flex-center"> --
+                <p><strong>TrackMoney</strong></p>
+            </div>
+        </logo> -->
+        <navlinks class="nav-style">
+            <div class="logo-style">
+                <!-- uba-red2 -->
+                    <a href="/" class="m-0 p-0"><img src="../../../assets/img/tm.png" class="img-fluid new-width"></a>
+            </div>
+            <ul class="nav navbar-nav nav-flex-icons ml-auto ie-double-nav">
+                <li class="nav-item dropdown btn-group" dropdown>
+                    <a dropdownToggle type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                        <i class="fa fa-user"></i> Account
+                    </a>
+                    <div class="dropdown-menu dropdown-primary dropdown-menu-right" role="menu">
+                        <a *ngIf='super' routerLink="/auth/register" class="dropdown-item">Create User</a>
+                        <a *ngIf='super' routerLink="/auth/users" class="dropdown-item">Manage Users</a>
+                        <a routerLink="/auth/new-password" class="dropdown-item">Change Password</a>
+                        <a (click)="signOut()" class="dropdown-item">Log Out</a>
+                    </div>
+                </li>
+            </ul>
+
+        </navlinks>
+
+    </mdb-navbar>
+    <!--/. Navbar -->
+
+</header>
+<!--/.Double navigation-->

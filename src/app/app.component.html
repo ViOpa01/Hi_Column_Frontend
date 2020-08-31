@@ -1,0 +1,13 @@
+<app-navigation *ngIf="!isSpecialPage()"></app-navigation>
+
+<!-- <mdb-navbar *ngIf="isSpecialPage()" SideClass="navbar fixed-top navbar-expand-md scrolling-navbar" [containerInside]="false">
+</mdb-navbar> -->
+
+<main>
+
+    <div [class.container-fluid]="!isSpecialPage()">
+        <router-outlet></router-outlet>
+    </div>
+</main>
+
+<app-footer *ngIf="!isSpecialPage()"></app-footer>

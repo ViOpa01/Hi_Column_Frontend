@@ -1,0 +1,25 @@
+.table-wrapper {
+    display: block;
+    max-height: 186em;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    white-space: nowrap;
+}
+
+.blue-gradient {
+    background: -webkit-linear-gradient(50deg, #45cafc, #303f9f);
+    background: linear-gradient(40deg, #45cafc, #4285f4);
+}
+
+.widthChange {
+    width: 4.6rem !important;
+}
+
+.divWidth {
+    padding-right: 5.6rem !important;
+}
+
+.saveSpace {
+    padding-right: 0rem !important;
+    padding-left: 0.6rem !important;
+}

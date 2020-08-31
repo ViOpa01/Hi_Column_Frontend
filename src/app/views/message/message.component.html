@@ -1,0 +1,27 @@
+
+    <!--Card-->
+    <mdb-card cascade="true">
+  
+      <!--Card image-->
+      <div class="view view-cascade gradient-card-header blue-gradient scrollable">
+        <h2 class="card-header-title">Notes</h2>
+      </div>
+      <!--/Card image-->
+  
+      <mdb-card-body cascade="true" class="small-card" >
+        <!--Card content-->
+  
+        <mdb-card-text *ngFor="let message of messageData">
+          <p>{{message.message}}</p>
+          <br>
+          <p>Sender: {{message.sender}}</p>
+          <p>Created At: {{message.createdAt | date : 'yyyy-MM-dd HH:mm:ss'}}</p>
+
+        </mdb-card-text>
+  
+      </mdb-card-body>
+      <!--/.Card content-->
+  
+    </mdb-card>
+    <!--/.Card-->
+ 

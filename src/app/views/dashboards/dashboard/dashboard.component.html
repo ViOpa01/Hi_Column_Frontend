@@ -1,0 +1,102 @@
+<!-- Nav Tabs -->
+<mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-3 mb-30'" class='tabs-wrapper'>
+    <!--Panel 1-->
+    <mdb-tab heading="Transaction Status">
+        <app-stats-card id="tstatus" [totalValue]=totalValue ></app-stats-card>
+        <section id="toverview">
+            <h5 class="mt-30">Transactions</h5>
+            <div class="row">
+                <div class="pb-3 col-xl-7 col-lg-12 mr-0" style="justify-content:center; align-items:center;">
+                    <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="full-height mt-0">
+                        <mdb-transaction-time-chart [totalValue]=totalValue></mdb-transaction-time-chart>
+                    </div>
+                </div>
+                
+                <div class="pb-3 col-xl-5 col-lg-12 mr-0">
+                    <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="full-height mt-0">
+                            <div class="table-responsive px-4">
+                                    <table class="table table-borderless">
+                                        <tr class="row mx-0 no-change">
+                                            <td class="col-lg-4 col-sm-8 datepickers mt-3">
+                                                <div class="md-form">
+                                                    <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+                                                    </mdb-date-picker>
+                                                </div>
+                                            </td>
+                                            <td class="col-lg-4 col-sm-8 datepickers mt-3">
+                                                <div class="md-form">
+                                                    <mdb-date-picker ngDefaultControl [(ngModel)]="to" [placeholder]="'yyyy-mm-dd'" required>
+                                                    </mdb-date-picker>
+                                                </div>
+                                            </td>
+                                            <td class="col-lg-1 col-sm-2 mt-3">
+                                                <button (click)="getTransactionStatus()" class="btn btn-uc waves-light btn-sm mt-0-3"
+                                                    mdbWavesEffect>Generate</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                            </div>
+
+                            <h5 *ngIf="isEmpty(data) == false" class="new-look px-4">Transactions Details</h5>
+                            <div class="px-4" [ngClass]="{'overflow-table' : isEmpty(data) == false}">
+                            <table *ngIf="isEmpty(data) == false" class="table no-header noChange border-space">
+                                <tbody class="no-change" style="white-space: nowrap;">
+                                    <tr>
+                                        <td>Total Value</td>
+                                        <td><strong>{{data.total_value  / 100 | currency : '₦'}}</strong></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Volume</td>
+                                        <td><strong>{{data.total_volume | number : '1.0'}}</strong></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Successful Transactions</td>
+                                        <td><strong class="color-new">{{data.success_count | number : '1.0'}}</strong></td>
+                                        <td><strong>{{data.success_percent}}%</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Failed Transactions</td>
+                                        <td><strong class="color-new3">{{data.failed_count | number : '1.0'}}</strong></td>
+                                        <td><strong>{{data.failed_percent}}%</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Utilized Terminals</td>
+                                        <td><strong class="color-new">{{data.utilized_terminals | number : '1.0'}}</strong></td>
+                                        <td><strong>{{data.utilized_terminals_percent}}%</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Non-Utilized Terminals</td>
+                                        <td><strong class="color-new3">{{data.non_utilized_terminals | number : '1.0'}}</strong></td>
+                                        <td><strong>{{data.non_utilized_terminals_percent}}%</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf="isData == false; else gettingData" class="col-12 text-center">No Data
+                                available</div>
+                            <ng-template #gettingData>
+                                <div *ngIf="isEmpty(data) == true" class="col-12 text-center">
+                                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                                </div>
+                            </ng-template>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </mdb-tab>
+    <!--Panel 2-->
+    <!--Panel 3-->
+    <mdb-tab heading="Performance Analysis">
+        <section *ngIf="!merchantU"  id="panalysis">
+            <mdb-performance-records-table [shadows]="false"></mdb-performance-records-table>
+        </section>
+        <section *ngIf="merchantU">
+            <div [ngClass]="{ 'card card-cascade narrower mt-0 pt-3': true, 'z-depth-0': !shadows}">
+                <app-terminal-performance [shadows]="false" [merchant]="merchant"></app-terminal-performance>
+            </div>
+        </section>
+    </mdb-tab>
+</mdb-tabset>

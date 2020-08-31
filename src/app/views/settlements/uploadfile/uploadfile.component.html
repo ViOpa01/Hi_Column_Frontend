@@ -1,0 +1,167 @@
+<div class="col-lg-12 col-md-12">
+    <div [ngClass]="{
+            'card card-cascade narrower': true,
+            'z-depth-0': !shadows,
+            'mt-0 px-4': true
+          }">
+      <div *ngIf="admin || super">
+  
+      <div class="table-responsive">
+        <div>
+          <h5 class="mt-3"><strong>Upload File</strong></h5>
+        </div>
+      </div>
+<!--   
+      <div class="file-field md-form">
+          <div class="waves-light btn btn-uc btn-sm" mdbWavesEffect>
+            <span>Choose file</span>
+            <input type="file" mdbFileSelect (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput">
+          </div>
+          <div class="file-path-wrapper col-lg-3 col-sm-3">
+            <input class="file-path" type="text" placeholder="No file chosen" [value]="showFiles()">
+          </div>
+        </div> -->
+      <form #form = ngForm>
+      <div class="col-lg-3 col-sm-3 p-0 file-path-wrapper">
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="fileModel" [disabled]="uploading" type="file"
+          (change)="check($event);" />
+        <br> <br> 
+      </div>
+      <div class="col-lg-2 col-sm-4 p-0 mb-3">
+          <input [disabled]="!fileModel || !isChecked || uploading" class="form-control my-0 py-0" name="sheetCount" ngDefaultControl [ngModelOptions]="{standalone: true}" [(ngModel)]="sheetCount"
+          type="number" (input)="sheets()" placeholder="No of Sheets in file"/>
+      </div>
+
+      <div class="row">
+          <div *ngFor="let count of sheetsArray; let i = index" class="col-lg-2 col-sm-4 p-0 mb-3 pl-1">
+            <p>Sheet {{count}}:</p>
+              <select [disabled]="uploading" (change)="selectSwitch()" [ngModelOptions]="{standalone: true}" [(ngModel)]="switchNames[i]" class="browser-default custom-select d-block">
+                <option value=undefined selected>Select switch</option>
+                <option value="ignore">Ignore this sheet</option>
+                <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+              </select>
+          </div>
+      </div>
+      
+      <div>
+          <mdb-progress class="mb-3" *ngIf="uploadPercent >= 0" value="{{uploadPercent}}" min="0" max="100" type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100">{{uploadPercent}}%</mdb-progress>
+          
+          <button class="btn btn-uc btn-sm" [disabled]="!sheetCount || switchNames.length != sheetCount || !validSwitches.length || isUploading" (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i class="fa "
+            [ngClass]="{'spinner-border spinner-border-sm':isUploading==true}"></i></button>
+      </div>
+      </form>
+
+      <hr>
+
+    </div>
+  
+      <div>
+  
+        <div>
+          <h5 class="mb-0" [ngClass]="{
+            'mt-3': !admin && !super
+          }"><strong>Upload History</strong></h5>
+        </div>
+        <div class="col-lg-2 col-sm-4 p-0 my-3">
+          <select ngDefaultControl [(ngModel)]='processor' (change)="setPage(1); getHistory()"
+            class="browser-default custom-select d-block">
+            <option value="">View All</option>
+            <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+          </select>
+        </div>
+        <div class="table-wrapper">
+          <!--Table-->
+          <table class="table table-striped table-hover mb-0 border-space">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th class="th-md">S/N</th>
+                <th class="th-md">
+                  <a (click)="sortBy('filename')">Filename
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('count')">Uploaded Count
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('count')">Unique Count
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('failed_insert')">Duplicate Count
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('proccessor')">Processor
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('createdAt')">Created at
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('updatedAt')">Updated at
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md text-center">Action</th>
+  
+  
+              </tr>
+            </thead>
+            <!--Table head-->
+  
+            <!--Table body-->
+            <tbody *ngIf="uploadHistory.length > 0">
+              <tr  *ngFor="let row of uploadHistory; let i = index">
+                <td>{{ serial + i }}</td>
+                <td>{{ row.filename }}</td>
+                <td>{{ row.count + row.failed_insert | number : '1.0'}}</td>
+                <td>{{ row.count | number : '1.0'}}</td>
+                <td>{{ row.failed_insert | number : '1.0'}}</td>
+                <td>{{ row.processor }}</td>
+                <td>{{ row.createdAt | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{ row.updatedAt | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td *ngIf="row.download_link" class="text-center">
+                  <a target="_blank" href="{{row.download_link}}">Download file</a>
+                  <button class="btn btn-elegant waves-light btn-sm" [disabled]="isDeleting[i]" (click)="deleteFile(row._id, i)">{{isDeleting[i] ? 'deleting' : 'delete'}}<i class="fa "
+                    [ngClass]="{'spinner-border spinner-border-sm':isDeleting[i]==true}"></i></button>
+                </td>
+                <td *ngIf="!row.download_link" class="text-center">N/A</td>
+              </tr>
+            </tbody>
+            <!--Table body-->
+            <tbody *ngIf="isHistory == false; else gettingData">
+              <tr >
+                <td colspan="9" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #gettingData>
+              <tbody *ngIf="isHistory == undefined">
+                <tr >
+                  <td colspan="9" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!--Table-->
+        </div>
+  
+        <hr class="my-0" />
+  
+        <app-pagination *ngIf="page" [event]="'UploadHistory'" [page]=page></app-pagination>
+      </div>
+  
+    </div>
+  </div>

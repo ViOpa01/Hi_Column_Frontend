@@ -1,0 +1,1302 @@
+<link href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet">
+<mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-3 mb-30'" (showBsTab)="showLoader($event)" class="tabs-wrapper">
+  <!--Panel 1-->
+  <mdb-tab heading="<i class='fa fa-file-text-o' aria-hidden='true'></i> UNSENT">
+    <div class="row">
+      <div class="ml-2">
+        <button *ngIf="admin || super" type="button" class="btn btn-elegant btn-sm waves-light" data-toggle="modal"
+          data-target="#frame" (click)="frame.show()" mdbWavesEffect>UPLOAD</button>
+
+        <button [disabled]="!selectedDisputesIds || selectedDisputesIds.length<1" *ngIf="admin || super"
+          class="btn btn-uc waves-light btn-sm" (click)="sendDispute()" mdbWavesEffect>
+          <i class="fa " [ngClass]="{'spinner-border spinner-border-sm':isSending}">
+          </i>Send Dispute
+        </button>
+
+      </div>
+    </div>
+
+    <!--Modals-->
+
+    <div mdbModal #frame="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop" tabindex="-1"
+      role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+      [config]="{backdrop: true, ignoreBackdropClick: false}">
+      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header d-flex ">
+            <p class="heading">UPLOAD DISPUTES</p>
+            <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="frame.hide()"
+              mdbWavesEffect>x</button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <form #form="ngForm">
+              <div class="row">
+                <!--Grid column-->
+                <div class="col-lg-12 col-md-12">
+                  <!--Card-->
+                  <div class="card card-cascade narrower">
+                    <!--Card content-->
+                    <div class="card-body card-body-cascade">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-4">
+                          <div class="md-form">
+                            <div class="alert alert-info p-2">
+                              Excel File should not exceed <strong>5MB</strong> <br> Total number of rows should not
+                              exceed <strong>10,000</strong>
+                            </div>
+                            <input [disabled]="readingFile" type="file" (change)="readExcel($event)" #settlements />
+                            <br> <br>
+                            <p *ngIf="readingFile"><i class="spinner-border spinner-border-md"></i> Reading File</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div *ngIf="sheetNames && sheetNames.length > 0" class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <th>
+                                Sheet Name
+                              </th>
+                              <th>
+                                Row Count
+                              </th>
+                              <th>
+                                Actions
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr  *ngFor="let sheet of sheetNames; let i = index">
+                                <td>{{ sheet.sheetName }}</td>
+                                <td>{{sheet.rowCount | number : '1.0'}}</td>
+                                <td>
+                                    <select [ngModelOptions]="{standalone: true}" *ngIf="sheet.rowCount > 0 || sheet.rowCount == undefined" [disabled]="sheet.uploadingStatus || sheet.uploadingStatus==false"ngDefaultControl [(ngModel)]="switchNames[i]" (change)="sheet.switchName = switchNames[i]; sheet.switchDetail = this.getSwitchDetails(switchNames[i]); reset(sheet.sheetName)" class="custom-select form-control-sm d-inline-block col-6">
+                                        <option value=undefined selected>Select switch</option>
+                                        <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+                                      </select>
+
+                                  <button [disabled]="!sheet.switchName" class="btn btn-primary btn-sm" (click)="validate(sheet.sheetName)"
+                                    *ngIf="(sheet.validatingStatus == undefined || sheet.validatingStatus==true) &&totalRowCount<=10000 && sheet.rowCount > 0 || sheet.rowCount == undefined">{{sheet.validatingStatus ? "Validating" : "Validate"}}
+                                    <i class="fa "
+                                      [ngClass]="{'spinner-border spinner-border-sm':sheet.validatingStatus==true, 'fa-check':sheet.validatingStatus==false}"></i></button>
+                                    
+
+                                  <button *ngIf="sheet.validatingStatus == false && sheet.invalid.length > 0"
+                                    class="btn btn-warning btn-sm" data-toggle="modal"
+                                    (click)="setTitle('Invalid', sheet.sheetName); pageSet(); basicModal.show()"
+                                    mdbWavesEffect>Invalid Rows
+                                    {{sheet.invalid.length | number : '1.0'}}</button>
+
+                                  <button
+                                    *ngIf="sheet.validatingStatus == false && sheet.invalid.length > 0 && sheet.valid.length > 0"
+                                    class="btn btn-success btn-sm" data-toggle="modal"
+                                    (click)="setTitle('Valid', sheet.sheetName); pageSet(); basicModal.show()"
+                                    mdbWavesEffect>Valid Rows
+                                    {{sheet.valid.length | number : '1.0'}}</button>
+
+                                  <button *ngIf="sheet.validatingStatus == false && sheet.valid.length > 0"
+                                    class="btn btn-primary btn-sm"
+                                    (click)="setThreshold(); uploadSheet(sheet.sheetName)"
+                                    [disabled]="sheet.uploadingStatus || sheet.uploadingStatus==false">{{sheet.uploadingStatus ? 'Uploading' : 'Upload Valid Rows' }}<i
+                                      class="fa "
+                                      [ngClass]="{'spinner-border spinner-border-sm':sheet.uploadingStatus==true, 'fa-check':sheet.uploadingStatus==false}"></i></button>
+                                     
+                                  <mdb-progress-bar *ngIf="sheet.uploadingStatus==true"
+                                    class="progress primary-color-dark" mode="indeterminate"></mdb-progress-bar>
+                                  <p *ngIf="sheet.rowCount == 0">
+                                    No Entries in Sheet</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="alert p-2"
+                            [ngClass]="{'alert-success':totalRowCount<=10000, 'alert-danger':totalRowCount>10000}">
+                            Total number of rows: <strong>{{totalRowCount | number : '1.0'}}</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      <ng-template *ngIf="correct == false">
+                        <div>
+                          Please make sure the file is correct. I accept only Interswitch files.
+                        </div>
+                      </ng-template>
+
+
+                      <h5 *ngIf="reading === false">
+                        {{ filename | uppercase }} loaded
+                      </h5>
+                    </div>
+                    <!--/.Card content-->
+                  </div>
+                  <!--/.Card-->
+                </div>
+                <!--Grid column-->
+              </div>
+            </form>
+          </div>
+
+
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal" (click)="frame.hide()"
+              mdbWavesEffect>Close</button>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
+    <div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+      aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+      <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">{{title}} Rows</h4>
+            <div>
+              <button type="button" class="close mr-1 unset-close" aria-label="Close" data-dismiss="modal"
+                (click)="basicModal.hide()" mdbWavesEffect>x</button>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover mb-0 border-space">
+                <thead>
+                  <tr>
+                    <th class="th-md">S/N</th>
+                    <th *ngFor="let header of headers" class="th-md">
+                      {{header}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="returnedArray.length > 0;">
+                  <tr  *ngFor="let row of returnedArray; let i = index">
+                    <td>{{ serialR + i }}</td>
+                    <td *ngFor="let header of headers">
+                      {{row[header]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <hr class="my-0" />
+
+            <!--Bottom Table UI-->
+            <div class="d-flex justify-content-between" style="overflow:auto;">
+              <!--Pagination -->
+              <nav class="my-4">
+                <div class="row">
+                  <div class="col-xs-12 col-12">
+                    <pagination [totalItems]="contentArray.length" [maxSize]='maxSize' [itemsPerPage]="limitR"
+                      (pageChanged)="pageChangedSimple($event)"></pagination>
+                  </div>
+                </div>
+              </nav>
+              <!--/Pagination -->
+            </div>
+            <!--Bottom Table UI-->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ud btn-sm waves-light" (click)="exportExcel(title)"
+              mdbWavesEffect>Export</button>
+            <button type="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+              (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--Modals-->
+
+
+    <div [ngClass]="{
+            'card card-cascade narrower': true,
+            'z-depth-0': !shadows,
+            'mt-0': true
+          }">
+
+      <div class="table-responsive px-4 pt-3">
+        <table class="table table-borderless border-space">
+          <tr class="row mx-0 no-change">
+            <td class="col-lg-1 col-sm-2 col-6">
+              <p class="noWrap">No of Records:</p>
+              <select ngDefaultControl [(ngModel)]='limit' (change)="setPage(1); getDisputes()"
+                class="browser-default custom-select d-block">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </td>
+            <td class="col-lg-2 col-sm-2 col-6">
+              <p>Processor:</p>
+              <select ngDefaultControl [(ngModel)]='processor1' (change)="setPage(1); getDisputes()"
+              class="browser-default custom-select d-block">
+              <option value="">View All</option>
+              <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+            </select>
+            </td>
+            <td class="col-lg-4 col-sm-8">
+              <p>Search:</p>
+              <input class="form-control my-0 py-0" ngDefaultControl [(ngModel)]="search" placeholder="Search"
+                name="search" type="text" />
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <p>From:</p>
+              <div class="md-form">
+                <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <p>To:</p>
+              <div class="md-form">
+                <mdb-date-picker ngDefaultControl [(ngModel)]="to" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-1 col-sm-2">
+              <button (click)="setPage(1); getDisputes()" class="btn btn-uc waves-light btn-sm mt-1-2"
+                mdbWavesEffect>Search</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="px-4">
+        <div class="table-wrapper">
+          <!--Table-->
+          <table class="table table-striped table-hover mb-0 border-space">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th *ngIf='super || admin'>
+                  <!-- <mdb-checkbox></mdb-checkbox> -->
+                  <div class="custom-control custom-checkbox">
+                    <input [disabled]="unsentRecords.length == 0"
+                      [checked]="selectedDisputesIds.length === uIds.length && uIds.length != 0"
+                      (change)="selectDisputes($event.target, 'all', 'tabUnsent')" type="checkbox"
+                      class="custom-control-input" id="allDisputeCheckBx">
+                    <label class="custom-control-label" for="allDisputeCheckBx"></label>
+                  </div>
+                </th>
+                <th class="th-md">S/N</th>
+                <!-- <th class="th-md">
+                      <a (click)="sortBy('validationStatus')">TAMS Validation
+                        <i class="fa fa-sort ml-1"></i>
+                      </a>
+                    </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('terminal_id', 'tabUnsent')">Terminal ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('merchant_id', 'tabUnsent')">Merchant ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('pan', 'tabUnsent')">Card Pan
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('rrn', 'tabUnsent')">RRN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('stan', 'tabUnsent')">STAN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_amount', 'tabUnsent')">Amount (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('processor', 'tabUnsent')">Processor
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <!-- <th class="th-md">
+                      <a (click)="sortBy('status')">Status
+                        <i class="fa fa-sort ml-1"></i>
+                      </a>
+                    </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_date', 'tabUnsent')">Transaction Date
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <!--Table head-->
+            <!-- Table body-->
+            <tbody *ngIf="unsentRecords.length > 0">
+              <tr  *ngFor="let row of unsentRecords; let i = index">
+                <td *ngIf='super || admin'>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked{{row._id}}"
+                      [checked]="selectedDisputesIds.indexOf(row._id) > -1"
+                      (change)="selectDisputes($event.target, row._id, 'tabUnsent')">
+                    <label class="custom-control-label" for="defaultUnchecked{{row._id}}"></label>
+                  </div>
+                </td>
+                <td>{{ serial + i }}</td>
+                <!-- <td>{{row.validationStatus}}</td> -->
+                <td>{{ row.terminal_id }}</td>
+                <td>{{ row.merchant_id }}</td>
+                <td>{{ row.pan || 'Not Available'}}</td>
+                <td>{{ row.rrn }}</td>
+                <td>{{ row.stan }}</td>
+                <td>{{ row.transaction_amount | number: "1.2-2" }}</td>
+                <td>{{row.processor}}</td>
+                <!-- <td>{{ row.status }}</td> -->
+                <td>{{ row.transaction_date | date: "'yyyy-MM-dd HH:mm:ss" }}</td>
+              </tr>
+            </tbody>
+            <!--Table body-->
+            <tbody *ngIf="isData == false; else unsentData">
+              <tr >
+                <td colspan="11" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #unsentData>
+              <tbody *ngIf="isData == undefined">
+                <tr >
+                  <td colspan="11" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!--Table-->
+        </div>
+
+        <hr class="my-0" />
+
+        <app-pagination *ngIf="page" [event]="'UnsentBank'" [page]=page></app-pagination>
+      </div>
+    </div>
+
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-clock-o' aria-hidden='true'></i> PENDING">
+    <div class="row">
+      <div class="ml-2">
+        <button [disabled]="!selectedDisputesIds || selectedDisputesIds.length<1" class="btn btn-uc waves-light btn-sm"
+          (click)="printAll($event,pendingRecords); printPreviewModal.show()" mdbWavesEffect>
+          Print | Export
+        </button>
+
+      </div>
+    </div>
+    <div mdbModal #pendingModal="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop" tabindex="-1"
+      role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+      [config]="{backdrop: true, ignoreBackdropClick: false}">
+
+      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header d-flex ">
+            <p class="heading">VIEW DISPUTE</p>
+            <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="pendingModal.hide()"
+              mdbWavesEffect>x</button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12" *ngIf="receiptRowData">
+                <app-purchase *ngIf="receiptRowData.receiptType == 'purchase'" [isAll]=false
+                  [receiptRowData]=receiptRowData></app-purchase>
+                <app-postpaid *ngIf="receiptRowData.receiptType == 'postpaid'" [isAll]=false
+                  [receiptRowData]=receiptRowData></app-postpaid>
+                <app-token *ngIf="receiptRowData.receiptType == 'token'" [isAll]=false [receiptRowData]=receiptRowData>
+                </app-token>
+                <app-small *ngIf="receiptRowData.receiptType == 'small'" [isAll]=false [receiptRowData]=receiptRowData>
+                </app-small>
+                <p *ngIf="!receiptRowData.transaction_data.rrn">No Receipt Data Found</p>
+              </div>
+            </div>
+          </div>
+          <!--Footer-->
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal"
+              (click)="pendingModal.hide()" mdbWavesEffect>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div [ngClass]="{
+            'card card-cascade narrower': true,
+            'z-depth-0': !shadows,
+            'mt-0': true
+          }">
+
+      <div class="table-responsive px-4 pt-3">
+        <table class="table table-borderless">
+          <tr class="row mx-0 no-change">
+            <td class="col-lg-1 col-sm-2 col-6">
+              <p class="noWrap">No of Records:</p>
+              <select ngDefaultControl [(ngModel)]='limit2' (change)="getPending()"
+                class="browser-default custom-select d-block">
+
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </td>
+            <td class="col-lg-2 col-sm-2 col-6">
+              <p>Processor:</p>
+              <select ngDefaultControl [(ngModel)]='processor2' (change)="setPage(2); getPending()"
+              class="browser-default custom-select d-block">
+              <option value="">View All</option>
+              <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+            </select>
+            </td>
+            <td class="col-lg-4 col-sm-8">
+              <p>Search:</p>
+              <input class="form-control my-0 py-0" ngDefaultControl [(ngModel)]="search2" placeholder="Search"
+                name="search" type="text" />
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <div class="md-form">
+                <p>From:</p>
+                <mdb-date-picker ngDefaultControl [(ngModel)]="from2" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <p>To:</p>
+              <div class="md-form">
+
+                <mdb-date-picker ngDefaultControl [(ngModel)]="to2" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-1 col-sm-2">
+              <button (click)="setPage(2); getPending()" class="btn btn-uc waves-light btn-sm mt-1-2"
+                mdbWavesEffect>Search</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="px-4">
+        <div class="table-wrapper">
+          <!--Table-->
+          <table class="table table-striped table-hover mb-0 border-space">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th>
+                  <!-- <mdb-checkbox></mdb-checkbox> -->
+                  <div class="custom-control custom-checkbox">
+                    <input [disabled]="pendingRecords.length == 0"
+                      [checked]="selectedDisputesIds.length === uIds.length && uIds.length != 0"
+                      (change)="selectDisputes($event.target, 'all', 'tabPending')" type="checkbox"
+                      class="custom-control-input" id="allDisputeCheckBxsPending">
+                    <label class="custom-control-label" for="allDisputeCheckBxsPending"></label>
+                  </div>
+                </th>
+                <th class="th-md">Action</th>
+                <th class="th-md">S/N</th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('validationStatus')">TAMS Validation
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('terminal_id', 'tabPending')">Terminal ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('merchant_id', 'tabPending')">Merchant ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('pan', 'tabPending')">Card Pan
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('rrn', 'tabPending')">RRN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('stan', 'tabPending')">STAN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_amount', 'tabPending')">Amount (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('processor', 'tabPending')">Processor
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('status')">Status
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_date', 'tabPending')">Transaction Date
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody *ngIf="pendingRecords.length > 0">
+              <tr  *ngFor="let row of pendingRecords; let i = index">
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked{{row._id}}"
+                      [checked]="selectedDisputesIds.indexOf(row._id) > -1"
+                      (change)="selectDisputes($event.target, row._id, 'tabPending')">
+                    <label class="custom-control-label" for="defaultUnchecked{{row._id}}"></label>
+                  </div>
+                </td>
+                <td>
+                  <button *ngIf="row.transaction_data" (click)="receiptRowData = row; pendingModal.show()"
+                    class="btn btn-uc waves-light btn-sm" mdbWavesEffect>View</button>
+                </td>
+                <td>{{ serial2 + i }}</td>
+                <td>{{ row.terminal_id }}</td>
+                <td>{{ row.merchant_id }}</td>
+                <td>{{ row.pan || 'Not Available'}}</td>
+                <td>{{ row.rrn }}</td>
+                <td>{{ row.stan }}</td>
+                <td>{{ row.transaction_amount | number: "1.2-2" }}</td>
+                <td>{{ row.processor }}</td>
+                <td>{{ row.transaction_date | date: "'yyyy-MM-dd HH:mm:ss" }}</td>
+              </tr>
+            </tbody>
+            <!--Table body-->
+            <tbody *ngIf="isData2 == false; else pendingData">
+              <tr >
+                <td colspan="11" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #pendingData>
+              <tbody *ngIf="isData2 == undefined">
+                <tr >
+                  <td colspan="11" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!--Table-->
+        </div>
+
+        <hr class="my-0" />
+
+        <app-pagination *ngIf="page2" [event]="'PendingBank'" [page]='page2'></app-pagination>
+      </div>
+    </div>
+
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-check' aria-hidden='true'></i> APPROVED">
+    <div class="row">
+
+      <div class="ml-2">
+        <button [disabled]="!selectedDisputesIds || selectedDisputesIds.length<1" class="btn btn-uc waves-light btn-sm"
+          (click)="printAll($event,approvedRecords); printPreviewModal.show()" mdbWavesEffect>
+          Print | Export
+        </button>
+
+      </div>
+    </div>
+
+    <div mdbModal #approvedModal="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop" tabindex="-1"
+      role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+      [config]="{backdrop: true, ignoreBackdropClick: false}">
+
+      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header d-flex ">
+            <p class="heading">VIEW DISPUTE</p>
+            <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="approvedModal.hide()"
+              mdbWavesEffect>x</button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-7 col-sm-12" *ngIf="receiptRowData">
+                <app-purchase *ngIf="receiptRowData.receiptType == 'purchase'" [isAll]=false
+                  [receiptRowData]=receiptRowData></app-purchase>
+                <app-postpaid *ngIf="receiptRowData.receiptType == 'postpaid'" [isAll]=false
+                  [receiptRowData]=receiptRowData></app-postpaid>
+                <app-token *ngIf="receiptRowData.receiptType == 'token'" [isAll]=false [receiptRowData]=receiptRowData>
+                </app-token>
+                <app-small *ngIf="receiptRowData.receiptType == 'small'" [isAll]=false [receiptRowData]=receiptRowData>
+                </app-small>
+                <p *ngIf="!receiptRowData.transaction_data.rrn">No Receipt Data Found</p>
+              </div>
+              <div class="col-lg-5 col-sm-12">
+                <app-message [messageRowData]=messageRowData></app-message>
+              </div>
+            </div>
+          </div>
+          <!--Footer-->
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal"
+              (click)="approvedModal.hide()" mdbWavesEffect>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div [ngClass]="{
+            'card card-cascade narrower': true,
+            'z-depth-0': !shadows,
+            'mt-0': true
+          }">
+
+      <div class="table-responsive px-4 pt-3">
+        <table class="table table-borderless">
+          <tr class="row mx-0 no-change">
+            <td class="col-lg-1 col-sm-2 col-6">
+              <p class="noWrap">No of Records:</p>
+              <select ngDefaultControl [(ngModel)]='limit3' (change)="getApproved()"
+                class="browser-default custom-select d-block">
+
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </td>
+            <td class="col-lg-2 col-sm-2 col-6">
+              <p>Processor:</p>
+              <select ngDefaultControl [(ngModel)]='processor3' (change)="setPage(3); getApproved()"
+              class="browser-default custom-select d-block">
+              <option value="">View All</option>
+              <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+            </select>
+            </td>
+            <td class="col-lg-4 col-sm-8">
+              <p>Search:</p>
+              <input class="form-control my-0 py-0" ngDefaultControl [(ngModel)]="search3" placeholder="Search"
+                name="search" type="text" />
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <div class="md-form">
+                <p>From:</p>
+                <mdb-date-picker ngDefaultControl [(ngModel)]="from3" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <p>To:</p>
+              <div class="md-form">
+
+                <mdb-date-picker ngDefaultControl [(ngModel)]="to3" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-1 col-sm-2">
+              <button (click)="setPage(3); getApproved()" class="btn btn-uc waves-light btn-sm mt-1-2"
+                mdbWavesEffect>Search</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="px-4">
+        <div class="table-wrapper">
+          <!--Table-->
+          <table class="table table-striped table-hover mb-0 border-space">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th>
+                  <!-- <mdb-checkbox></mdb-checkbox> -->
+                  <div class="custom-control custom-checkbox">
+                    <input [disabled]="approvedRecords.length == 0"
+                      [checked]="selectedDisputesIds.length === uIds.length && uIds.length != 0"
+                      (change)="selectDisputes($event.target, 'all', 'tabApproved')" type="checkbox"
+                      class="custom-control-input" id="allDisputeCheckBxsApproved">
+                    <label class="custom-control-label" for="allDisputeCheckBxsApproved"></label>
+                  </div>
+                </th>
+                <th class="th-md">Action</th>
+                <th class="th-md">S/N</th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('validationStatus')">TAMS Validation
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('terminal_id', 'tabApproved')">Terminal ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('merchant_id', 'tabApproved')">Merchant ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('pan', 'tabApproved')">Card Pan
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('rrn', 'tabApproved')">RRN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('stan', 'tabApproved')">STAN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_amount', 'tabApproved')">Amount (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('processor', 'tabApproved')">Processor
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('status')">Status
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_date', 'tabApproved')">Transaction Date
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody *ngIf="approvedRecords.length > 0">
+              <tr  *ngFor="let row of approvedRecords; let i = index">
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked{{row._id}}"
+                      [checked]="selectedDisputesIds.indexOf(row._id) > -1"
+                      (change)="selectDisputes($event.target, row._id, 'tabApproved')">
+                    <label class="custom-control-label" for="defaultUnchecked{{row._id}}"></label>
+                  </div>
+                </td>
+                <td>
+                  <button *ngIf="row.transaction_data"
+                    (click)="receiptRowData = row; messageRowData = getData(row.dispute_messages); approvedModal.show()"
+                    class="btn btn-uc waves-light btn-sm" mdbWavesEffect>View</button>
+                </td>
+                <td>{{ serial3 + i }}</td>
+                <td>{{ row.terminal_id }}</td>
+                <td>{{ row.merchant_id }}</td>
+                <td>{{ row.pan || 'Not Available' }}</td>
+                <td>{{ row.rrn }}</td>
+                <td>{{ row.stan }}</td>
+                <td>{{ row.transaction_amount | number: "1.2-2" }}</td>
+                <td>{{row.processor}}</td>
+                <td>{{ row.transaction_date | date: "'yyyy-MM-dd HH:mm:ss" }}</td>
+              </tr>
+            </tbody>
+            <!--Table body-->
+            <tbody *ngIf="isData3 == false; else approvedData">
+              <tr >
+                <td colspan="11" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #approvedData>
+              <tbody *ngIf="isData3 == undefined">
+                <tr >
+                  <td colspan="11" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!--Table-->
+        </div>
+
+        <hr class="my-0" />
+
+        <app-pagination *ngIf="page3" [event]="'ApprovedBank'" [page]=page3></app-pagination>
+      </div>
+    </div>
+
+
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-times' aria-hidden='true'></i> DECLINED">
+    <div class="row">
+      <div class="ml-2">
+        <button [disabled]="!selectedDisputesIds || selectedDisputesIds.length<1" class="btn btn-uc waves-light btn-sm"
+          (click)="printAll($event,declinedRecords); printPreviewModal.show()" mdbWavesEffect>
+          Print | Export
+        </button>
+
+      </div>
+    </div>
+
+    <div mdbModal #declinedModal="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop" tabindex="-1"
+      role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+      [config]="{backdrop: true, ignoreBackdropClick: false}">
+
+      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header d-flex ">
+            <p class="heading">VIEW DISPUTE</p>
+            <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="declinedModal.hide()"
+              mdbWavesEffect>x</button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-7 col-sm-12" *ngIf="receiptRowData">
+                <app-purchase *ngIf="receiptRowData.receiptType == 'purchase'" [isAll]=false
+                  [receiptRowData]=receiptRowData></app-purchase>
+                <app-postpaid *ngIf="receiptRowData.receiptType == 'postpaid'" [isAll]=false
+                  [receiptRowData]=receiptRowData></app-postpaid>
+                <app-token *ngIf="receiptRowData.receiptType == 'token'" [isAll]=false [receiptRowData]=receiptRowData>
+                </app-token>
+                <app-small *ngIf="receiptRowData.receiptType == 'small'" [isAll]=false [receiptRowData]=receiptRowData>
+                </app-small>
+                <p *ngIf="!receiptRowData.transaction_data.rrn">No Receipt Data Found</p>
+              </div>
+              <div class="col-lg-5 col-sm-12">
+                <app-message [messageRowData]=messageRowData></app-message>
+              </div>
+            </div>
+          </div>
+          <!--Footer-->
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal"
+              (click)="declinedModal.hide()" mdbWavesEffect>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div [ngClass]="{
+            'card card-cascade narrower': true,
+            'z-depth-0': !shadows,
+            'mt-0': true
+          }">
+
+      <div class="table-responsive px-4 pt-3">
+        <table class="table table-borderless">
+          <tr class="row mx-0 no-change">
+            <td class="col-lg-1 col-sm-2col-6">
+              <p class="noWrap">No of Records:</p>
+              <select ngDefaultControl [(ngModel)]='limit4' (change)="getDeclined()"
+                class="browser-default custom-select d-block">
+
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </td>
+            <td class="col-lg-2 col-sm-2 col-6">
+              <p>Processor:</p>
+              <select ngDefaultControl [(ngModel)]='processor4' (change)="setPage(4); getDeclined()"
+              class="browser-default custom-select d-block">
+              <option value="">View All</option>
+              <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+            </select>
+            </td>
+            <td class="col-lg-4 col-sm-8">
+              <p>Search:</p>
+              <input class="form-control my-0 py-0" ngDefaultControl [(ngModel)]="search4" placeholder="Search"
+                name="search" type="text" />
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <div class="md-form">
+                <p>From:</p>
+                <mdb-date-picker ngDefaultControl [(ngModel)]="from4" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <p>To:</p>
+              <div class="md-form">
+
+                <mdb-date-picker ngDefaultControl [(ngModel)]="to4" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-1 col-sm-2">
+              <button (click)="setPage(4); getDeclined()" class="btn btn-uc waves-light btn-sm mt-1-2"
+                mdbWavesEffect>Search</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="px-4">
+        <div class="table-wrapper">
+          <!--Table-->
+          <table class="table table-striped table-hover mb-0 border-space ">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th>
+                  <!-- <mdb-checkbox></mdb-checkbox> -->
+                  <div class="custom-control custom-checkbox">
+                    <input [disabled]="declinedRecords.length == 0"
+                      [checked]="selectedDisputesIds.length === uIds.length && uIds.length != 0"
+                      (change)="selectDisputes($event.target, 'all', 'tabDeclined')" type="checkbox"
+                      class="custom-control-input" id="allDisputeCheckBxsDeclined">
+                    <label class="custom-control-label" for="allDisputeCheckBxsDeclined"></label>
+                  </div>
+                </th>
+                <th class="th-md">Action</th>
+                <th class="th-md">S/N</th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('validationStatus')">TAMS Validation
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('terminal_id', 'tabDeclined')">Terminal ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('merchant_id', 'tabDeclined')">Merchant ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('pan', 'tabDeclined')">Card Pan
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('rrn', 'tabDeclined')">RRN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('stan', 'tabDeclined')">STAN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_amount', 'tabDeclined')">Amount (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('processor', 'tabDeclined')">Processor
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('status')">Status
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_date', 'tabDeclined')">Transaction Date
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody *ngIf="declinedRecords.length > 0">
+              <tr  *ngFor="let row of declinedRecords; let i = index">
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked{{row._id}}"
+                      [checked]="selectedDisputesIds.indexOf(row._id) > -1"
+                      (change)="selectDisputes($event.target, row._id, 'tabDeclined')">
+                    <label class="custom-control-label" for="defaultUnchecked{{row._id}}"></label>
+                  </div>
+                </td>
+                <td>
+                    <button *ngIf="row.transaction_data"
+                    (click)="receiptRowData = row; messageRowData = getData(row.dispute_messages); declinedModal.show()"
+                    class="btn btn-uc waves-light btn-sm" mdbWavesEffect>View</button>
+                </td>
+                <td>{{ serial4 + i }}</td>
+                <td>{{ row.terminal_id }}</td>
+                <td>{{ row.merchant_id }}</td>
+                <td>{{ row.pan || 'Not Available' }}</td>
+                <td>{{ row.rrn }}</td>
+                <td>{{ row.stan }}</td>
+                <td>{{ row.transaction_amount | number: "1.2-2" }}</td>
+                <td>{{row.processor}}</td>
+                <td>{{ row.transaction_date | date: "'yyyy-MM-dd HH:mm:ss" }}</td>
+              </tr>
+            </tbody>
+            <!--Table body-->
+            <tbody *ngIf="isData4 == false; else declinedData">
+              <tr >
+                <td colspan="11" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #declinedData>
+              <tbody *ngIf="isData4 == undefined">
+                <tr >
+                  <td colspan="11" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!--Table-->
+        </div>
+
+        <hr class="my-0" />
+
+        <app-pagination *ngIf="page4" [event]="'DeclinedBank'" [page]=page4></app-pagination>
+      </div>
+    </div>
+
+
+  </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-search-minus' aria-hidden='true'></i> NOT FOUND">
+
+    <div [ngClass]="{
+            'card card-cascade narrower': true,
+            'z-depth-0': !shadows
+          }">
+
+      <div class="table-responsive px-4 pt-3">
+        <table class="table table-borderless">
+          <tr class="row mx-0 no-change">
+            <td class="col-lg-1 col-sm-2 col-6">
+              <p class="noWrap">No of Records:</p>
+              <select ngDefaultControl [(ngModel)]='limit6' (change)="getNotFound()"
+                class="browser-default custom-select d-block">
+
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </td>
+            <td class="col-lg-2 col-sm-2 col-6">
+              <p>Processor:</p>
+              <select ngDefaultControl [(ngModel)]='processor6' (change)="setPage(6); getNotFound()"
+              class="browser-default custom-select d-block">
+              <option value="">View All</option>
+              <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+            </select>
+            </td>
+            <td class="col-lg-4 col-sm-8">
+              <p>Search:</p>
+              <input class="form-control my-0 py-0" ngDefaultControl [(ngModel)]="search6" placeholder="Search"
+                name="search" type="text" />
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <div class="md-form">
+                <p>From:</p>
+                <mdb-date-picker ngDefaultControl [(ngModel)]="from6" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-2 col-sm-4 col-6 datepickers">
+              <p>To:</p>
+              <div class="md-form">
+
+                <mdb-date-picker ngDefaultControl [(ngModel)]="to6" [placeholder]="'yyyy-mm-dd'" required>
+                </mdb-date-picker>
+              </div>
+            </td>
+            <td class="col-lg-1 col-sm-2">
+              <button (click)="setPage(6); getNotFound()" class="btn btn-uc waves-light btn-sm mt-1-2"
+                mdbWavesEffect>Search</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="px-4">
+        <div class="table-wrapper">
+          <!--Table-->
+          <table class="table table-striped table-hover mb-0 border-space ">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th class="th-md">S/N</th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('validationStatus')">TAMS Validation
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('terminal_id', 'tabNotFound')">Terminal ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('merchant_id', 'tabNotFound')">Merchant ID
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('pan', 'tabNotFound')">Card Pan
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('rrn', 'tabNotFound')">RRN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('stan', 'tabNotFound')">STAN
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_amount', 'tabNotFound')">Amount (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('processor', 'tabNotFound')">Processor
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <!-- <th class="th-md">
+                          <a (click)="sortBy('status')">Status
+                            <i class="fa fa-sort ml-1"></i>
+                          </a>
+                        </th> -->
+                <th class="th-md">
+                  <a (click)="sortBy('transaction_date', 'tabNotFound')">Transaction Date
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody *ngIf="notFoundRecords.length > 0">
+              <tr  *ngFor="let row of notFoundRecords; let i = index">
+                <td>{{ serial6 + i }}</td>
+                <td>{{ row.terminal_id }}</td>
+                <td>{{ row.merchant_id }}</td>
+                <td>{{ row.pan || 'Not Available' }}</td>
+                <td>{{ row.rrn }}</td>
+                <td>{{ row.stan }}</td>
+                <td>{{ row.transaction_amount | number: "1.2-2" }}</td>
+                <td>{{row.processor}}</td>
+                <td>{{ row.transaction_date | date: "'yyyy-MM-dd HH:mm:ss" }}</td>
+              </tr>
+            </tbody>
+            <!--Table body-->
+            <tbody *ngIf="isData6 == false; else notFoundData">
+              <tr >
+                <td colspan="11" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #notFoundData>
+              <tbody *ngIf="isData6 == undefined">
+                <tr >
+                  <td colspan="11" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!--Table-->
+        </div>
+
+        <hr class="my-0" />
+
+        <!--Bottom Table UI-->
+        <app-pagination *ngIf="page5" [event]="'NotFoundBank'" [page]=page5></app-pagination>
+        <!--Bottom Table UI-->
+      </div>
+    </div>
+  </mdb-tab>
+</mdb-tabset>
+
+<div mdbModal #printPreviewModal="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  [config]="{backdrop: true, ignoreBackdropClick: false}">
+
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header d-flex ">
+        <p class="heading">Print Preview</p>
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="printPreviewModal.hide()"
+          mdbWavesEffect>x</button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <div id="printAll">
+          <div class="row splitter">
+            <div class="col-3" *ngFor="let receiptRowData of receiptRowDatas">
+              <app-purchase *ngIf="receiptRowData.receiptType == 'purchase'" [isAll]=true
+                [receiptRowData]=receiptRowData></app-purchase>
+              <app-postpaid *ngIf="receiptRowData.receiptType == 'postpaid'" [isAll]=true
+                [receiptRowData]=receiptRowData></app-postpaid>
+              <app-token *ngIf="receiptRowData.receiptType == 'token'" [isAll]=true [receiptRowData]=receiptRowData>
+              </app-token>
+              <app-small *ngIf="receiptRowData.receiptType == 'small'" [isAll]=true [receiptRowData]=receiptRowData>
+              </app-small>
+              <p *ngIf="!receiptRowData.transaction_data.rrn">No Receipt Data Found</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Footer-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal" (click)="printAll($event)"
+          mdbWavesEffect>Print | Export</button>
+        <button type="button" class="btn btn-uc btn-sm waves-light" data-dismiss="modal"
+          (click)="printPreviewModal.hide()" mdbWavesEffect>Close</button>
+      </div>
+    </div>
+  </div>
+</div>

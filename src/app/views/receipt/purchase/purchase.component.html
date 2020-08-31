@@ -1,0 +1,260 @@
+<div [id]='receiptData?receiptData._id:""'>
+    <div class="invoice-box" id='hello'>
+        <table class="no-border" cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr>
+                            <td class="title">
+                                <!-- <img src="../../../../assets/img/products/ikeja_black.bmp"
+                                                    style="max-width:160px; height:50px"> -->
+                                <img src = "../../../../assets/img/banks/{{tid}}.png"/>
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr>
+                            <td style="text-align:center">
+                                {{receiptData.merchant_name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                {{receiptData.merchant_address}}
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr>
+                            <td>
+                                {{receiptData.mid}}
+                            </td>
+
+                            <td>
+                                {{receiptData.terminal_id}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="date-time">
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr>
+                            <td>
+                                {{receiptData.date || receiptData.datetime | date :'yy-MM-dd'}}
+                            </td>
+                            <td>
+                                {{receiptData.date || receiptData.datetime | date :'HH:mm:ss'}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="receipt-title information">
+                <td colspan="2">
+                    <table class="no-border" style="text-align:center">
+                        <tr>
+                            <td>
+                                PURCHASE
+                            </td>
+                            
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="seperator">
+                <td colspan="2" class="p-0">
+
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td colspan="2">
+                    <table class="no-border" style="text-align:center">
+                        <tr>
+                            <td class="strongText" *ngIf="receiptData.error == false">
+                                **APPROVED**
+                            </td>
+                            <td class="strongText" *ngIf="receiptData.error == true">
+                                **DECLINED**
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ***CUSTOMER COPY***
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr *ngIf="!isTrans" class="details">
+                <td>
+                    AID
+                </td>
+
+                <td>
+                    {{receiptData.aid}}
+                </td>
+            </tr>
+            <tr *ngIf="!isTrans" class="details">
+                <td>
+                    SCHEME
+                </td>
+
+                <td>
+                    {{receiptData.label}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    PAN
+                </td>
+
+                <td>
+                    {{receiptData.mPan}}
+                </td>
+            </tr>
+            <tr *ngIf="!isTrans"class="details">
+                <td>
+                    EXPIRY
+                </td>
+
+                <td>
+                    {{receiptData.expiryDate}}
+                </td>
+            </tr>
+            <tr *ngIf="!isTrans" class="details">
+                <td>
+                    NAME
+                </td>
+
+                <td>
+                    {{receiptData.payer}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    RRN
+                </td>
+
+                <td>
+                    {{receiptData.rrn}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    STAN
+                </td>
+
+                <td>
+                    {{receiptData.stan}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    Auth ID
+                </td>
+
+                <td>
+                    {{receiptData.acode}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    Account
+                </td>
+
+                <td>
+                    {{receiptData.account_number}}
+                </td>
+            </tr>
+
+            <tr class="receipt-title">
+                <td colspan="3">
+                    <table class="no-border" style="text-align:center">
+                        <tr>
+                            <td style="text-align:center">
+                                ****************
+                                <br>
+                                N {{receiptData.amount / 100 | number : '1.2-2'}}
+                                <br>
+                                ****************
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td>
+                    TVR
+                </td>
+                <td>
+                    {{receiptData.tvr}}
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td>
+                    TSI
+                </td>
+                <td>
+                    {{receiptData.tsi}}
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td>
+                    CRTM
+                </td>
+                <td>
+                    {{receiptData.crtm}}
+                </td>
+            </tr>
+            <tr class="receipt-title" style="text-align:center">
+                <td colspan="2">
+                    {{receiptData.status_message}}
+                </td>
+            </tr>
+            <tr class="seperatorb">
+                <td colspan="2">
+
+                </td>
+            </tr>
+
+            <tr class="receipt-title">
+                <td colspan="3">
+                    <table class="no-border" style="text-align:center">
+                        <tr>
+                            <td style="text-align:center">
+                                <br>
+                                <p>Tamslite {{receiptData.version}}</p>
+                                <p>POWERED BY ITEX</p>
+                                <p>www.iisysgroup.com</p>
+                                <p>0700-2255-4839</p>
+
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="isAll == false">
+    <button type="button" class="btn btn-ud btn-sm waves-light" (click)="printTicket($event, receiptData._id)"
+        mdbWavesEffect>Print | Export</button>
+</div>

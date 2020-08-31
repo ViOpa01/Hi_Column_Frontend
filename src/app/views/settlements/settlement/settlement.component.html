@@ -1,0 +1,16 @@
+<mdb-tabset *ngIf="!merchant" #staticTabs [buttonClass]="'md-tabs tabs-3 mb-30'" class='tabs-wrapper'>
+  <mdb-tab heading="Settlement Transactions">
+    <app-transactions></app-transactions>
+  </mdb-tab>
+  <mdb-tab heading="Terminal Report">
+      <app-terminal-report></app-terminal-report>
+    </mdb-tab>
+  <mdb-tab heading="Merchant Report">
+      <app-summary></app-summary>
+    </mdb-tab>
+    
+</mdb-tabset>
+
+<div *ngIf="merchant">
+    <app-merchant-settlement></app-merchant-settlement>
+</div>

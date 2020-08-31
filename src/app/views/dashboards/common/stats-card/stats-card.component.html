@@ -1,0 +1,81 @@
+
+<section>
+    <h5>Status</h5>
+    <div class="row">
+        <div class="width-min mb-2">
+            <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card pr-3">
+                <div class="admin-up">
+                    <div class="data pb-2">
+                        <p class="new-head no-change noWrap">Total Terminals</p>
+                        <p *ngIf="isData != undefined" class="new-font"><strong>{{data.allTerminals || 0 | number : '1.0'}}</strong></p>
+                        <!-- <p *ngIf="isData == false" class="new-font"><strong>No Data available</strong></p> -->
+                        <p *ngIf="isData == undefined">
+                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                        </p>
+                        </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="width-min mb-2">
+        <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card pr-3">
+            <div class="admin-up">
+                <div class="data pb-2">
+                    <p class="new-head no-change noWrap">Total Online</p>
+                    <p *ngIf="(isData2 !=undefined || isData !=undefined)" class="new-font color-new"><strong>{{data.onlineTerminals || 0 | number : '1.0'}}</strong></p>
+                    <!-- <p *ngIf="isData == false && isData2 != true" class="new-font"><strong>No Data available</strong></p> -->
+                    <p *ngIf="isData2 == undefined && isData == undefined">
+                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="width-min mb-2">
+        <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card pr-3">
+            <div class="admin-up">
+                <div class="data pb-2">
+                    <p class="new-head no-change noWrap">Total Active</p>
+                    <p *ngIf="isData != undefined" class="new-font color-new2"><strong>{{data.activeTerminals || 0 | number : '1.0'}}</strong></p>
+                    <!-- <p *ngIf="isData == false" class="new-font"><strong>No Data available</strong></p> -->
+                    <p *ngIf="isData == undefined">
+                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="width-min mb-2">
+        <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card pr-3">
+            <div class="admin-up">
+                <div class="data pb-2">
+                    <p class="new-head no-change noWrap">Total Inactive</p>
+                    <p *ngIf="isData != undefined" class="new-font color-new3"><strong>{{data.inactiveTerminals || 0 | number : '1.0'}}</strong></p>
+                    <!-- <p *ngIf="isData == false" class="new-font"><strong>No Data available</strong></p> -->
+                    <p *ngIf="isData == undefined">
+                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- <div class="width-min mb-2 d-none">
+                <div [ngClass]="{ 'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}" class="cascading-admin-card pr-3">
+                    <div class="admin-up">
+                        <div class="data pb-2">
+                            <p class="new-head no-change noWrap">Total Value</p>
+                            <p *ngIf="totalValue" class="new-font"><strong>{{totalValue / 100 | number: '1.2-2'}}</strong></p>
+                            <p *ngIf="totalValue == -1" class="new-font"><strong>No Data available</strong></p>
+                            <p *ngIf="totalValue == undefined">
+                                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </div> -->
+    </div>
+
+</section>

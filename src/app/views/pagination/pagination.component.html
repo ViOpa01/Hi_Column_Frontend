@@ -1,0 +1,27 @@
+  <!--Bottom Table UI-->
+  <div class="d-flex justify-content-between " style="overflow:auto;">
+      <!--Pagination -->
+      <nav>
+          <div class="table-responsive">
+              <table class="table table-borderless">
+                      <tr class="row mx-0 no-change" style="align-items: flex-end;">
+                          <td>
+                                  <button [disabled]="page <= 1"
+                                  (click)="page = page - 1; changePage()"
+                                  class="btn btn-uc waves-light btn-sm mt-2-1" mdbWavesEffect>Previous</button>
+                          </td>
+                          <td class="col-lg-4 col-sm-4">
+                                  <input (blur)="changePage()" (keyup)="changePage($event)" class="form-control my-0 py-0"
+                                  name="page" ngDefaultControl [(ngModel)]="page" type="number" placeholder="{{page}}">
+                          </td>
+                          <td>
+                                  <button (click)="page = page + 1; changePage();"
+                                  class="btn btn-uc waves-light btn-sm mt-2-1" mdbWavesEffect>Next</button>
+                          </td>
+                      </tr>
+              </table>  
+          </div>
+      </nav>
+      <!--/Pagination -->
+  </div>
+  <!--Bottom Table UI-->

@@ -1,0 +1,144 @@
+<mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-3 mb-30'" class='tabs-wrapper'>
+	<mdb-tab heading="Users">
+		<section autocomplete="off">
+			<!--Body-->
+			<div class="card card-cascade narrower pb-3">
+				<div class="card-body card-body-cascade p-0">
+
+					<div class="px-4 mt-3">
+						<div class="table-wrapper">
+							<!--Table-->
+							<table class="table table-striped table-hover mb-0 border-space">
+								<thead>
+									<tr>
+										<th class="th-md">S/N</th>
+										<th class="th-md text-center">Action</th>
+										<th class="th-md">
+											<a (click)="sortBy('firstname')">Firstname
+												<i class="fa fa-sort ml-1"></i>
+											</a>
+										</th>
+										<th class="th-md">
+											<a (click)="sortBy('lastname')">Lastname
+												<i class="fa fa-sort ml-1"></i>
+											</a>
+										</th>
+										<th class="th-md">Email</th>
+										<th class="th-md">Role</th>
+										<th class="th-md">
+											<a (click)="sortBy('createdAt')">Created at
+												<i class="fa fa-sort ml-1"></i>
+											</a>
+										</th>
+									</tr>
+								</thead>
+								<tbody *ngIf="users.length > 0">
+									<tr  *ngFor="let row of users; let i = index">
+										<td>{{ serial + i }}</td>
+										<td class="text-center">
+											<button *ngIf="row.role != 'Super Admin'" class="btn btn-sm btn-ud waves-light m-0"
+												(click)="delete(row._id)">Delete</button>
+											<button *ngIf="row.role == 'Super Admin'" [disabled]="count < 2" class="btn btn-sm btn-ud waves-light m-0"
+												(click)="delete(row._id)">Delete</button>
+										</td>
+										<td>{{ row.firstname}}</td>
+										<td>{{ row.lastname}}</td>
+										<td>{{ row.email || row.merchant_email}}</td>
+										<td *ngIf="(users_data[i].edit != true) && (row.role == 'Super Admin' && count < 2)">{{row.role}}</td>
+										<td [id]="'pointer-'+i" class="pointer" (click)="(users_data[i].edit = true);"
+											*ngIf="(users_data[i].edit != true) && (row.role == 'Super Admin' && count >= 2)"><i class="fa fa-pencil"></i>
+											{{ row.role }}</td>
+										<td class="pointee" *ngIf="(users_data[i].edit == true) && (row.role == 'Super Admin' && count >= 2)">
+											<select (clickOutside)="onClickedOutside($event, i)"
+												(change)="editRole(i, $event);" value="admin"
+												class="browser-default custom-select d-block">
+												<option value="">Select Role</option>
+												<option value="">Staff</option>
+												<!-- <option value="account_rel_manager">Account Relationship Manager
+												</option>
+												<option value="branch_op_manager">Branch Operations Manager</option>
+												<option value="branch_manager">Branch Manager</option>
+												<option value="internal_control">Internal Control</option>
+												<option value="head_office">Head Office</option> -->
+												<option value="admin">Admin</option>
+												<option value="super admin">Super Admin</option>
+											</select>
+										</td>
+										<td [id]="'pointer-'+i" class="pointer" (click)="(users_data[i].edit = true);"
+											*ngIf="(users_data[i].edit != true) && (row.role != 'Super Admin')"><i class="fa fa-pencil"></i>
+											{{ row.role }}</td>
+										<td class="pointee" *ngIf="(users_data[i].edit == true) && (row.role != 'Super Admin')">
+											<select (clickOutside)="onClickedOutside($event, i)"
+												(change)="editRole(i, $event);" value="admin"
+												class="browser-default custom-select d-block">
+												<option value="">Select Role</option>
+												<option value="">Staff</option>
+												<!-- <option value="account_rel_manager">Account Relationship Manager
+												</option>
+												<option value="branch_op_manager">Branch Operations Manager</option>
+												<option value="branch_manager">Branch Manager</option>
+												<option value="internal_control">Internal Control</option>
+												<option value="head_office">Head Office</option> -->
+												<option value="admin">Admin</option>
+												<option value="super admin">Super Admin</option>
+											</select>
+										</td>
+										<td>{{ row.createdAt | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+									</tr>
+								</tbody>
+								<tbody *ngIf="isData == false; else gettingData">
+									<tr >
+										<td colspan="8" style="text-align:center;padding: 5% 20%">
+											<strong>No Data Available</strong>
+										</td>
+									</tr>
+								</tbody>
+								<ng-template #gettingData>
+									<tbody *ngIf="isData == undefined">
+										<tr >
+											<td colspan="8" style="text-align:center;padding: 5% 20%">
+												<mdb-spinner spinnerColor="blue"></mdb-spinner>
+											</td>
+										</tr>
+									</tbody>
+								</ng-template>
+							</table>
+						</div>
+						<hr class="my-0">
+
+						<app-pagination *ngIf="page" [event]="'ManageUsersPage'" [page]=page></app-pagination>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</mdb-tab>
+	<mdb-tab heading="Merchant Email Change">
+			<section>
+					<!--Body-->
+					<div class="card card-cascade narrower pb-3 p-custom">
+					  <div class="card-body card-body-cascade pb-0">
+						    <form [formGroup]="userDetails">
+							<div class="md-form">
+							  <input ngDefaultControl type="text" formControlName="id" class="form-control" placeholder="Merchant ID">
+							  <span class="text-danger">{{errors.id_detail}} {{errors.id}}</span>
+							</div>
+				
+							<div class="md-form">
+								<input ngDefaultControl formControlName="email" type="email" class="form-control" placeholder="New Email">
+								<span class="text-danger">{{errors.email_detail}} {{errors.email}}</span>
+							  </div>
+							</form>
+				
+							<div class="text-center">
+							  <button class="btn blue-gradient btn-md waves-effect waves-light" mdbWavesEffect (click)="changeEmail()">
+								SAVE
+								<i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+							  </button>
+						</div>
+					  </div>
+					</div>
+				  
+				  </section>
+	</mdb-tab>
+</mdb-tabset>

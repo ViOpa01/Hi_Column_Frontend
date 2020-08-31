@@ -1,0 +1,185 @@
+<div class="col-lg-12 col-md-12">
+    <div class="row">
+      <div class="ml-2">
+        <!-- <button type="button" class="btn btn-elegant btn-sm waves-light" data-toggle="modal" data-target="#search"
+            (click)="search.show()" mdbWavesEffect>ADVANCED SEARCH</button> -->
+  
+        <button [disabled]="!merchantTrans.length" type="button" class="btn btn-uc btn-sm waves-light" (click)="exportExcel('MerchantTrans')"
+          mdbWavesEffect>Export</button>
+      </div>
+    </div>
+  
+    <div [ngClass]="{
+            'card card-cascade narrower': true,
+            'z-depth-0': !shadows,
+            'mt-0': true
+          }">
+      <!--Card image-->
+      <div
+        class="view view-cascade gradient-card-header blue-gradient narrower py-2 mt-4 mx-4 mb-3 d-flex justify-content-between align-items-center">
+  
+  
+        <p class="white-text mx-3">SETTLEMENT EXPECTATIONS</p>
+  
+  
+      </div>
+      <!--/Card image-->
+  
+    <div class="table-responsive px-4">
+  <table class="table table-borderless table2">
+      <tr class="row mx-0 no-change">
+          <td class="col-lg-1 col-sm-2">
+              <button (click)="setType('day')" class="btn btn-uc waves-light btn-sm"
+                  mdbWavesEffect>Daily</button>
+          </td>
+          <td class="col-lg-1 col-sm-2">
+              <button (click)="setType('week')" class="btn btn-uc waves-light btn-sm"
+                  mdbWavesEffect>Weekly</button>
+          </td>
+      </tr>
+      <tr class="row mx-0 no-change">
+          <td *ngIf="day" class="col-lg-2 col-sm-4 datepickers">
+              <div class="md-form">
+                <p class="noWrap">From:</p>
+                  <mdb-date-picker ngDefaultControl [(ngModel)]="from" [placeholder]="'yyyy-mm-dd'" required>
+                  </mdb-date-picker>
+              </div>
+          </td>
+          <td *ngIf="week" class="col-lg-1 col-sm-2">
+              <p class="noWrap">Year:</p>
+              <select [(ngModel)]="year" class="browser-default custom-select d-block">
+                  <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+              </select>
+          </td>
+          <td *ngIf="week" class="col-lg-1 col-sm-2">
+              <p class="noWrap">Month:</p>
+              <select [(ngModel)]="month" class="browser-default custom-select d-block">
+                  <option *ngFor="let month of months" value="{{month}}">{{month}}</option>
+              </select>
+          </td>
+          <td class="col-lg-1 col-sm-2">
+              <button (click)="getMerchantTrans(); setPage(1);" class="btn btn-uc waves-light btn-sm mt-1-2"
+                  mdbWavesEffect>Search</button>
+          </td>
+      </tr>
+  </table>
+</div>
+
+  
+      <div class="px-4">
+        <div class="table-wrapper">
+          <!--Table-->
+          <table class="table table-striped table-hover mb-0 border-space ">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th class="th-md">S/N</th>
+                <th class="th-md text-center">Action</th>
+                <th class="th-md">
+                    <a (click)="sortBy('date', 'MerchantTrans')">Date
+                      <i class="fa fa-sort ml-1"></i>
+                    </a>
+                  </th>
+                <th class="th-md">
+                  <a (click)="sortBy('total_value', 'MerchantTrans')">Total Value (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('total_volume', 'MerchantTrans')">Total Volume
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('successful_value', 'MerchantTrans')">Successful Value (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('successful_volume', 'MerchantTrans')">Successful Volume
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('failed_value', 'MerchantTrans')">Failed Value (₦)
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+                <th class="th-md">
+                  <a (click)="sortBy('failed_volume', 'MerchantTrans')">Failed Volume
+                    <i class="fa fa-sort ml-1"></i>
+                  </a>
+                </th>
+               
+              </tr>
+            </thead>
+            <!--Table head-->
+  
+            <!--Table body-->
+            <tbody *ngIf="merchantTrans.length > 0">
+              <tr  [ngClass]="{paidColor: row.paid}" *ngFor="let row of merchantTrans; let i = index">
+                <td>{{ serial + i }}</td>
+                <td class="text-center">
+                  <button *ngIf="row.total_value > 0" class="btn btn-elegant waves-light btn-sm"
+                    (click)="date2 = row.date; basicModal.show(); id = row._id; "
+                    mdbWavesEffect>View</button>
+                  <p *ngIf="row.total_value == 0">No Transactions Done</p>
+                </td>
+                <td>{{ row.date | date: "'yyyy-MM-dd" }}</td>
+                <td>{{ row.total_value | number: '1.2-2'}}</td>
+                <td>{{ row.total_volume | number: '1.0'}}</td>
+                <td>{{ row.successful_value | number: '1.2-2'}}</td>
+                <td>{{ row.successful_volume | number: '1.0'}}</td>
+                <td>{{ row.failed_value | number: '1.2-2'}}</td>
+                <td>{{ row.failed_volume | number: '1.0'}}</td>
+               
+              </tr>
+            </tbody>
+            <!--Table body-->
+            <tbody *ngIf="isData == false; else gettingData">
+              <tr >
+                <td colspan="10" style="text-align:center;padding: 5% 20%">
+                  <strong>No Data Available</strong>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #gettingData>
+              <tbody *ngIf="isData == undefined">
+                <tr >
+                  <td colspan="10" style="text-align:center;padding: 5% 20%">
+                    <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+          <!--Table-->
+        </div>
+  
+      </div>
+      <hr class="mb-4 mt-0" />
+
+    <app-pagination *ngIf="week && page" [event]="'MerchantTransPage'" [page]=page></app-pagination>
+    </div>
+  </div>
+  
+  <div mdbModal #basicModal="mdbModal" class="modal fade" style=" overflow: auto" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+    <div class="modal-dialog modal-dialog-scrollable modal-fluid" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title w-100" id="myModalLabel">TRANSACTIONS</h4>
+          <button type="button" class="close unset-close" aria-label="Close" data-dismiss="modal"
+            (click)="basicModal.hide(); date2 = ''" mdbWavesEffect>x</button>
+        </div>
+        <div *ngIf="date2" class="modal-body">
+            <mdb-transaction-history-table [shadows]="false" [show]="false" [date2]="date2">
+              </mdb-transaction-history-table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-uc btn-sm waves-light" aria-label="Close" data-dismiss="modal"
+            (click)="basicModal.hide(); date2 = ''" mdbWavesEffect>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

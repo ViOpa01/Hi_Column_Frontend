@@ -1,0 +1,426 @@
+<div [id]='receiptData?receiptData._id:""'>
+    <div class="invoice-box" id='hello'>
+        <table class="no-border" cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr>
+                            <td class="title">
+                                <!-- <img src="../../../../assets/img/products/ikeja_black.bmp"
+                                                  style="max-width:160px; height:50px"> -->
+                                <img src="{{name}}">
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr>
+                            <td style="text-align:center">
+                                {{receiptData.merchant_name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">
+                                {{receiptData.merchant_address}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr>
+                            <td>
+                                {{receiptData.mid}}
+                            </td>
+                            <td>
+                                {{receiptData.terminal_id}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="seperatord">
+                <td colspan="2">
+
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td colspan="2">
+                    <table class="no-border" style="text-align:center">
+                        <tr *ngIf="receiptData.product != 'EKEDC'">
+                            <td>
+                                TOKEN
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ***CUSTOMER COPY***
+                            </td>
+                        </tr>
+                        <tr>
+                            <td *ngIf="receiptData.error == false">
+                                APPROVED
+                            </td>
+                            <td *ngIf="receiptData.error == true">
+                                DECLINED
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <br>
+            <tr class="details">
+                <td>
+                    TID
+                </td>
+
+                <td>
+                    {{receiptData.terminal_id}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    TXN TID
+                </td>
+
+                <td>
+                    {{receiptData.txn_tid}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    WID
+                </td>
+
+                <td>
+                    {{receiptData.wallet}}
+                </td>
+            </tr>
+            <tr class="details">
+                    <td colspan="2">
+                        <span>REF</span>
+                        <span class="ref"> {{receiptData.reference}}</span>
+                    </td>  
+                </tr>
+            <tr class="details">
+                <td>
+                    PAYMENT METHOD
+                </td>
+
+                <td>
+                    {{receiptData.payment}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    NAME
+                </td>
+
+                <td>
+                    {{receiptData.name}}
+                </td>
+            </tr>
+            <br>
+            <tr *ngIf="receiptData.product != 'PHED'" class="details">
+                <td>
+                    TRANS SEQ
+                </td>
+
+                <td>
+                    {{receiptData.transactionID}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product != 'IBEDC'">
+            <tr *ngIf="receiptData.product != 'IBEDC'" class="details">
+                    <td colspan="2">
+                            <span>ADDR: </span>
+                            <span>  {{receiptData.VASCustomerAddress || receiptData.address}}</span>
+                        </td>
+            </tr>
+            <br *ngIf="receiptData.product != 'IBEDC'">
+            <!-- <tr *ngIf="receiptData.product == 'IKEDC' || receiptData.product == 'EKEDC'" class="details">
+                <td>
+                    ACCT TYPE
+                </td>
+
+                <td>
+                    {{receiptData.acctType}}
+                </td>
+            </tr>
+            <tr *ngIf="receiptData.product == 'PHED'"class="details">
+                <td>
+                    DEBIT
+                </td>
+
+                <td>
+                    {{receiptData.debit}}
+                </td>
+            </tr> -->
+            <tr *ngIf="receiptData.product != 'PHED'" class="details">
+                <td>
+                    TYPE
+                </td>
+
+                <td>
+                    {{receiptData.type}}
+                </td>
+            </tr> 
+            <tr *ngIf="receiptData.product == 'IKEDC'" class="details">
+                <td>
+                    TRANS ID
+                </td>
+
+                <td>
+                    {{receiptData.tran_id}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product == 'IKEDC'">
+            <tr *ngIf="receiptData.product == 'IKEDC'" class="details">
+                <td>
+                    UNIT
+                </td>
+
+                <td>
+                    {{receiptData.unit}}
+                </td>
+            </tr>
+            <tr *ngIf="receiptData.product != 'PHED'"  class="details">
+                    <td colspan="2">
+                        <table class="no-border" style="text-align:center">
+                            <tr>
+                                <td>
+                                    *** TOKEN ***
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                     {{receiptData.token}}
+                                </td>
+                            </tr>
+                            <tr class="seperatorc no-change">
+                                    <td colspan="2">
+                    
+                                    </td>
+                                </tr>
+
+                        </table>
+                    </td>
+                </tr>
+
+            <tr *ngIf="receiptData.product != 'PHED'" class="details">
+                <td>
+                    UNIT VALUE
+                </td>
+
+                <td>
+                    {{receiptData.unit_value}}
+                </td>
+            </tr>
+            <tr *ngIf="receiptData.product != 'AEDC' && receiptData.product != 'EKEDC' && receiptData.product != 'PHED'" class="details">
+                <td>
+                    VAT
+                </td>
+
+                <td>
+                    {{receiptData.vat}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product == 'IBEDC'">
+            <tr *ngIf="receiptData.cardName" class="details">
+                <td>
+                    CARD NAME
+                </td>
+
+                <td>
+                    {{receiptData.cardName}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product == 'IKEDC'">
+            <tr class="details">
+                <td>
+                    PAN
+                </td>
+
+                <td>
+                    {{receiptData.mPan}}
+                </td>
+            </tr>
+            <tr *ngIf="receiptData.aid" class="details">
+                <td>
+                    AID
+                </td>
+
+                <td>
+                    {{receiptData.aid}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product == 'PHED'">
+            <tr class="details">
+                <td>
+                    LABEL
+                </td>
+
+                <td>
+                    {{receiptData.label}}
+                </td>
+            </tr>
+            <tr *ngIf="receiptData.expiryDate" class="details">
+                <td>
+                    EXPIRY
+                </td>
+
+                <td>
+                    {{receiptData.expiryDate}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product == 'IBEDC'">
+            <tr class="details">
+                <td>
+                    STAN
+                </td>
+
+                <td>
+                    {{receiptData.stan}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product == 'IKEDC'">
+            <tr class="details">
+                <td>
+                    CREF
+                </td>
+
+                <td>
+                    {{receiptData.rrn}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    RESP CODE
+                </td>
+
+                <td>
+                    {{receiptData.resp}}
+                </td>
+            </tr>
+            <br *ngIf="receiptData.product == 'AEDC'">
+            <tr class="details">
+                    <td>
+                        AUTH ID
+                    </td>
+    
+                    <td>
+                        {{receiptData.acode}}
+                    </td>
+                </tr>
+            <!-- <br *ngIf="receiptData.product == 'IBEDC'">
+            <tr *ngIf="receiptData.product == 'IBEDC'" class="details">
+                    <td colspan="2">
+                            <span>ADDR: </span>
+                            <span>  {{receiptData.VASCustomerAddress || receiptData.address}}</span>
+                        </td>
+            </tr> -->
+            <!-- <br *ngIf="receiptData.product == 'IBEDC'"> -->
+            <tr *ngIf="receiptData.product != 'EEDC' && receiptData.product != 'IBEDC'" class="details">
+                <td>
+                    METER NUMBER
+                </td>
+
+                <td>
+                    {{receiptData.meter || receiptData.account}}
+                </td>
+            </tr>
+            <tr class="details">
+                <td>
+                    DATE
+                </td>
+
+                <td>
+                        {{(receiptData.date || receiptData.datetime) | date : 'yyyy-MM-dd HH:mm:ss'}}
+                </td>
+            </tr>
+
+            <tr class="receipt-title">
+                <td colspan="3">
+                    <table class="no-border" style="text-align:center">
+                        <tr>
+                            <td style="text-align:center">
+                                ****************
+                                <br>
+                                N {{receiptData.amount / 100 | number : '1.2-2'}}
+                                <br>
+                                ****************
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td style="text-align:center" colspan="2">
+                    {{receiptData.status_message}}
+                </td>
+            </tr>
+            <tr *ngIf="receiptData.product == 'IKEDC'" class="receipt-title">
+                <td colspan="2">
+                    <table class="no-border">
+                        <tr *ngIf="receiptData.token">
+                            <td>
+                                IE CALL LINES:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                01-700 0250
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                0700 022 5543
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                customercare@ikejaelectric.com
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="seperatorb">
+                <td colspan="2">
+
+                </td>
+            </tr>
+            <tr class="receipt-title">
+                <td colspan="3">
+                    <table class="no-border" style="text-align:center">
+                        <tr>
+                            <td style="text-align:center">
+                                <br>
+                                <p>Tamslite {{receiptData.version}}</p>
+                                <p *ngIf="receiptData.product != 'EEDC'">POWERED BY ITEX</p>
+                                <p *ngIf="receiptData.product == 'EEDC'">POWERED BY FETS</p>
+                                <p>www.iisysgroup.com</p>
+                                <p>0700-2255-4839</p>
+
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="isAll == false">
+    <button type="button" class="btn btn-ud btn-sm waves-light" (click)="printTicket($event,receiptData._id)"
+        mdbWavesEffect>Print | Export</button>
+</div>

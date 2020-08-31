@@ -1,0 +1,45 @@
+<header>
+    <section class="view intro intro-2 ">
+      <div class="full-bg-img  mask flex-center">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-5 col-lg-6 col-md-10 col-sm-12 mx-auto mt-lg-5">
+  
+              <!--Form with header-->
+              <div class="card wow fadeIn" data-wow-delay="0.3s" style="animation-name: none; visibility: visible;">
+                <form #form = ngForm (submit)="reset()">
+                <div class="card-body">
+  
+                  <div class="pb-15">
+                    <!-- uba-red -->
+                    <img src="../../../../assets/img/trackmoney.png" class="img-fluid mx-auto">
+                </div>
+  
+                  <!--Body-->
+                  <form [formGroup]="userDetails">
+                  <div class="md-form">
+                    <input ngDefaultControl type="text" id="orangeForm-email" formControlName="email" class="form-control" placeholder="Your email or merchant ID">
+                    <span class="text-danger">{{errors.email_detail}} {{errors.email}}</span>
+                  </div>
+                  </form>
+  
+                  <div class="text-center pb-30">
+                    <button class="btn btn-style d-block w-100 btn-ud btn-lg waves-effect waves-light" mdbWavesEffect>
+                      Reset
+                      <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                    <div class="text-left mt-2"><a routerLink="/login" class="nav-link d-inline text-ud">Login</a></div>
+                  </div>
+  
+                </div>
+                </form>
+              </div>
+              <!--/Form with header-->
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+  
