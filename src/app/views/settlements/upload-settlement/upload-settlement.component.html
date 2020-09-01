@@ -1,0 +1,286 @@
+<div class="col-lg-12">
+  <div class="row">
+    <div class="ml-2 px-4 pb-4">
+      <h6 class="header-style">Settled Merchants</h6>
+        <!-- <button [disabled]="!tableData.length" type="button" class="btn btn-ud btn-sm waves-light"
+            (click)="exportExcel()" mdbWavesEffect>Export
+        </button> -->
+    </div>
+  </div>
+  
+  <div [ngClass]="{'px-4':show}" class="table-responsive">
+      <table class="table table-borderless">
+          <tr class="row mx-0 no-change">
+              <td class="col-lg-7 col-sm-10">
+                  <div class="md-form special-div m-0">
+                      <!-- <mdb-icon fas icon="search" class="prefix"> </mdb-icon> -->
+                      <img src="../../../assets/img/Shape.svg" class="prefix py-2 pl-3">
+                      <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="search" ngDefaultControl [(ngModel)]="search"
+                       type="text" placeholder="Search">
+                  </div>
+                
+              </td>
+              <!-- <td *ngIf="!date2" class="col-lg-2 col-sm-2 mt-3">
+                  <p class="noWrap">Source:</p>
+                  <select [(ngModel)]="source" (change)="getSettledHistory();"
+                      class="browser-default custom-select d-block">
+                      <option value="">View All</option>
+                      <option value="EPMS">EPMS</option>
+                      <option value="POSVAS">POSVAS</option>
+                  </select>
+              </td> -->
+              <td class="col-lg-1 col-sm-2 col-6">
+                  <select *ngIf="show" ngDefaultControl [(ngModel)]='status'
+                      (change)="setPage(); getSettledHistory();"
+                      class="browser-default custom-select d-block">
+                      <option disabled=true value=undefined>Status</option>
+                      <option value="">View All</option>
+                      <option value="successful">Approved</option>
+                      <option value="failed">Declined</option>
+                  </select>
+  
+                  <select *ngIf="!show" ngDefaultControl [(ngModel)]='status'
+                      (change)="setPage(); getSettledHistory();" class="browser-default custom-select d-block">
+                      <option disabled=true value=undefined>Status</option>
+                      <option value="">View All</option>
+                      <option value="successful">Approved</option>
+                      <option value="failed">Declined</option>
+                  </select>
+              </td>
+  
+              <td class="col-lg-1 col-sm-2">
+                  <select *ngIf="show" (change)="setLimit($event); getSettledHistory();"
+                      class="browser-default custom-select d-block">
+                      <option disabled=true value="">No of Records</option>
+                      <option value="20">20</option>
+                      <option value="50" selected>50</option>
+                      <option value="100">100</option>
+                      <option value="200">200</option>
+                  </select>
+  
+                  <select *ngIf="!show" (change)="setLimit($event); getSettledHistory();" class="browser-default custom-select d-block">
+                      <option disabled=true value="">No of Records</option>
+                      <option value="20">20</option>
+                      <option value="50" selected>50</option>
+                      <option value="100">100</option>
+                      <option value="200">200</option>
+                  </select>
+              </td>
+  
+              <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
+                  <input type="date" [(ngModel)]="from" (blur)="getSettledHistory()" [placeholder]="'From:'" id="input"
+                      class="form-control px-0" ngDefaultControl>
+              </td>
+              <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
+                  <input type="date" [(ngModel)]="to" (blur)="getSettledHistory()" [placeholder]="'To:'" id="input"
+                      class="form-control px-0" ngDefaultControl>
+              </td>
+  
+              <td class="col-lg-1 col-sm-2">
+                      <button type="button" class="btn btn-ud btn-sm waves-light"
+                  (click)="upload.show()" mdbWavesEffect>Import
+              </button>
+                     
+                  </td>
+          </tr>
+      </table>
+  </div>
+
+  <div mdbModal #upload="mdbModal" class="modal fade" style=" overflow: auto" id="uploadModalTop" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  [config]="{backdrop: true, ignoreBackdropClick: false}">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header d-flex ">
+        <p class="heading">UPLOAD SETTLED MERCHANTS</p>
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="upload.hide()"
+          mdbWavesEffect>x</button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <form #form="ngForm">
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-12 col-md-12">
+              <!--Card-->
+              <div class="card card-cascade narrower">
+                <!--Card content-->
+                <div class="card-body card-body-cascade">
+                  <form #form = ngForm>
+                    <div class="col-lg-3 col-sm-3 p-0 file-path-wrapper">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="fileModel" [disabled]="uploading" type="file"
+                        (change)="checkFile($event);" />
+                      <br> <br> 
+                    </div>
+                    <div class="col-lg-4 col-sm-4 p-0 mb-3">
+                        <input [disabled]="!fileModel || !isChecked || uploading" class="form-control my-0 py-0" name="sheetCount" ngDefaultControl [ngModelOptions]="{standalone: true}" [(ngModel)]="sheetCount"
+                        type="number" (input)="sheets()" placeholder="No of Sheets in file"/>
+                    </div>
+              
+                    <div class="row">
+                        <div *ngFor="let count of sheetsArray; let i = index" class="col-lg-4 col-sm-4 p-0 mb-3 pl-1">
+                          <p>Sheet {{count}}:</p>
+                            <select [disabled]="uploading" (change)="selectSwitch()" [ngModelOptions]="{standalone: true}" [(ngModel)]="switchNames[i]" class="browser-default custom-select d-block">
+                              <option value=undefined selected>Select switch</option>
+                              <option value="ignore">Ignore this sheet</option>
+                              <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <mdb-progress class="mb-3" *ngIf="uploadPercent >= 0" value="{{uploadPercent}}" min="0" max="100" type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100">{{uploadPercent}}%</mdb-progress>
+                        
+                        <button class="btn btn-ud btn-sm" [disabled]="!sheetCount || switchNames.length != sheetCount || !validSwitches.length || isUploading" (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i class="fa "
+                          [ngClass]="{'spinner-border spinner-border-sm':isUploading==true}"></i></button>
+                    </div>
+                    </form>
+                </div>
+                <!--/.Card content-->
+              </div>
+              <!--/.Card-->
+            </div>
+            <!--Grid column-->
+          </div>
+        </form>
+      </div>
+
+
+      <!--Footer-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal" (click)="upload.hide()"
+          mdbWavesEffect>Close</button>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+  
+
+    <div [ngClass]="{'px-4':show}">
+  
+        <div class="table-wrapper" [ngClass]="{'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}">
+            <!--Table-->
+            <table class="table table-striped table-hover mb-0 border-space">
+  
+                <!--Table head-->
+                <thead>
+                  <tr>
+                      <th class="th-md">
+                          <a >S/N
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a (click)="sortBy('supermerchant_name')">Super Merchant
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a (click)="sortBy('supermerchantcode')">Merchant ID
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a (click)="sortBy('transactionID')">Transaction ID
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a (click)="sortBy('name')">Name
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a (click)="sortBy('status')">Status
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                     
+                      <th class="th-md text-center">
+                          <a (click)="sortBy('pan')">Card Pan
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a (click)="sortBy('totaldeliveryfee')">Total Delivery Fee ₦
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                     
+                      <th class="th-md">
+                          <a (click)="sortBy('totalamount')">Total Amount ₦
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a (click)="sortBy('initiatedTime')">Initiated Time
+                              <i class="fa fa-sort ml-1"></i>
+                          </a>
+                      </th>
+  
+                  </tr>
+              </thead>
+                <!--Table head-->
+  
+                <!--Table body-->
+                <tbody *ngFor="let row of tableData;let i = index;">
+                  <tr
+                  [ngClass]="{'error-color':(row.status == 'FAILED' && row.status)}">
+  
+                  <td>{{serial1 + i}}</td>
+                  <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement"><a href="javascript:;"
+                          [routerLink]="['/merchant', row.merchant_id]">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</a>
+                  </td>
+                  <td *ngIf="merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
+                  <td *ngIf="!row.paymentdetails.deliverysettlement">{{ row.paymentdetails.supermerchant_name || 'N/A' }}</td>
+                  <td>{{row.paymentdetails.supermerchantcode}}</td>
+  
+                  <td>{{row.transactionID}}</td>
+                  <td>{{row.name || 'N/A'}}</td>
+                  <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status}}</td>
+                  <td class="text-center">{{row.pan || 'N/A'}}</td>
+  
+                  
+                  <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
+                  
+  
+                  <td>{{'₦' + (row.paymentdetails.totalamount | number : '1.2-2')}}</td>
+  
+  
+                  <td>{{row.initiatedTime | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+  
+              </tr>
+                </tbody>
+  
+                <!--Table body-->
+                <tbody *ngIf="isData == false; else gettingTrans">
+                    <tr >
+                        <td colspan="14" style="text-align:center;padding: 5% 20%">
+                            <strong>No Data Available</strong>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #gettingTrans>
+                    <tbody *ngIf="isData == undefined">
+                        <tr >
+                            <td colspan="14" style="text-align:center;padding: 5% 20%">
+                                <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-template>
+  
+            </table>
+            <!--Table-->
+        </div>
+  
+        <hr class="my-0">
+  
+        
+  
+        <app-pagination *ngIf="page" [event]="'UploadHistoryPage'" [page]=page></app-pagination>
+    </div>
+  
+  </div>

@@ -108,13 +108,18 @@
 
                             <mdb-item *ngIf='user || admin || super || merchant'>
                                 <mdb-item-head
-                                    [ngClass]="{'active': (sLink1 || {}).isActive ||  (sLink2 || {}).isActive || (sLink3 || {}).isActive || sLink4.isActive || (sLink5 || {}).isActive}">
+                                    [ngClass]="{'active': (sLink1 || {}).isActive ||  (sLink2 || {}).isActive || (sLink3 || {}).isActive || sLink4.isActive || (sLink5 || {}).isActive || (sLink6 || {}).isActive}">
                                     Settlements
                                 </mdb-item-head>
                                 <mdb-item-body>
                                     <ul>
+                                        <li>
+                                            <a #sLink1="routerLinkActive" routerLink="settlements/upload-merchants"
+                                                routerLinkActive="active">Upload Settled Merchants</a>
+
+                                        </li>
                                         <li *ngIf='!merchant'>
-                                            <a #sLink1="routerLinkActive" routerLink="settlements/uploads"
+                                            <a #sLink6="routerLinkActive" routerLink="settlements/uploads"
                                                 routerLinkActive="active">Uploads</a>
 
                                         </li>

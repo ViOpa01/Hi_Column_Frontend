@@ -27,6 +27,7 @@ import { ReconciliationSummaryDuoComponent } from './reconciliation-summary-duo/
 import { ReconciliationSummaryVasComponent } from './reconciliation-summary-vas/reconciliation-summary-vas.component';
 import { ReconciliationVasComponent } from './reconciliation-vas/reconciliation-vas.component';
 import { SettlementReconciliationVasComponent } from './settlement-reconciliation-vas/settlement-reconciliation-vas.component';
+import { UploadSettlementComponent } from './upload-settlement/upload-settlement.component';
 
 const routes: Routes = [{
     path: '', children:
@@ -46,6 +47,10 @@ const routes: Routes = [{
         { path: 'settlement-reconciliation', component: SettlementReconciliationComponent,  canActivate: [AuthGuard,  RoleGuard], data: {
           allowedRoles: ['admin', 'super', '', 'merchant']
         }},
+
+        { path: 'upload-merchants', component: UploadSettlementComponent,  canActivate: [AuthGuard,  RoleGuard], data: {
+          allowedRoles: ['admin', 'super','', 'merchant']
+        }},
         // Only to be used for Itex
         // { path: 'settlement-reconciliation-vas', component: SettlementReconciliationVasComponent,  canActivate: [AuthGuard,  RoleGuard], data: {
         //   allowedRoles: ['admin', 'super', '']
@@ -53,6 +58,8 @@ const routes: Routes = [{
         { path: '', component: SettlementComponent,  canActivate: [AuthGuard,  RoleGuard], data: {
           allowedRoles: ['admin', 'super','', 'merchant']
         }}
+
+
       ]
   },]
 
@@ -69,7 +76,7 @@ const routes: Routes = [{
         PaginationModule.forRoot(),
         ModalModule.forRoot(),],
     exports: [],
-    declarations: [TransactionsComponent, SummaryComponent, SameDayComponent, ReconciliationComponent, SettlementComponent, TerminalReportComponent, ReconciliationSummaryComponent, SettlementReconciliationComponent, UploadfileComponent, ReconciliationMerchantComponent, MerchantSettlementComponent, UploadsComponent, MerchantTransactionsComponent, ReconciliationSummaryDuoComponent, ReconciliationSummaryVasComponent, ReconciliationVasComponent, SettlementReconciliationVasComponent],
+    declarations: [TransactionsComponent, SummaryComponent, SameDayComponent, ReconciliationComponent, SettlementComponent, TerminalReportComponent, ReconciliationSummaryComponent, SettlementReconciliationComponent, UploadfileComponent, ReconciliationMerchantComponent, MerchantSettlementComponent, UploadsComponent, MerchantTransactionsComponent, ReconciliationSummaryDuoComponent, ReconciliationSummaryVasComponent, ReconciliationVasComponent, SettlementReconciliationVasComponent, UploadSettlementComponent],
     schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SettlementsModule { }

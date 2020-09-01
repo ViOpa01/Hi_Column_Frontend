@@ -22,7 +22,7 @@
             </td>
             <!-- <td *ngIf="!date2" class="col-lg-2 col-sm-2 mt-3">
                 <p class="noWrap">Source:</p>
-                <select [(ngModel)]="source" (change)="getTransactionHistory(); getFailureReason()"
+                <select [(ngModel)]="source" (change)="getTransactionHistory();"
                     class="browser-default custom-select d-block">
                     <option value="">View All</option>
                     <option value="EPMS">EPMS</option>
@@ -31,7 +31,7 @@
             </td> -->
             <td class="col-lg-1 col-sm-2 col-6">
                 <select *ngIf="show" ngDefaultControl [(ngModel)]='status'
-                    (change)="setPage(); getTransactionHistory(); getFailureReason()"
+                    (change)="setPage(); getTransactionHistory();"
                     class="browser-default custom-select d-block">
                     <option disabled=true value=undefined>Status</option>
                     <option value="">View All</option>
@@ -49,7 +49,7 @@
             </td>
 
             <td class="col-lg-1 col-sm-2">
-                <select *ngIf="show" (change)="setLimit($event); getTransactionHistory(); getFailureReason()"
+                <select *ngIf="show" (change)="setLimit($event); getTransactionHistory();"
                     class="browser-default custom-select d-block">
                     <option disabled=true value="">No of Records</option>
                     <option value="20">20</option>
@@ -135,7 +135,7 @@
                         </a>
                     </th>
                     <th class="th-md">
-                        <a (click)="sortBy('name')">Name
+                        <a (click)="sortBy('cardholdername')">Name
                             <i class="fa fa-sort ml-1"></i>
                         </a>
                     </th>
@@ -146,7 +146,7 @@
                     </th>
                    
                     <th class="th-md text-center">
-                        <a (click)="sortBy('pan')">Card Pan
+                        <a (click)="sortBy('cardpan')">Card Pan
                             <i class="fa fa-sort ml-1"></i>
                         </a>
                     </th>
@@ -185,9 +185,9 @@
                 <td>{{row.paymentdetails.supermerchantcode}}</td>
 
                 <td>{{row.transactionID}}</td>
-                <td>{{row.name || 'N/A'}}</td>
+                <td>{{row.cardholdername || 'N/A'}}</td>
                 <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status}}</td>
-                <td class="text-center">{{row.pan || 'N/A'}}</td>
+                <td class="text-center">{{row.cardpan || 'N/A'}}</td>
 
                 
                 <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>

@@ -8,13 +8,14 @@ import * as filesaver from 'file-saver';
 import { WebworkerService } from 'app/providers/webworker.service';
 import  BankModel  from 'app/Models/bank-image.model';
 import  CardModel  from 'app/Models/card.model';
+import { ToastService } from 'ng-uikit-pro-standard';
 
 @Component({
-  selector: 'app-transactions',
-  templateUrl: './transactions.component.html',
-  styleUrls: ['./transactions.component.scss']
+  selector: 'app-upload-settlement',
+  templateUrl: './upload-settlement.component.html',
+  styleUrls: ['./upload-settlement.component.scss']
 })
-export class TransactionsComponent implements OnInit  {
+export class UploadSettlementComponent implements OnInit {
 
   @Input() shadows = false
   @Input('mid') mid: string = "";
@@ -29,6 +30,11 @@ export class TransactionsComponent implements OnInit  {
   from: string = "";
   to: string = "";
   source: string = "";
+  uploadPercent: number;
+
+  switchNames: any [] = [];
+  validSwitches: any[] = []
+  switchesData: any[] = [];
 
   page = 1;
   limit = 50;
@@ -51,13 +57,18 @@ export class TransactionsComponent implements OnInit  {
   bankModel = BankModel
   brandModel = CardModel
 
-  private sorted = false;
+  isChecked: boolean;
+  sheetCount: number;
+  sheetsArray: any[] = []
+  isUploading = false;
 
+  private sorted = false;
+  file: File;
 
   private EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   private EXCEL_EXTENSION = 'xlsx';
 
-  constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService) {
+  constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService, private toast: ToastService) {
     this.merchantU = false;
     const userStr = localStorage.getItem('user');
 
@@ -96,12 +107,12 @@ export class TransactionsComponent implements OnInit  {
     this.from = this.date;
     this.to = this.date;
 
-    this.getTransactionHistory();
+    this.getSettledHistory();
     // this.getFailureReason();
 
-    eventsService.getEvent('TransHistoryPage').subscribe(page => {
+    eventsService.getEvent('UploadHistoryPage').subscribe(page => {
       this.page = page;
-      this.getTransactionHistory();
+      this.getSettledHistory();
       
       // if(this.show) {
       //   this.getFailureReason();
@@ -109,6 +120,7 @@ export class TransactionsComponent implements OnInit  {
       
     })
   }
+
 
   sortBy(by: string | any): void {
 
@@ -170,14 +182,99 @@ export class TransactionsComponent implements OnInit  {
     return buf;
   }
 
+  getSwitchDetails(name) {
+    return this.switchesData.find(item => item.name === name)
+  }
+
+  getSwitch() {
+    const apiURL = `config/switch/settlement`;
+    this.payvueservice.apiCall(apiURL).then(data => {
+      this.switchesData = data.data
+    }).catch(error =>
+      {
+        console.log(error)
+      })
+  }
+
+
+
+  checkFile(event:any) {
+    this.uploadPercent = NaN;
+    var mime = event.target.files[0].type
+    if (mime !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' && mime !== 'application/vnd.ms-excel') {
+      this.toast.error("incorrect file type, must be valid excel")
+      this.isChecked = false;
+      return;
+    }
+    localStorage.setItem('xfile', 'true');
+    this.file = event.target.files[0];
+    this.isChecked = true;
+    this.sheetsArray = [];
+    this.sheetCount = undefined;
+  }
+
+  reset() {
+    this.sheetCount = undefined
+  }
+
+  sheets() {
+    this.sheetsArray = [];
+    this.switchNames = this.switchNames.slice(0,this.sheetCount);
+      for (let i = 1;i <= this.sheetCount; i++) {
+        this.sheetsArray.push(i);
+      } 
+     
+  }
+
+  doUpload() {
+    localStorage.setItem('xfile', 'true');
+    this.isUploading = true
+    let names = this.switchNames.join(',');
+    const formData = new FormData();
+    formData.append('file',this.file);
+    formData.append('processors',names)
+    const apiURL = `settlements/upload-file`;
+    
+    //   console.log(8888888)
+    // this.payvueservice.apiCall(apiURL, 'post', formData, true, true).then(data => {
+    //   console.log(data, 'hi data');
+    //   this.toast.success(data.data.message);
+    // formData.append('file',this.file);
+    // formData.append('type','settlement');
+    // formData.append('processor',names);
+    // formData.append('Authorization', localStorage.getItem('itt'))
+    // const apiURL = `upload`;
+
+    this.payvueservice.apiCall(apiURL, 'post', formData, true, true).then(data => {
+      console.log(data);
+      // this.toast.success(data);
+      // this.toast.success(data.data.message);
+
+      let isProcessing = true;
+      
+      eventsService.getEvent('upload-processing').emit(isProcessing);
+      
+      localStorage.removeItem('xfile');
+    }).catch(error => {
+      this.isUploading = false;
+      this.toast.error(`failed to upload  ${this.file.name}`);
+      console.error(`failed to upload ${this.file.name}`, error)
+    })
+  }
+
+  selectSwitch() {
+    this.switchNames = this.switchNames.filter(item => item != 'undefined');
+    this.validSwitches = this.switchNames.filter(item => item != 'ignore');
+   }
+
   checkKey(event){
 
     if(event && event.key == 'Enter'){
-      this.getTransactionHistory();
+      this.getSettledHistory();
     }
   }
 
-  getTransactionHistory() {
+  getSettledHistory() {
 
     let page = this.page < 1 ? 1 : this.page
 
@@ -212,10 +309,9 @@ export class TransactionsComponent implements OnInit  {
     });
   }
 
-
   pageChanged(event: any): void {
     this.page = event.page;
-    this.getTransactionHistory();
+    this.getSettledHistory();
   }
 
   setLimit(event: any) {
@@ -226,3 +322,4 @@ export class TransactionsComponent implements OnInit  {
     this.page = 1;
   }
 }
+
