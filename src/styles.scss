@@ -21,7 +21,7 @@ body {
   background-color: #F5F5F5;
   font-size: 12px;
   color: #2c2c2c;
-  // font-family: Futura !important;
+  font-family: Helvetica !important;
   // font-family: "Futura"
 }
 
@@ -46,7 +46,7 @@ body {
 
 
 .btn.btn-sm {
-  padding: 0.4rem 1.3rem !important;
+  padding: 0.7rem 3.3rem !important;
 }
 
 p:not(.no-change) {
@@ -100,6 +100,7 @@ p:not(.no-change) {
 
 .btn {
   border-radius: 5px!important;
+  text-transform: unset !important
 }
 
 .need-header {

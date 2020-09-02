@@ -105,7 +105,7 @@
             <!--Grid column-->
             <div class="col-lg-12 col-md-12">
               <!--Card-->
-              <div class="card card-cascade narrower">
+              <div [ngClass]="{'card card-cascade narrower': true, 'z-depth-0': !shadows}">
                 <!--Card content-->
                 <div class="card-body card-body-cascade">
                   <form #form = ngForm>
@@ -173,50 +173,53 @@
                           </a>
                       </th>
                       <th class="th-md">
-                          <a (click)="sortBy('supermerchant_name')">Super Merchant
-                              <i class="fa fa-sort ml-1"></i>
+                          <a>Super Merchant
+                              <!-- <i class="fa fa-sort ml-1"></i> -->
                           </a>
                       </th>
                       <th class="th-md">
-                          <a (click)="sortBy('supermerchantcode')">Merchant ID
-                              <i class="fa fa-sort ml-1"></i>
+                          <a>Merchant ID
+                              <!-- <i class="fa fa-sort ml-1"></i> -->
                           </a>
                       </th>
                       <th class="th-md">
-                          <a (click)="sortBy('transactionID')">Transaction ID
-                              <i class="fa fa-sort ml-1"></i>
+                          <a>Transaction ID
+                              <!-- <i class="fa fa-sort ml-1"></i> -->
                           </a>
                       </th>
                       <th class="th-md">
-                          <a (click)="sortBy('name')">Name
-                              <i class="fa fa-sort ml-1"></i>
+                          <a>Name
+                              <!-- <i class="fa fa-sort ml-1"></i> -->
                           </a>
                       </th>
                       <th class="th-md">
-                          <a (click)="sortBy('status')">Status
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                     
-                      <th class="th-md text-center">
-                          <a (click)="sortBy('pan')">Card Pan
-                              <i class="fa fa-sort ml-1"></i>
-                          </a>
-                      </th>
-                      <th class="th-md">
-                          <a (click)="sortBy('totaldeliveryfee')">Total Delivery Fee ₦
-                              <i class="fa fa-sort ml-1"></i>
+                          <a>Status
+                              <!-- <i class="fa fa-sort ml-1"></i> -->
                           </a>
                       </th>
                      
                       <th class="th-md">
-                          <a (click)="sortBy('totalamount')">Total Amount ₦
-                              <i class="fa fa-sort ml-1"></i>
+                          <a>Card Pan
+                              <!-- <i class="fa fa-sort ml-1"></i> -->
                           </a>
                       </th>
                       <th class="th-md">
-                          <a (click)="sortBy('initiatedTime')">Initiated Time
-                              <i class="fa fa-sort ml-1"></i>
+                        <a>Bank
+                            <!-- <i class="fa fa-sort ml-1"></i> -->
+                        </a>
+                    </th>
+                      <th class="th-md">
+                          <a>Total Delivery Fee ₦
+                              <!-- <i class="fa fa-sort ml-1"></i> -->
+                          </a>
+                      </th>
+                     
+                      <th class="th-md">
+                          <a>Total Amount ₦
+                          </a>
+                      </th>
+                      <th class="th-md">
+                          <a>Initiated Time
                           </a>
                       </th>
   
@@ -226,8 +229,7 @@
   
                 <!--Table body-->
                 <tbody *ngFor="let row of tableData;let i = index;">
-                  <tr
-                  [ngClass]="{'error-color':(row.status == 'FAILED' && row.status)}">
+                  <tr>
   
                   <td>{{serial1 + i}}</td>
                   <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement"><a href="javascript:;"
@@ -238,9 +240,10 @@
                   <td>{{row.paymentdetails.supermerchantcode}}</td>
   
                   <td>{{row.transactionID}}</td>
-                  <td>{{row.name || 'N/A'}}</td>
-                  <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status}}</td>
-                  <td class="text-center">{{row.pan || 'N/A'}}</td>
+                  <td>{{row.cardholdername || 'N/A'}}</td>
+                  <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status | titlecase}}</td>
+                  <td>{{row.cardpan || 'N/A'}}</td>
+                  <td>{{row.paymentdetails.deliverysettlement? (row.paymentdetails.deliverysettlement.supermerchant_bankname || 'N/A') : 'N/A'}}</td>
   
                   
                   <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
