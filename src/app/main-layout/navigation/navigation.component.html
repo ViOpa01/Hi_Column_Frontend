@@ -34,15 +34,16 @@
 
                                 </mdb-item-body>
                             </mdb-item>
-                            <mdb-item *ngIf='merchant' class="no-collase">
-                                <mdb-item-head routerLinkActive="active" routerLink="account"> Account
+                            <mdb-item *ngIf='admin || super || isSuperMerchant' class="no-collase">
+                                <mdb-item-head routerLinkActive="active" routerLink="onboarding"> Onboard Merchant
                                 </mdb-item-head>
                                 <mdb-item-body>
 
                                 </mdb-item-body>
                             </mdb-item>
 
-                            <mdb-item *ngIf='user ||admin || super || merchant'>
+
+                            <mdb-item *ngIf='user ||admin || super || isSuperMerchant'>
                                 <mdb-item-head [ngClass]="{'active':(tranLink || {}).isActive || (tranLink2 || {}).isActive}">
                                    Transactions
                                 </mdb-item-head>
@@ -61,115 +62,16 @@
                                 </mdb-item-body>
                             </mdb-item>
 
-                            <!-- <mdb-item>
-                            <mdb-item-head mdbWavesEffect>
-                                <i class="fa fa-group"></i> Merchant
-                            </mdb-item-head>
-                            <mdb-item-body></mdb-item-body>
-                        </mdb-item> -->
-
-                            <!-- <mdb-item>
-                            <mdb-item-head mdbWavesEffect>
-                                <i class="fa fa-credit-card"></i> Terminals
-                            </mdb-item-head>
-                            <mdb-item-body></mdb-item-body>
-                        </mdb-item> -->
-
-                            <mdb-item *ngIf='user ||admin || super'>
-                                <mdb-item-head [ngClass]="{'active':(merchantsLink || {}).isActive || (merchantsLink2 || {}).isActive || (merchantsLink3 || {}).isActive || (merchantsLink4 || {}).isActive}">
-                                    Merchant Management
-                                </mdb-item-head>
-                                <mdb-item-body>
-                                    <ul>
-                                        <!-- <li>
-                                            <a #merchantsLink="routerLinkActive" routerLink="onboarding"
-                                                routerLinkActive="active">Onboarding</a>
-                                        </li> -->
-                                        <li>
-                                            <a #merchantsLink2="routerLinkActive" routerLink="merchant"
-                                                routerLinkActive="active">View Merchants</a>
-                                        </li>
-                                        <li>
-                                            <a #merchantsLink3="routerLinkActive" routerLink="terminal"
-                                                routerLinkActive="active">View Terminals</a>
-                                            
-                                        </li>
-                                        <!-- <li>
-                                                <a #merchantsLink4="routerLinkActive" routerLink="terminal-inventory"
-                                                    routerLinkActive="active">Terminal Inventory</a>
-                                            </li> -->
-
-
-                                    </ul>
-                                </mdb-item-body>
-                            </mdb-item>
-
-
-
-                            <mdb-item *ngIf='user || admin || super || merchant'>
-                                <mdb-item-head
-                                    [ngClass]="{'active': (sLink1 || {}).isActive ||  (sLink2 || {}).isActive || (sLink3 || {}).isActive || sLink4.isActive || (sLink5 || {}).isActive || (sLink6 || {}).isActive}">
-                                    Settlements
-                                </mdb-item-head>
-                                <mdb-item-body>
-                                    <ul>
-                                        <li>
-                                            <a #sLink1="routerLinkActive" routerLink="settlements/upload-merchants"
-                                                routerLinkActive="active">Upload Settled Merchants</a>
-
-                                        </li>
-                                        <li *ngIf='!merchant'>
-                                            <a #sLink6="routerLinkActive" routerLink="settlements/uploads"
-                                                routerLinkActive="active">Uploads</a>
-
-                                        </li>
-
-                                        <li>
-                                            <a #sLink2="routerLinkActive" [routerLinkActiveOptions]="{exact:
-                                            true}" routerLink="settlements" class="waves-effect"
-                                                routerLinkActive="active">Settlement Report</a>
-
-                                        </li>
-                                        <li *ngIf='!merchant'>
-                                                <a #sLink1="routerLinkActive" routerLink="settlements/same-day"
-                                                    routerLinkActive="active">Same-Day</a>
-    
-                                            </li>
-                                        <li *ngIf='merchant'>
-                                            <a #sLink5="routerLinkActive" routerLink="settlements/settlement-expectations"
-                                                routerLinkActive="active">Settlement Expectations</a>
-                                        </li>
-                                        <li>
-                                            <a #sLink4="routerLinkActive"
-                                                routerLink="settlements/settlement-reconciliation"
-                                                routerLinkActive="active">Reconciliation</a>
-                                        </li>
-                                        <!-- Only for Itex -->
-                                        <!-- <li *ngIf='!merchant'>
-                                            <a #sLink4="routerLinkActive"
-                                                routerLink="settlements/settlement-reconciliation-vas"
-                                                routerLinkActive="active">VAS Reconciliation</a>
-                                        </li> -->
-                                    </ul>
-                                </mdb-item-body>
-                            </mdb-item>
-
-                            <!-- <mdb-item>
-                            <mdb-item-head mdbWavesEffect>
-                                <i class="fa fa-credit-card"></i> Transaction Receipt
-                            </mdb-item-head>
-                            <mdb-item-body></mdb-item-body>
-                        </mdb-item> -->
-
-                            <mdb-item *ngIf='user || admin || user' class="no-collase">
-                                <mdb-item-head routerLinkActive="active" routerLink="dispute"> Dispute Resolution
+                            <mdb-item *ngIf='admin || super || isSuperMerchant' class="no-collase">
+                                <mdb-item-head routerLinkActive="active" routerLink="settlements/upload-merchants"> Upload Settled Merchants
                                 </mdb-item-head>
                                 <mdb-item-body>
 
                                 </mdb-item-body>
                             </mdb-item>
 
-                            <mdb-item *ngIf='admin || super' class="no-collase">
+
+                            <mdb-item *ngIf='admin || super || isSuperMerchant' class="no-collase">
                                 <mdb-item-head routerLinkActive="active" routerLink="configuration">Configuration
                                 </mdb-item-head>
                                 <mdb-item-body>
@@ -177,27 +79,6 @@
                                 </mdb-item-body>
                             </mdb-item>
 
-                            <mdb-item *ngIf='merchant' class="no-collase">
-                                <mdb-item-head routerLinkActive="active" routerLink="dispute/merchant"> Merchant Dispute
-                                </mdb-item-head>
-                                <mdb-item-body>
-
-                                </mdb-item-body>
-                            </mdb-item>
-
-                            <!-- <mdb-item>
-                            <mdb-item-head mdbWavesEffect>
-                                <i class="fa fa-tachometer"></i> Entities
-                            </mdb-item-head>
-                            <mdb-item-body></mdb-item-body>
-                        </mdb-item> -->
-
-                            <!-- <mdb-item>
-                            <mdb-item-head mdbWavesEffect>
-                                <i class="fa fa-tachometer"></i> Acquirer Settings
-                            </mdb-item-head>
-                            <mdb-item-body></mdb-item-body>
-                        </mdb-item> -->
 
                         </mdb-squeezebox>
                     </ul>

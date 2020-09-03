@@ -34,6 +34,7 @@ export class PayVueApiService {
     let apiURL = `${this.rootURL}${url}`;
     // if(isFormData) apiURL = `http://192.168.9.123:3000/${url}`
     // if(isFormData) apiURL = `http://23.239.0.110:8082/${url}`
+    
     let headers = new HttpHeaders();
     if (!isFormData) headers = headers.set('Content-Type', 'application/json');
     headers = headers.set('Authorization', '' + localStorage.getItem('itt'));

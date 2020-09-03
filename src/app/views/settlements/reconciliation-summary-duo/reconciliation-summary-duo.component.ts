@@ -55,7 +55,7 @@ export class ReconciliationSummaryDuoComponent implements OnInit  {
 
   constructor( private payvueservice: PayVueApiService, private webWorkerService: WebworkerService) {
     let user = payvueservice.getUser();
-    this.merchant = user.role.merchantcode
+    this.merchant = user.merchantcode
 
     if (user && user.roles.some(role => role == 'merchant')) {
 

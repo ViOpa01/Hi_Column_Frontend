@@ -19,6 +19,8 @@ export class RoleGuard implements CanActivate {
         // if (user.role.some(r => roles.includes(r))) {
             if (roles.includes(user.role.toLowerCase())) {
             isAadmin = true;
+        } else if (user.isSuperMerchant == true){
+            isAadmin = true;
         }
         if (isAadmin) return true;
         this.router.navigate(['/login']);

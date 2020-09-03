@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class NavigationComponent implements OnInit {
   @ViewChild('sidenav') sidenav: ElementRef;
   merchant: boolean;
+  isSuperMerchant: boolean;
   user: boolean;
   admin: boolean;
   super: boolean;
@@ -24,6 +25,7 @@ export class NavigationComponent implements OnInit {
     this.url = this.route.url;
 
     this.merchant = false;
+    this.isSuperMerchant = false;
     this.user = false;
     this.admin = false;
     this.super = false;
@@ -33,6 +35,10 @@ export class NavigationComponent implements OnInit {
     if (u && u.role.toLowerCase() == 'merchant') {
 
       this.merchant = true;
+
+      if(u && u.isSuperMerchant == true){
+        this.isSuperMerchant = true
+      }
     }
     if(u && u.role.toLowerCase() == '') {
       

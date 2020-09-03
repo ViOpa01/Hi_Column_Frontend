@@ -46,7 +46,12 @@ body {
 
 
 .btn.btn-sm {
-  padding: 0.7rem 3.3rem !important;
+  padding: 0.84rem 2.14rem;;
+  font-size: 0.64rem;
+  max-width: 160px;
+  min-width: 160px;
+  margin: 0;
+  font-size: 12px;
 }
 
 p:not(.no-change) {
@@ -61,7 +66,7 @@ p:not(.no-change) {
   margin-bottom: 0 !important;
 }
 
-.form-control {
+.form-control:not(.no-change) {
   // background-color: #F2F2F2
   background-color: transparent;
   border-top: unset !important;
@@ -125,6 +130,10 @@ table td {
     font-size: 14px;
     font-weight: 400;
     // border-bottom: 10px solid #fff !important;
+}
+
+table tr{
+  align-items: flex-end;
 }
 
 tr > th > a{

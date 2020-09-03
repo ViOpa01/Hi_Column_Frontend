@@ -180,9 +180,7 @@
                 <tr>
 
                 <td>{{serial1 + i}}</td>
-                <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement"><a href="javascript:;"
-                        [routerLink]="['/merchant', row.merchant_id]">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</a>
-                </td>
+                <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
                 <td *ngIf="merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
                 <td *ngIf="!row.paymentdetails.deliverysettlement">{{ row.paymentdetails.supermerchant_name || 'N/A' }}</td>
                 <td>{{row.paymentdetails.supermerchantcode}}</td>
@@ -191,7 +189,7 @@
                 <td>{{row.cardholdername || 'N/A'}}</td>
                 <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status | titlecase}}</td>
                 <td>{{row.cardpan || 'N/A'}}</td>
-                <td>{{row.paymentdetails.deliverysettlement? (row.paymentdetails.deliverysettlement.supermerchant_bankname || 'N/A') : 'N/A'}}</td>
+                <td>{{row.paymentdetails.deliverysettlement? ((row.paymentdetails.deliverysettlement.supermerchant_bankname | titlecase) || 'N/A') : 'N/A'}}</td>
                 
                 <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
                 

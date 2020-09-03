@@ -213,11 +213,34 @@
                               <!-- <i class="fa fa-sort ml-1"></i> -->
                           </a>
                       </th>
-                     
+                      <th class="th-md">
+                        <a>Delivery Settlement ₦
+                            <!-- <i class="fa fa-sort ml-1"></i> -->
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a>Switch Fee ₦
+                            <!-- <i class="fa fa-sort ml-1"></i> -->
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a>Itex Fee ₦
+                            <!-- <i class="fa fa-sort ml-1"></i> -->
+                        </a>
+                    </th>
+                    <th class="th-md">
+                        <a>Supermerchant on Delivery Amount ₦
+                            <!-- <i class="fa fa-sort ml-1"></i> -->
+                        </a>
+                    </th>
                       <th class="th-md">
                           <a>Total Amount ₦
                           </a>
                       </th>
+                      <th class="th-md">
+                        <a>Settled
+                        </a>
+                    </th>
                       <th class="th-md">
                           <a>Initiated Time
                           </a>
@@ -232,9 +255,7 @@
                   <tr>
   
                   <td>{{serial1 + i}}</td>
-                  <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement"><a href="javascript:;"
-                          [routerLink]="['/merchant', row.merchant_id]">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</a>
-                  </td>
+                  <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
                   <td *ngIf="merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
                   <td *ngIf="!row.paymentdetails.deliverysettlement">{{ row.paymentdetails.supermerchant_name || 'N/A' }}</td>
                   <td>{{row.paymentdetails.supermerchantcode}}</td>
@@ -243,15 +264,17 @@
                   <td>{{row.cardholdername || 'N/A'}}</td>
                   <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status | titlecase}}</td>
                   <td>{{row.cardpan || 'N/A'}}</td>
-                  <td>{{row.paymentdetails.deliverysettlement? (row.paymentdetails.deliverysettlement.supermerchant_bankname || 'N/A') : 'N/A'}}</td>
+                  <td>{{row.paymentdetails.deliverysettlement? ((row.paymentdetails.deliverysettlement.supermerchant_bankname | titlecase) || 'N/A') : 'N/A'}}</td>
   
                   
                   <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
                   
-  
+                  <td>{{row.paymentdetails.deliverysettlement? ('₦' + row.paymentdetails.deliverysettlement.amount_to_settle_delivery || 'N/A') : 'N/A'}}</td>
+                  <td>{{row.paymentdetails.deliverysettlement? ('₦' + row.paymentdetails.deliverysettlement.itexswitchcharge_on_deliveryamount || 'N/A') : 'N/A'}}</td>
+                  <td>{{row.paymentdetails.deliverysettlement? ('₦' + row.paymentdetails.deliverysettlement.itexcharge_on_deliveryamount || 'N/A') : 'N/A'}}</td>
+                  <td>{{row.paymentdetails.deliverysettlement? ('₦' + row.paymentdetails.deliverysettlement.supermerchant_on_deliveryamount || 'N/A') : 'N/A'}}</td>
                   <td>{{'₦' + (row.paymentdetails.totalamount | number : '1.2-2')}}</td>
-  
-  
+                  <td>{{row.settled || 'N/A'}}</td>
                   <td>{{row.initiatedTime | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
   
               </tr>
@@ -260,7 +283,7 @@
                 <!--Table body-->
                 <tbody *ngIf="isData == false; else gettingTrans">
                     <tr >
-                        <td colspan="14" style="text-align:center;padding: 5% 20%">
+                        <td colspan="15" style="text-align:center;padding: 5% 20%">
                             <strong>No Data Available</strong>
                         </td>
                     </tr>
@@ -268,7 +291,7 @@
                 <ng-template #gettingTrans>
                     <tbody *ngIf="isData == undefined">
                         <tr >
-                            <td colspan="14" style="text-align:center;padding: 5% 20%">
+                            <td colspan="15" style="text-align:center;padding: 5% 20%">
                                 <mdb-spinner spinnerColor="blue"></mdb-spinner>
                             </td>
                         </tr>

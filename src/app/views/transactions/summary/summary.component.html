@@ -11,15 +11,15 @@
     <div [ngClass]="{'px-4':show}" class="table-responsive">
         <table class="table table-borderless">
             <tr class="row mx-0 no-change mt-3">
-               
+
                 <td class="col-lg-7 col-sm-10">
                     <div class="md-form special-div m-0">
                         <!-- <mdb-icon fas icon="search" class="prefix"> </mdb-icon> -->
                         <img src="../../../assets/img/Shape.svg" class="prefix py-2 pl-3">
-                        <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="search" ngDefaultControl [(ngModel)]="search"
-                         type="text" placeholder="Search">
+                        <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="search"
+                            ngDefaultControl [(ngModel)]="search" type="text" placeholder="Search">
                     </div>
-                  
+
                 </td>
                 <!-- <td *ngIf="!date2" class="col-lg-2 col-sm-2 mt-3">
                     <p class="noWrap">Source:</p>
@@ -32,8 +32,7 @@
                 </td> -->
                 <td class="col-lg-1 col-sm-2 col-6">
                     <select *ngIf="show" ngDefaultControl [(ngModel)]='status'
-                        (change)="setPage(); getTransactionHistory();"
-                        class="browser-default custom-select d-block">
+                        (change)="setPage(); getTransactionHistory();" class="browser-default custom-select d-block">
                         <option disabled=true value=undefined>Status</option>
                         <option value="">View All</option>
                         <option value="successful">Approved</option>
@@ -59,7 +58,8 @@
                         <option value="200">200</option>
                     </select>
 
-                    <select *ngIf="!show" (change)="setLimit($event); getTransactionHistory();" class="browser-default custom-select d-block">
+                    <select *ngIf="!show" (change)="setLimit($event); getTransactionHistory();"
+                        class="browser-default custom-select d-block">
                         <option disabled=true value="">No of Records</option>
                         <option value="20">20</option>
                         <option value="50" selected>50</option>
@@ -69,18 +69,18 @@
                 </td>
 
                 <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
-                    <input type="date" [(ngModel)]="from" (blur)="getTransactionHistory()" [placeholder]="'From:'" id="input"
-                        class="form-control px-0" ngDefaultControl>
+                    <input type="date" [(ngModel)]="from" (blur)="getTransactionHistory()" [placeholder]="'From:'"
+                        id="input" class="form-control px-0" ngDefaultControl>
                 </td>
                 <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
-                    <input type="date" [(ngModel)]="to" (blur)="getTransactionHistory()" [placeholder]="'To:'" id="input"
-                        class="form-control px-0" ngDefaultControl>
+                    <input type="date" [(ngModel)]="to" (blur)="getTransactionHistory()" [placeholder]="'To:'"
+                        id="input" class="form-control px-0" ngDefaultControl>
                 </td>
                 <td class="col-lg-1 col-sm-2">
                     <button [disabled]="!tableData.length" type="button" class="btn btn-ud btn-sm waves-light m-1"
-                (click)="exportExcel()" mdbWavesEffect>Export
-            </button>
-                   
+                        (click)="exportExcel()" mdbWavesEffect>Export
+                    </button>
+
                 </td>
             </tr>
         </table>
@@ -108,237 +108,246 @@
       </div> -->
     <div [ngClass]="{'px-4':show}">
         <!--Table-->
-        <table class="table table-striped table-hover mb-0 border-space">
+        <div class="table-wrapper">
+            <table class="table table-striped table-hover mb-0 border-space">
 
-            <!--Table head-->
-            <thead>
-                <tr>
-                    <th class="th-md">
-                        <a >S/N
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('paymentdetails.deliverysettlement.supermerchant_name')">Super Merchant
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('paymentdetails.supermerchantcode')">Merchant ID
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('transactionID')">Transaction ID
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('cardholdername')">Name
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('status')">Status
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                   
-                    <th class="th-md">
-                        <a (click)="sortBy('cardpan')">Card Pan
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a>
-                            No of Sub Merchant
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('paymentdetails.totaldeliveryfee')">Total Delivery Fee ₦
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                   
-                    <th class="th-md">
-                        <a (click)="sortBy('paymentdetails.totalamount')">Total Amount ₦
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('settled')">Settled
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th class="th-md">
-                        <a (click)="sortBy('initiatedTime')">Initiated Time
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
+                <!--Table head-->
+                <thead>
+                    <tr>
+                        <th class="th-md">
+                            <a>S/N
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('paymentdetails.deliverysettlement.supermerchant_name')">Super Merchant
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('paymentdetails.supermerchantcode')">Merchant ID
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('transactionID')">Transaction ID
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('cardholdername')">Name
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('status')">Status
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
 
-                </tr>
-            </thead>
-            <!--Table head-->
+                        <th class="th-md">
+                            <a (click)="sortBy('cardpan')">Card Pan
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a>
+                                No of Sub Merchant
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('paymentdetails.totaldeliveryfee')">Total Delivery Fee ₦
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
 
-            <!--Table body-->
-            <tbody *ngFor="let row of tableData;let i = index;" class="nested-table">
+                        <th class="th-md">
+                            <a (click)="sortBy('paymentdetails.totalamount')">Total Amount ₦
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('settled')">Settled
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('initiatedTime')">Initiated Time
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
 
+                    </tr>
+                </thead>
+                <!--Table head-->
 
-                <tr>
-
-                    <td>{{serial1 + i}}</td>
-                    <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement"><a href="javascript:;"
-                            [routerLink]="['/merchant', row.merchant_id]">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</a>
-                    </td>
-                    <td *ngIf="merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
-                    <td *ngIf="!row.paymentdetails.deliverysettlement">{{ row.paymentdetails.supermerchant_name || 'N/A' }}</td>
-                    <td>{{row.paymentdetails.supermerchantcode}}</td>
-
-                    <td>{{row.transactionID}}</td>
-                    <td>{{row.cardholdername || 'N/A'}}</td>
-                    <td [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">{{row.status | titlecase}}</td>
-                    <td>{{row.cardpan || 'N/A'}}</td>
-
-                    <td>{{row.paymentdetails.submerchantpaymentdetails.length | number : '1.0'}}</td>
-
-                    
-                    <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
-                    
-
-                    <td>{{'₦' + (row.paymentdetails.totalamount | number : '1.2-2')}}</td>
-
-                    <td>{{row.settled || 'N/A'}}</td>
+                <!--Table body-->
+                <tbody *ngFor="let row of tableData;let i = index;" class="nested-table">
 
 
-                    <td>{{row.initiatedTime | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+                    <tr>
 
-                    <td class="text-right">
-                        <!-- <button class="btn btn-uc waves-light btn-sm" [disabled]="!row.response_msg && !row.response_code" (click)="getReceipt(row);receiptModal.show()">View</button> -->
+                        <td>{{serial1 + i}}</td>
+                        <td *ngIf="!merchantU && row.paymentdetails.deliverysettlement">{{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
+                        <td *ngIf="merchantU && row.paymentdetails.deliverysettlement">
+                            {{ row.paymentdetails.deliverysettlement.supermerchant_name }}</td>
+                        <td *ngIf="!row.paymentdetails.deliverysettlement">
+                            {{ row.paymentdetails.supermerchant_name || 'N/A' }}</td>
+                        <td>{{row.paymentdetails.supermerchantcode}}</td>
 
-                        <a *ngIf="!showDetails[i]" class="waves-light" (click)="showData(i);"><i class="view-history fa fa-caret-down"></i></a>
+                        <td>{{row.transactionID}}</td>
+                        <td>{{row.cardholdername || 'N/A'}}</td>
+                        <td
+                            [ngClass]="{'text-success':row.status == 'APPROVED', 'text-warning':row.status == 'PENDING', 'text-danger':row.status == 'FAILED','noWrap' : true}">
+                            {{row.status | titlecase}}</td>
+                        <td>{{row.cardpan || 'N/A'}}</td>
 
-                        <a *ngIf="showDetails[i]" class="waves-light" (click)="showData(i);"><i class="view-history fa fa-caret-up"></i></a>
-                    </td>
-                </tr>
+                        <td>{{row.paymentdetails.submerchantpaymentdetails.length | number : '1.0'}}</td>
 
-                
-                <tr *ngIf="showDetails[i]" class="nested-header">
-                    <th colspan=1 class="th-md">
-                        <a>S/N
-                        </a>
-                    </th>
-                    <th colspan=2 class="th-md">
-                        <a (click)="sortBy('submerchant_name')">Merchant Name
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th colspan=2 class="th-md">
-                        <a (click)="sortBy('submerchantcode')">Merchant ID
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th></th>
-                    <th colspan=1 class="th-md">
-                        <a (click)="sortBy('submerchant_bankname')">Bank
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th></th>
-                    <th colspan=2 class="th-md">
-                        <a (click)="sortBy('supermerchant_accountnumber')">Account Number
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <th colspan=3 class="th-md">
-                        <a (click)="sortBy('subamount')">Amount ₦
-                            <!-- <i class="fa fa-sort ml-1"></i> -->
-                        </a>
-                    </th>
-                    <!-- <th colspan=1 class="th-md">
+
+                        <td>{{'₦' + (row.paymentdetails.totaldeliveryfee | number : '1.2-2')}}</td>
+
+
+                        <td>{{'₦' + (row.paymentdetails.totalamount | number : '1.2-2')}}</td>
+
+                        <td>{{row.settled || 'N/A'}}</td>
+
+
+                        <td>{{row.initiatedTime | date : 'yyyy-MM-dd HH:mm:ss' }}</td>
+
+                        <td class="text-right">
+                            <!-- <button class="btn btn-uc waves-light btn-sm" [disabled]="!row.response_msg && !row.response_code" (click)="getReceipt(row);receiptModal.show()">View</button> -->
+
+                            <a *ngIf="!showDetails[i]" class="waves-light" (click)="showData(i);"><i
+                                    class="view-history fa fa-caret-down"></i></a>
+
+                            <a *ngIf="showDetails[i]" class="waves-light" (click)="showData(i);"><i
+                                    class="view-history fa fa-caret-up"></i></a>
+                        </td>
+                    </tr>
+
+
+                    <tr *ngIf="showDetails[i]" class="nested-header">
+                        <th colspan=1 class="th-md">
+                            <a>S/N
+                            </a>
+                        </th>
+                        <th colspan=2 class="th-md">
+                            <a (click)="sortBy('submerchant_name')">Merchant Name
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th colspan=2 class="th-md">
+                            <a (click)="sortBy('submerchantcode')">Merchant ID
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th></th>
+                        <th colspan=1 class="th-md">
+                            <a (click)="sortBy('submerchant_bankname')">Bank
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th></th>
+                        <th colspan=2 class="th-md">
+                            <a (click)="sortBy('supermerchant_accountnumber')">Account Number
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th colspan=3 class="th-md">
+                            <a (click)="sortBy('subamount')">Amount ₦
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <!-- <th colspan=1 class="th-md">
                         <a (click)="sortBy('submerchant_amount_to_settle')">Settlement (₦)
                             <i class="fa fa-sort ml-1"></i>
                         </a>
                     </th> -->
-                    <!-- <th colspan=1 class="th-md">
+                        <!-- <th colspan=1 class="th-md">
                         <a (click)="sortBy('totaldeliveryfee')">Delivery Fee (₦)
                             <i class="fa fa-sort ml-1"></i>
                         </a>
                     </th> -->
-                    <!-- <th colspan=1 class="th-md">
+                        <!-- <th colspan=1 class="th-md">
                         <a (click)="sortBy('submerchant_mscharge_from_subamount')">MSC (₦)
                             <i class="fa fa-sort ml-1"></i>
                         </a>
                     </th> -->
-                    <!-- <th colspan=1 class="th-md">
+                        <!-- <th colspan=1 class="th-md">
                         <a (click)="sortBy('itexswitchcharge_from_subamount')">Switch Charge (₦)
                             <i class="fa fa-sort ml-1"></i>
                         </a>
                     </th> -->
-                    <!-- <th colspan=3 class="th-md">
+                        <!-- <th colspan=3 class="th-md">
                         <a (click)="sortBy('itexcharge_from_subamount')">ITEX Charge (₦)
                             <i class="fa fa-sort ml-1"></i>
                         </a>
                     </th> -->
-                    <!-- <th class="th-md">
+                        <!-- <th class="th-md">
                         <p  class="text-transparent">Status
                             <i class="fa fa-sort ml-1 text-transparent"></i>
                         </p>
                     </th> -->
 
-                </tr>
-                
-                <ng-container *ngIf="showDetails[i]">  
-                <tr class="nested-table" *ngFor="let row2 of tranHistory; let x = index;">
-                    <td colspan=1> {{x + 1}}</td>
-                    <td colspan=2>{{ row2.submerchant_name || 'N/A' }}</td>
-                    <td colspan=2>{{row2.submerchantcode}}</td>
-                    <td></td>
-                    <!-- <td class=" colspan=1 *ngIf="row2.submerchant_bankname && row2.submerchant_bankname != 'NIL' && row2.submerchant_bankname != '----'">
+                    </tr>
+
+                    <ng-container *ngIf="showDetails[i]">
+                        <tr class="nested-table" *ngFor="let row2 of tranHistory; let x = index;">
+                            <td colspan=1> {{x + 1}}</td>
+                            <td colspan=2>{{ row2.submerchant_name || 'N/A' }}</td>
+                            <td colspan=2>{{row2.submerchantcode}}</td>
+                            <td></td>
+                            <!-- <td class=" colspan=1 *ngIf="row2.submerchant_bankname && row2.submerchant_bankname != 'NIL' && row2.submerchant_bankname != '----'">
                         <img *ngIf="bankModel[row2.submerchant_bankname.toLowerCase()]" src="{{bankModel[row2.submerchant_bankname.toLowerCase()]}}">
                         {{!bankModel[row2.submerchant_bankname.toLowerCase()] ? row2.bank : '' }}
                     </td> -->
-                    <td>{{row2.submerchant_bankname || N/A}}</td>
-                    <td></td>
-                    <td colspan=2 *ngIf="!row2.submerchant_bankname || row2.submerchant_bankname == 'NIL' || row2.submerchant_bankname == '----'">
-                        N/A
-                    </td>
-                    <td colspan=2>{{row2.submerchant_accountnumber}}</td>
-                    <td colspan=3>{{'₦' + (row2.subamount | number : '1.2-2')}}</td>
-                    <!-- <td></td> -->
-                    <!-- <td colspan=1>{{row2.submerchant_amount_to_settle | number : '1.2-2'}}</td> -->
-                    <!-- <td colspan=1>{{(row2.subamount - row2.submerchant_amount_to_settle) || row.deliveryfee  | number : '1.2-2'}}</td> -->
-                    <!-- <td colspan=1>{{(row2.submerchant_mscharge_from_subamount  | number : '1.2-2') || 'N/A'}}</td> -->
-                    <!-- <td colspan=1>{{(row2.itexswitchcharge_from_subamount  | number : '1.2-2') || 'N/A'}}</td> -->
-                    <!-- <td colspan=3>{{(row2.itexcharge_from_subamount  | number : '1.2-2') || 'N/A'}}</td> -->
-                    <!-- <td colspan=1></td> -->
+                            <td>{{(row2.submerchant_bankname | titlecase) || N/A}}</td>
+                            <td></td>
+                            <td colspan=2
+                                *ngIf="!row2.submerchant_bankname || row2.submerchant_bankname == 'NIL' || row2.submerchant_bankname == '----'">
+                                N/A
+                            </td>
+                            <td colspan=2>{{row2.submerchant_accountnumber}}</td>
+                            <td colspan=3>{{'₦' + (row2.subamount | number : '1.2-2')}}</td>
+                            <!-- <td></td> -->
+                            <!-- <td colspan=1>{{row2.submerchant_amount_to_settle | number : '1.2-2'}}</td> -->
+                            <!-- <td colspan=1>{{(row2.subamount - row2.submerchant_amount_to_settle) || row.deliveryfee  | number : '1.2-2'}}</td> -->
+                            <!-- <td colspan=1>{{(row2.submerchant_mscharge_from_subamount  | number : '1.2-2') || 'N/A'}}</td> -->
+                            <!-- <td colspan=1>{{(row2.itexswitchcharge_from_subamount  | number : '1.2-2') || 'N/A'}}</td> -->
+                            <!-- <td colspan=3>{{(row2.itexcharge_from_subamount  | number : '1.2-2') || 'N/A'}}</td> -->
+                            <!-- <td colspan=1></td> -->
 
-                </tr>
+                        </tr>
 
-                <tr *ngIf="viewIndex < tableData[i].paymentdetails.submerchantpaymentdetails.length" class="view-more">
-                    <td colspan=14 (click)="viewMore(i)" style="text-align:center;padding: 5% 20%">View More Transactions</td>
-                </tr>
-                </ng-container >  
+                        <tr *ngIf="viewIndex < tableData[i].paymentdetails.submerchantpaymentdetails.length"
+                            class="view-more">
+                            <td colspan=14 (click)="viewMore(i)" style="text-align:center;padding: 5% 20%">View More
+                                Transactions</td>
+                        </tr>
+                    </ng-container>
 
-            </tbody>
+                </tbody>
 
-            <!--Table body-->
-            <tbody *ngIf="isData == false; else gettingTrans">
-                <tr>
-                    <td colspan="14" style="text-align:center;padding: 5% 20%">
-                        <strong>No Data Available</strong>
-                    </td>
-                </tr>
-            </tbody>
-            <ng-template #gettingTrans>
-                <tbody *ngIf="isData == undefined">
+                <!--Table body-->
+                <tbody *ngIf="isData == false; else gettingTrans">
                     <tr>
                         <td colspan="14" style="text-align:center;padding: 5% 20%">
-                            <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                            <strong>No Data Available</strong>
                         </td>
                     </tr>
                 </tbody>
-            </ng-template>
+                <ng-template #gettingTrans>
+                    <tbody *ngIf="isData == undefined">
+                        <tr>
+                            <td colspan="14" style="text-align:center;padding: 5% 20%">
+                                <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-template>
 
-        </table>
+            </table>
+        </div>
         <!--Table-->
 
         <hr class="my-0">
