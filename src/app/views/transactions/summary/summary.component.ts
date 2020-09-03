@@ -181,15 +181,17 @@ export class SummaryComponent implements OnInit {
   }
 
   public exportExcel() {
-    let exportData = [];
-    this.tableData.map(item => {
-      exportData.push({ ...item });
-      return item;
-    })
+    let tableData = []
+    let exportData = []
+
+    exportData = tableData
 
     const input = {
       config: {
-        body: exportData
+        body: exportData,
+        multiple: true,
+        name: ["TRANSACTIONS", "SETTLEMENT", "SETTLEMENT ITEX"],
+        // columns: {index: [1], names:  [["hello", "hi", "whatsup"]] }
       },
       host: window.location.host,
       path: window.location.pathname,
@@ -203,6 +205,7 @@ export class SummaryComponent implements OnInit {
     ).catch(console.error);
   }
 
+ 
   private save(file, filename, filetype, fileextension) {
     const blob = new Blob([this.s2ab(file)], {
       type: filetype

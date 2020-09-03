@@ -8,6 +8,7 @@ import * as filesaver from 'file-saver';
 import { WebworkerService } from 'app/providers/webworker.service';
 import  BankModel  from 'app/Models/bank-image.model';
 import  CardModel  from 'app/Models/card.model';
+import { ToastService } from 'ng-uikit-pro-standard';
 
 
 @Component({
@@ -45,7 +46,7 @@ export class MerchantOnboardingComponent implements OnInit  {
   isFailureData: boolean;
   optionsSelect: Array<any>;
 
-  superMerchant: boolean;
+  superMerchant: boolean = true;
   isEdit: boolean;
 
   merchant: string = "";
@@ -77,6 +78,7 @@ export class MerchantOnboardingComponent implements OnInit  {
   sub_email: string;
   sub_mobile_number: string;
   superMerchantCode: string;
+  superMerchantCode2: string;
   superMerchantName: string;
   sub_bank_code: string;
   sub_account_number: string;
@@ -86,7 +88,12 @@ export class MerchantOnboardingComponent implements OnInit  {
   sub_password: string;
   password: string;
 
-  constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService) {
+  isUploading = false;
+  file: File;
+
+
+
+  constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService, private toast: ToastService) {
     this.merchantU = false;
     const userStr = localStorage.getItem('user');
 
@@ -139,6 +146,31 @@ export class MerchantOnboardingComponent implements OnInit  {
     })
   }
 
+  doUpload() {
+    localStorage.setItem('xfile', 'true');
+    this.isUploading = true
+    const formData = new FormData();
+    formData.append('file',this.file);
+    const apiURL = `:5009/v1/merchants/create/bulksubmerchants/${this.superMerchantCode2}`;
+    
+
+    this.payvueservice.apiCall(apiURL, 'post', formData, true, true).then(data => {
+      console.log(data);
+
+      let isProcessing = true;
+      this.superMerchantCode2 = '';
+      
+      eventsService.getEvent('upload-processing').emit(isProcessing);
+      
+      localStorage.removeItem('xfile');
+    }).catch(error => {
+      this.isUploading = false;
+      this.toast.error(`failed to upload  ${this.file.name}`);
+      console.error(`failed to upload ${this.file.name}`, error)
+    })
+  }
+
+
   clear(){
     this.superMerchant = undefined;
     this.firstname = '';
@@ -159,7 +191,6 @@ export class MerchantOnboardingComponent implements OnInit  {
     this.sub_email = '';
     this.sub_mobile_number = '';
     this.superMerchantCode = '';
-    this.superMerchantName = '';
     this.sub_bank_code = '';
     this.sub_account_number = '';
     this.sub_address = '';
@@ -168,8 +199,74 @@ export class MerchantOnboardingComponent implements OnInit  {
     this.sub_password = '';
   }
 
+
+  check(){ 
+    // this will check user input
+  }
+
   saveMerchant(){
-    // if()
+    if(this.superMerchant){
+      // this.check()
+
+      // if(this.error) return;
+      const check = confirm('Do you wish to save this Super Merchant?');
+      if (!check) return;
+
+      let datas = {
+          email: this.email,
+          mobile: this.mobile_number,
+          firstname: this.firstname,
+          lastname: this.lastname,
+          password: this.password,
+          businessname: this.business_name,
+          address: this.address,
+          state: this.state,
+          bank_code: this.bank_code,
+          account_number: this.account_number,
+          bvn: this.bvn
+  
+      }
+      const apiURL = `:5009/v1/merchants/create/supermerchant`;
+      this.payvueservice.apiCall(apiURL, 'post', datas ).then(data => {
+
+          this.toast.success(data.message)
+        
+      }).catch(error => {
+        console.error(error);
+        this.isData = false;
+      });
+    } else if(!this.superMerchant){
+
+      // this.check()
+      // if(this.error) return;
+      const check = confirm('Do you wish to save this Sub Merchant?');
+      if (!check) return;
+
+      let datas = {
+        email: this.sub_email,
+        mobile: this.sub_mobile_number,
+        firstname: this.sub_firstname,
+        lastname: this.sub_lastname,
+        password: this.sub_password,
+        businessname: this.sub_business_name,
+        address: this.sub_address,
+        state: this.sub_state,
+        bank_code: this.sub_bank_code,
+        account_number: this.sub_account_number,
+        bvn: this.sub_bvn,
+        superMerchantCode: this.superMerchantCode
+
+    }
+    const apiURL = `:5009/v1/merchants/create/submerchant`;
+    this.payvueservice.apiCall(apiURL, 'post', datas ).then(data => {
+
+        this.toast.success(data.message)
+      
+    }).catch(error => {
+      console.error(error);
+      this.isData = false;
+    });
+    }
   }
 
   sortBy(by: string | any): void {

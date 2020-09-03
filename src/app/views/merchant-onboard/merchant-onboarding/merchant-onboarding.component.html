@@ -1,13 +1,13 @@
 <div class="col-lg-12">
     <div class="row">
-      <div class="ml-2 px-4 pb-4">
-        <h6 class="header-style">Merchant List</h6>
-          <!-- <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
+        <div class="ml-2 px-4 pb-4">
+            <h6 class="header-style">Merchant List</h6>
+            <!-- <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
               (click)="exportExcel()" mdbWavesEffect>Export
           </button> -->
-      </div>
+        </div>
     </div>
-    
+
     <div [ngClass]="{'px-4':show}" class="table-responsive">
         <table class="table table-borderless">
             <tr class="row mx-0 no-change">
@@ -15,10 +15,10 @@
                     <div class="md-form special-div m-0">
                         <!-- <mdb-icon fas icon="search" class="prefix"> </mdb-icon> -->
                         <img src="../../../assets/img/Shape.svg" class="prefix py-2 pl-3">
-                        <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="search" ngDefaultControl [(ngModel)]="search"
-                         type="text" placeholder="Search">
+                        <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="search"
+                            ngDefaultControl [(ngModel)]="search" type="text" placeholder="Search">
                     </div>
-                  
+
                 </td>
                 <!-- <td *ngIf="!date2" class="col-lg-2 col-sm-2 mt-3">
                     <p class="noWrap">Source:</p>
@@ -30,24 +30,23 @@
                     </select>
                 </td> -->
                 <td class="col-lg-1 col-sm-2 col-6">
-                    <select *ngIf="show" ngDefaultControl [(ngModel)]='status'
-                        (change)="setPage(); getMerchants();"
+                    <select *ngIf="show" ngDefaultControl [(ngModel)]='status' (change)="setPage(); getMerchants();"
                         class="browser-default custom-select d-block">
                         <option disabled=true value=undefined>Status</option>
                         <option value="">View All</option>
                         <option value="successful">Approved</option>
                         <option value="failed">Declined</option>
                     </select>
-    
-                    <select *ngIf="!show" ngDefaultControl [(ngModel)]='status'
-                        (change)="setPage(); getMerchants();" class="browser-default custom-select d-block">
+
+                    <select *ngIf="!show" ngDefaultControl [(ngModel)]='status' (change)="setPage(); getMerchants();"
+                        class="browser-default custom-select d-block">
                         <option disabled=true value=undefined>Status</option>
                         <option value="">View All</option>
                         <option value="successful">Approved</option>
                         <option value="failed">Declined</option>
                     </select>
                 </td>
-    
+
                 <td class="col-lg-1 col-sm-2">
                     <select *ngIf="show" (change)="setLimit($event); getMerchants();"
                         class="browser-default custom-select d-block">
@@ -57,8 +56,9 @@
                         <option value="100">100</option>
                         <option value="200">200</option>
                     </select>
-    
-                    <select *ngIf="!show" (change)="setLimit($event); getMerchants();" class="browser-default custom-select d-block">
+
+                    <select *ngIf="!show" (change)="setLimit($event); getMerchants();"
+                        class="browser-default custom-select d-block">
                         <option disabled=true value="">No of Records</option>
                         <option value="20">20</option>
                         <option value="50" selected>50</option>
@@ -66,7 +66,7 @@
                         <option value="200">200</option>
                     </select>
                 </td>
-    
+
                 <td *ngIf="!date2" class="col-lg-1 col-sm-4 col-6">
                     <input type="date" [(ngModel)]="from" (blur)="getMerchants()" [placeholder]="'From:'" id="input"
                         class="form-control px-0" ngDefaultControl>
@@ -75,19 +75,20 @@
                     <input type="date" [(ngModel)]="to" (blur)="getMerchants()" [placeholder]="'To:'" id="input"
                         class="form-control px-0" ngDefaultControl>
                 </td>
-    
+
                 <td class="col-lg-1 col-sm-2">
-                        <button type="button" class="btn btn-ud btn-sm waves-light"
-                    (click)="onboardModal.show()" mdbWavesEffect><mdb-icon fas icon="plus"></mdb-icon> Add Merchant
-                </button>
-                       
-                    </td>
+                    <button type="button" class="btn btn-ud btn-sm waves-light" (click)="onboardModal.show()"
+                        mdbWavesEffect>
+                        <mdb-icon fas icon="plus"></mdb-icon> Add Merchant
+                    </button>
+
+                </td>
             </tr>
         </table>
     </div>
-    
-    
-      <!-- <div *ngIf="show && (status != 'successful')" [ngClass]="{'px-4':show}">
+
+
+    <!-- <div *ngIf="show && (status != 'successful')" [ngClass]="{'px-4':show}">
           <h5 *ngIf="isFailureData == true" class="mb-2"><strong>Top Reasons For Failure</strong></h5>
           <div class="row">
               <div class="width-min mb-2" *ngFor="let row of failureData;">
@@ -106,26 +107,31 @@
               </div>
           </div>
       </div> -->
-      <div [ngClass]="{'px-4':show}">
-    
-          <div class="table-wrapper" [ngClass]="{'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}">
-              <!--Table-->
-              <table class="table table-striped table-hover mb-0 border-space">
-    
-                  <!--Table head-->
-                  <thead>
+    <div [ngClass]="{'px-4':show}">
+
+        <div class="table-wrapper" [ngClass]="{'card card-cascade narrower mt-0': true, 'z-depth-0': !shadows}">
+            <!--Table-->
+            <table class="table table-striped table-hover mb-0 border-space">
+
+                <!--Table head-->
+                <thead>
                     <tr>
                         <th class="th-md">
-                            <a >S/N
+                            <a>S/N
                             </a>
                         </th>
                         <th class="th-md">
-                            <a (click)="sortBy('paymentdetails.bio.businessname')">Super Merchant
+                            <a (click)="sortBy('bio.businessname')">Merchant Name
                                 <!-- <i class="fa fa-sort ml-1"></i> -->
                             </a>
                         </th>
                         <th class="th-md">
-                            <a (click)="sortBy('paymentdetails.merchantcode')">Merchant ID
+                            <a (click)="sortBy('isSuperMerchant')">Super Merchant
+                                <!-- <i class="fa fa-sort ml-1"></i> -->
+                            </a>
+                        </th>
+                        <th class="th-md">
+                            <a (click)="sortBy('merchantcode')">Merchant ID
                                 <!-- <i class="fa fa-sort ml-1"></i> -->
                             </a>
                         </th>
@@ -159,313 +165,311 @@
                                 <!-- <i class="fa fa-sort ml-1"></i> -->
                             </a>
                         </th>
-    
+
                     </tr>
                 </thead>
-                  <!--Table head-->
-    
-                  <!--Table body-->
-                  <tbody *ngFor="let row of tableData;let i = index;">
+                <!--Table head-->
+
+                <!--Table body-->
+                <tbody *ngFor="let row of tableData;let i = index;">
                     <tr>
-    
-                    <td>{{serial1 + i}}</td>
-                    <td>{{ row.bio.businessname }}</td>
-                    <td>{{row.merchantcode}}</td>
-    
-                    <td>{{ row.email ? row.email.toString() : 'N/A'}}</td>
-                    <td>{{row.mobile? row.mobile.toString() : 'N/A'}}</td>
-                    <td>{{row.accountdetails.bank_name | titlecase}}</td>
-                    <td>{{row.accountdetails.account_number}}</td>
-                    <td>{{row.accountdetails.bvn}}</td>
-                    <td>{{row.bio.state}}</td>
-                    <td class="text-right">
-                        <!-- <button class="btn btn-uc waves-light btn-sm" [disabled]="!row.response_msg && !row.response_code" (click)="getReceipt(row);receiptModal.show()">View</button> -->
-                        <div class="dropdown" mdbDropdown>
+
+                        <td>{{serial1 + i}}</td>
+                        <td>{{ row.bio.businessname }}</td>
+                        <td>{{ row.isSuperMerchant }}</td>
+                        <td>{{row.merchantcode}}</td>
+
+                        <td>{{ row.email ? row.email.toString() : 'N/A'}}</td>
+                        <td>{{row.mobile? row.mobile.toString() : 'N/A'}}</td>
+                        <td>{{row.accountdetails.bank_name | titlecase}}</td>
+                        <td>{{row.accountdetails.account_number}}</td>
+                        <td>{{row.accountdetails.bvn}}</td>
+                        <td>{{row.bio.state}}</td>
+                        <td class="text-right">
+                            <!-- <button class="btn btn-uc waves-light btn-sm" [disabled]="!row.response_msg && !row.response_code" (click)="getReceipt(row);receiptModal.show()">View</button> -->
+                            <div class="dropdown" mdbDropdown>
 
 
-                            <mdb-icon mdbDropdownToggle class="waves-light fa-elli" type="button"
-                              mdbWavesEffectfas icon="ellipsis-h"></mdb-icon>
-                          
-                            <div class="dropdown-menu dropdown-menu-style">
-                              <p (click)="superMerchant = isSuperMerchant; isEdit = true; onboardModal.show()" class="dropdown-item">Edit</p>
-                              <p class="dropdown-item">Details</p>
-                                <p class="dropdown-item">View</p>
+                                <mdb-icon mdbDropdownToggle class="waves-light fa-elli" type="button" mdbWavesEffectfas
+                                    icon="ellipsis-h"></mdb-icon>
+
+                                <div class="dropdown-menu dropdown-menu-style">
+                                    <p (click)="superMerchant = isSuperMerchant; isEdit = true; onboardModal.show()"
+                                        class="dropdown-item">Edit</p>
+                                    <p class="dropdown-item">Details</p>
+                                    <p class="dropdown-item">View</p>
+                                </div>
                             </div>
-                          </div>
-            
-                    </td>
-    
-                </tr>
-                  </tbody>
-    
-                  <!--Table body-->
-                  <tbody *ngIf="isData == false; else gettingTrans">
-                      <tr >
-                          <td colspan="14" style="text-align:center;padding: 5% 20%">
-                              <strong>No Data Available</strong>
-                          </td>
-                      </tr>
-                  </tbody>
-                  <ng-template #gettingTrans>
-                      <tbody *ngIf="isData == undefined">
-                          <tr >
-                              <td colspan="14" style="text-align:center;padding: 5% 20%">
-                                  <mdb-spinner spinnerColor="blue"></mdb-spinner>
-                              </td>
-                          </tr>
-                      </tbody>
-                  </ng-template>
-    
-              </table>
-              <!--Table-->
-          </div>
-    
-          <hr class="my-0">
-    
-          
-    
-          <app-pagination *ngIf="page" [event]="'MerchListPage'" [page]=page></app-pagination>
-      </div>
-    
+
+                        </td>
+
+                    </tr>
+                </tbody>
+
+                <!--Table body-->
+                <tbody *ngIf="isData == false; else gettingTrans">
+                    <tr>
+                        <td colspan="14" style="text-align:center;padding: 5% 20%">
+                            <strong>No Data Available</strong>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #gettingTrans>
+                    <tbody *ngIf="isData == undefined">
+                        <tr>
+                            <td colspan="14" style="text-align:center;padding: 5% 20%">
+                                <mdb-spinner spinnerColor="blue"></mdb-spinner>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-template>
+
+            </table>
+            <!--Table-->
+        </div>
+
+        <hr class="my-0">
+
+
+
+        <!-- <app-pagination *ngIf="page" [event]="'MerchListPage'" [page]=page></app-pagination> -->
     </div>
 
+</div>
 
-    
-  <div mdbModal #onboardModal="mdbModal" class="modal fade" style=" overflow: auto" id="onboardModalTop" tabindex="-1"
-  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-  [config]="{backdrop: true, ignoreBackdropClick: true}">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <!--Content-->
-    <div class="modal-content">
-      <!--Header-->
-      <div class="modal-header d-flex ">
-        <p class="heading">Onboard Merchant</p>
-        <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="clear(); isEdit = false; onboardModal.hide()"
-          mdbWavesEffect>x</button>
-      </div>
-      <!--Body-->
-      <div class="modal-body">
-          <div *ngIf="!isEdit" class="row onboard-style" style="align-items: center;">
-            <div class="row col-lg-4 form-check">
-                <input [checked]="superMerchant"
-                    (change)="superMerchant = true"
-                    type="radio" class="form-check-input"
-                    id="materialUncheckedR" name="superMerchant">
-                <label class="form-check-label v-m"
-                    for="materialUncheckedR" style="height: 1rem;"></label>
-                <span>Super Merchant</span>
+
+
+<div mdbModal #onboardModal="mdbModal" class="modal fade" style=" overflow: auto" id="onboardModalTop" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+    [config]="{backdrop: true, ignoreBackdropClick: true}">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header d-flex ">
+                <p class="heading">Onboard Merchant</p>
+                <button type="button" class="close" aria-label="Close" data-dismiss="modal"
+                    (click)="clear(); isEdit = false; onboardModal.hide()" mdbWavesEffect>x</button>
             </div>
-            <div class="row col-lg-4 form-check">
-                <input [checked]="!superMerchant"
-                    (change)="superMerchant = false"
-                    type="radio" class="form-check-input"
-                    id="materialUncheckedK" name="superMerchant">
-                <label class="form-check-label v-m"
-                    for="materialUncheckedK" style="height: 1rem;"></label>
-                <span>Sub Merchant</span>
-            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <div *ngIf="!isEdit" class="row onboard-style" style="align-items: center;">
+                    <div class="row col-lg-4 form-check">
+                        <input [checked]="superMerchant" (change)="superMerchant = true" type="radio"
+                            class="form-check-input" id="materialUncheckedR" name="superMerchant">
+                        <label class="form-check-label v-m" for="materialUncheckedR" style="height: 1rem;"></label>
+                        <span>Super Merchant</span>
+                    </div>
+                    <div class="row col-lg-4 form-check">
+                        <input [checked]="!superMerchant" (change)="superMerchant = false" type="radio"
+                            class="form-check-input" id="materialUncheckedK" name="superMerchant">
+                        <label class="form-check-label v-m" for="materialUncheckedK" style="height: 1rem;"></label>
+                        <span>Sub Merchant</span>
+                    </div>
 
-          </div>
-
-          <div *ngIf="superMerchant" class="onboard-style">
-          <div class="row pt-4">
-              <div class="col-lg-6">
-                  <p>Firstname</p>
-                  <input class="form-control no-change my-0 py-0"
-                  [ngModelOptions]="{standalone: true}" ngDefaultControl
-                  [(ngModel)]="firstname"
-                  [name]="firstname" type="text"/>
-              </div>
-              <div class="col-lg-6">
-                <p>Lastname</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="lastname"
-                [name]="lastname" type="text"/>
-            </div>
-          </div>
-
-          <div class="row pt-4">
-            <div class="col-lg-6">
-                <p>Merchant Business Name</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="business_name"
-                [name]="business_name" type="text"/>
-            </div>
-            <div class="col-lg-6">
-              <p>Email</p>
-              <input class="form-control no-change my-0 py-0"
-              [ngModelOptions]="{standalone: true}" ngDefaultControl
-              [(ngModel)]="email"
-              [name]="email" type="text"/>
-          </div>
-        </div>
-
-        <div class="row pt-4">
-            <div class="col-lg-5">
-                <p>Mobile Number</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="mobile"
-                [name]="mobile" type="text"/>
-            </div>
-            <div class="col-lg-2">
-              <p>Bank Code</p>
-              <input class="form-control no-change my-0 py-0"
-              [ngModelOptions]="{standalone: true}" ngDefaultControl
-              [(ngModel)]="bankcode"
-              [name]="bankcode" type="text"/>
-          </div>
-          <div class="col-lg-5">
-            <p>Account Number</p>
-            <input class="form-control no-change my-0 py-0"
-            [ngModelOptions]="{standalone: true}" ngDefaultControl
-            [(ngModel)]="account_number"
-            [name]="account_number" type="text"/>
-        </div>
-
-        </div>
-
-        <div class="row pt-4">
-            <div class="col-lg-5">
-                <p>Address</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="address"
-                [name]="address" type="text"/>
-            </div>
-            <div class="col-lg-2">
-              <p>State</p>
-              <input class="form-control no-change my-0 py-0"
-              [ngModelOptions]="{standalone: true}" ngDefaultControl
-              [(ngModel)]="state"
-              [name]="state" type="text"/>
-          </div>
-          <div class="col-lg-5">
-            <p>BVN</p>
-            <input class="form-control no-change my-0 py-0"
-            [ngModelOptions]="{standalone: true}" ngDefaultControl
-            [(ngModel)]="bvn"
-            [name]="bvn" type="text"/>
-        </div>
-        
-        </div>
-        </div>
-
-        <div *ngIf="!superMerchant" class="onboard-style">
-            <div class="row pt-4">
-                <div class="col-lg-6">
-                    <p>Firstname</p>
-                    <input class="form-control no-change my-0 py-0"
-                    [ngModelOptions]="{standalone: true}" ngDefaultControl
-                    [(ngModel)]="sub_firstname"
-                    [name]="sub_firstname" type="text"/>
                 </div>
-                <div class="col-lg-6">
-                  <p>Lastname</p>
-                  <input class="form-control no-change my-0 py-0"
-                  [ngModelOptions]="{standalone: true}" ngDefaultControl
-                  [(ngModel)]="sub_lastname"
-                  [name]="sub_lastname" type="text"/>
-              </div>
-            </div>
-  
-            <div class="row pt-4">
-              <div class="col-lg-6">
-                  <p>Merchant Business Name</p>
-                  <input class="form-control no-change my-0 py-0"
-                  [ngModelOptions]="{standalone: true}" ngDefaultControl
-                  [(ngModel)]="sub_business_name"
-                  [name]="sub_business_name" type="text"/>
-              </div>
-              <div class="col-lg-6">
-                <p>Email</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="sub_email"
-                [name]="sub_email" type="text"/>
-            </div>
-          </div>
 
-          <div class="row pt-4">
-            <div class="col-lg-6">
-                <p>Mobile Number</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="sub_mobile"
-                [name]="sub_mobile" type="text"/>
-            </div>
-            <div class="col-lg-6">
-              <p>Super Merchant Code</p>
-              <input class="form-control no-change my-0 py-0"
-              [ngModelOptions]="{standalone: true}" ngDefaultControl
-              [(ngModel)]="superMerchantCode"
-              [name]="superMerchantCode" type="text"/>
-          </div>
+                <div *ngIf="superMerchant" class="onboard-style">
+                    <div class="row pt-4">
+                        <div class="col-lg-6">
+                            <p>Firstname</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="firstname" [name]="firstname" type="text" />
+                        </div>
+                        <div class="col-lg-6">
+                            <p>Lastname</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="lastname" [name]="lastname" type="text" />
+                        </div>
+                    </div>
 
+                    <div class="row pt-4">
+                        <div class="col-lg-6">
+                            <p>Merchant Business Name</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="business_name" [name]="business_name" type="text" />
+                        </div>
+                        <div class="col-lg-6">
+                            <p>Mobile Number</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="mobile_number" [name]="mobile_number" type="phone" />
+                        </div>
+                    </div>
+
+                    <div class="row pt-4">
+                       
+                        <div class="col-lg-6">
+                            <p>Email</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="email" [name]="email" type="email" />
+                        </div>
+                        <div class="col-lg-6">
+                            <p>Password</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="password" [name]="password" type="password" />
+                        </div>
+
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-lg-6">
+                            <p>Bank Code</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="bank_code" [name]="bank_code" type="text" />
+                        </div>
+                        <div class="col-lg-6">
+                            <p>Account Number</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="account_number" [name]="account_number" type="text" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-lg-5">
+                            <p>Address</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="address" [name]="address" type="text" />
+                        </div>
+                        <div class="col-lg-2">
+                            <p>State</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="state" [name]="state" type="text" />
+                        </div>
+                        <div class="col-lg-5">
+                            <p>BVN</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="bvn" [name]="bvn" type="text" />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div *ngIf="!superMerchant" class="onboard-style">
+
+                    <div class="pt-5 col-lg-6">
+                    <p>Bulk Upload</p>
+                    <form #form = ngForm>
+                        
+                       
+                        <div class="file-path-wrapper pt-2">
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="fileModel" [disabled]="uploading" type="file"
+                              (change)="checkFile($event);" />
+                          </div>
+
+                        <div class="py-2">
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="superMerchantCode2" placeholder="Super Merchant Code" [name]="superMerchantCode1"
+                                type="text" />
+                        </div>
+
+                       
+                        
+                        <div>
+                            <mdb-progress class="mb-3" *ngIf="uploadPercent >= 0" value="{{uploadPercent}}" min="0" max="100" type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100">{{uploadPercent}}%</mdb-progress>
+                            
+                            <button class="btn btn-ud btn-sm" [disabled]="isUploading || !fileModel || !superMerchantCode2" (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i class="fa "
+                              [ngClass]="{'spinner-border spinner-border-sm':isUploading==true}"></i></button>
+                        </div>
+                    </form>
+
+                    </div>
+                    <hr>
+                    <div class="row pt-4">
+                        <div class="col-lg-6">
+                            <p>Firstname</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_firstname" [name]="sub_firstname" type="text" />
+                        </div>
+                        <div class="col-lg-6">
+                            <p>Lastname</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_lastname" [name]="sub_lastname" type="text" />
+                        </div>
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-lg-6">
+                            <p>Merchant Business Name</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_business_name" [name]="sub_business_name"
+                                type="text" />
+                        </div>
+                        <div class="col-lg-6">
+                            <p>Mobile Number</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_mobile_number" [name]="sub_mobile_number"
+                                type="phone" />
+                        </div>
+                        
+                    </div>
+
+                    <div class="row pt-4">
+                       <div class="col-lg-6">
+                            <p>Email</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_email" [name]="sub_email" type="email" />
+                        </div>
+                        <div class="col-lg-6">
+                            <p>Password</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_password" [name]="sub_password" type="password" />
+                        </div>
+                        
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-lg-5">
+                            <p>Super Merchant Code</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="superMerchantCode" [name]="superMerchantCode"
+                                type="text" />
+                        </div>
+
+                        <div class="col-lg-2">
+                            <p>Bank Code</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_bank_code" [name]="sub_bank_code" type="text" />
+                        </div>
+                        <div class="col-lg-5">
+                            <p>Account Number</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_account_number" [name]="sub_account_number"
+                                type="text" />
+                        </div>
+
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-lg-5">
+                            <p>Address</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_address" [name]="sub_address" type="text" />
+                        </div>
+                        <div class="col-lg-2">
+                            <p>State</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_state" [name]="sub_state" type="text" />
+                        </div>
+                        <div class="col-lg-5">
+                            <p>BVN</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_bvn" [name]="sub_bvn" type="text" />
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!--Footer-->
+            <div class="modal-footer row" style="justify-content: center;">
+                <button type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
+                    (click)="saveMerchant()" mdbWavesEffect>Save Merchant</button>
+            </div>
         </div>
-  
-          <div class="row pt-4">
-              <div class="col-lg-5">
-                  <p>Super Merchant Name</p>
-                  <input class="form-control no-change my-0 py-0"
-                  [ngModelOptions]="{standalone: true}" ngDefaultControl
-                  [(ngModel)]="superMerchantName"
-                  [name]="superMerchantName" type="text"/>
-              </div>
-              <div class="col-lg-2">
-                <p>Bank Code</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="sub_bankcode"
-                [name]="sub_bankcode" type="text"/>
-            </div>
-            <div class="col-lg-5">
-              <p>Account Number</p>
-              <input class="form-control no-change my-0 py-0"
-              [ngModelOptions]="{standalone: true}" ngDefaultControl
-              [(ngModel)]="sub_account_number"
-              [name]="sub_account_number" type="text"/>
-          </div>
-  
-          </div>
-  
-          <div class="row pt-4">
-              <div class="col-lg-5">
-                  <p>Address</p>
-                  <input class="form-control no-change my-0 py-0"
-                  [ngModelOptions]="{standalone: true}" ngDefaultControl
-                  [(ngModel)]="sub_address"
-                  [name]="sub_address" type="text"/>
-              </div>
-              <div class="col-lg-2">
-                <p>State</p>
-                <input class="form-control no-change my-0 py-0"
-                [ngModelOptions]="{standalone: true}" ngDefaultControl
-                [(ngModel)]="sub_state"
-                [name]="sub_state" type="text"/>
-            </div>
-            <div class="col-lg-5">
-              <p>BVN</p>
-              <input class="form-control no-change my-0 py-0"
-              [ngModelOptions]="{standalone: true}" ngDefaultControl
-              [(ngModel)]="sub_bvn"
-              [name]="sub_bvn" type="text"/>
-          </div>
-          
-          </div>
-        </div>
-
-      </div>
-
-
-      <!--Footer-->
-      <div class="modal-footer row" style="justify-content: center;">
-        <button type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal" (click)="saveMerchant()"
-          mdbWavesEffect>Save Merchant</button>
-      </div>
+        <!--/.Content-->
     </div>
-    <!--/.Content-->
-  </div>
 </div>

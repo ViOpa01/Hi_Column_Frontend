@@ -127,17 +127,15 @@ export class TransactionsComponent implements OnInit  {
   }
 
   public exportExcel() {
-    let tableData = []
-    let exportData = []
-
-    exportData = tableData
+    let exportData = [];
+    this.tableData.map(item => {
+      exportData.push({ ...item });
+      return item;
+    })
 
     const input = {
       config: {
-        body: exportData,
-        multiple: true,
-        name: ["TRANSACTIONS", "SETTLEMENT", "SETTLEMENT ITEX"],
-        // columns: {index: [1], names:  [["hello", "hi", "whatsup"]] }
+        body: exportData
       },
       host: window.location.host,
       path: window.location.pathname,
@@ -150,6 +148,7 @@ export class TransactionsComponent implements OnInit  {
       }
     ).catch(console.error);
   }
+
 
   private save(file, filename, filetype, fileextension) {
     const blob = new Blob([this.s2ab(file)], {
