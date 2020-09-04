@@ -223,7 +223,7 @@
 
 
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer2">
                             <button *ngIf="!upload" class="btn btn-sm btn-ud waves-light" (click)="saveTerminal()"
                                 [disabled]="isSaving==true || !organisedArray.length">{{isSaving? 'Saving' : 'Save' }}<i class="fa "
                                     [ngClass]="{'spinner-border spinner-border-sm':isSaving==true}"></i></button>
@@ -289,7 +289,7 @@
                             </div>
                             <!--Bottom Table UI-->
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer2">
                             <button type="button" class="btn btn-ud btn-sm waves-light" (click)="exportExcel(title)"
                                 mdbWavesEffect>Export</button>
                             <button type="button" class="btn btn-uc btn-sm waves-light" aria-label="Close"

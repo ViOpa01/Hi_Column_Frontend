@@ -74,6 +74,16 @@ p:not(.no-change) {
     padding: 1rem;
 }
 
+.modal-footer2{
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
 .form-control:not(.no-change) {
   // background-color: #F2F2F2
   background-color: transparent;
