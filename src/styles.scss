@@ -66,6 +66,14 @@ p:not(.no-change) {
   margin-bottom: 0 !important;
 }
 
+.modal-header2{
+  -webkit-box-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
 .form-control:not(.no-change) {
   // background-color: #F2F2F2
   background-color: transparent;

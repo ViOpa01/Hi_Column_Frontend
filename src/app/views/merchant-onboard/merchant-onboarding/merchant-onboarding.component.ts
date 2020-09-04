@@ -91,6 +91,8 @@ export class MerchantOnboardingComponent implements OnInit  {
   isUploading = false;
   file: File;
 
+  details: any
+  isView: boolean = true;
 
 
   constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService, private toast: ToastService) {
@@ -197,6 +199,11 @@ export class MerchantOnboardingComponent implements OnInit  {
     this.sub_state = '';
     this.sub_bvn = '';
     this.sub_password = '';
+  }
+
+  setDetails(row){
+    this.details = row;
+    this.isView = true;
   }
 
 

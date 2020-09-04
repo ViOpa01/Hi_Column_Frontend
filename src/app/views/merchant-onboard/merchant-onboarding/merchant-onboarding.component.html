@@ -1,4 +1,4 @@
-<div class="col-lg-12">
+<div *ngIf="!isView" class="col-lg-12">
     <div class="row">
         <div class="ml-2 px-4 pb-4">
             <h6 class="header-style">Merchant List</h6>
@@ -77,7 +77,7 @@
                 </td>
 
                 <td class="col-lg-1 col-sm-2">
-                    <button type="button" class="btn btn-ud btn-sm waves-light" (click)="isEdit = false; superMerchant = true; onboardModal.show();"
+                    <button type="button" class="btn btn-ud btn-sm waves-light" (click)="isEdit = false; clear(); superMerchant = true; onboardModal.show();"
                         mdbWavesEffect>
                         <mdb-icon fas icon="plus"></mdb-icon> Add Merchant
                     </button>
@@ -194,9 +194,9 @@
                                     icon="ellipsis-h"></mdb-icon>
 
                                 <div class="dropdown-menu dropdown-menu-style">
-                                    <p (click)="superMerchant = isSuperMerchant; isEdit = true; onboardModal.show()"
+                                    <p (click)="superMerchant = isSuperMerchant; isEdit = true; clear(); onboardModal.show()"
                                         class="dropdown-item">Edit</p>
-                                    <p class="dropdown-item">Details</p>
+                                    <p (click)="setDetails(row)" class="dropdown-item">Details</p>
                                     <!-- <p class="dropdown-item">View</p> -->
                                 </div>
                             </div>
@@ -241,15 +241,13 @@
 
 <div mdbModal #onboardModal="mdbModal" class="modal fade" style=" overflow: auto" id="onboardModalTop" tabindex="-1"
     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-    [config]="{backdrop: true, ignoreBackdropClick: true}">
+    [config]="{backdrop: true, ignoreBackdropClick: false}">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <!--Content-->
         <div class="modal-content">
             <!--Header-->
-            <div class="modal-header d-flex ">
+            <div class="modal-header">
                 <p class="heading">Onboard Merchant</p>
-                <button type="button" class="close" aria-label="Close" data-dismiss="modal"
-                    (click)="onboardModal.hide(); clear();" mdbWavesEffect>x</button>
             </div>
             <!--Body-->
             <div class="modal-body">
@@ -272,12 +270,12 @@
                 <div *ngIf="superMerchant" class="onboard-style">
                     <div class="row pt-4">
                         <div class="col-lg-6">
-                            <p>Firstname</p>
+                            <p>First Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="firstname" [name]="firstname" type="text" />
                         </div>
                         <div class="col-lg-6">
-                            <p>Lastname</p>
+                            <p>Last Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="lastname" [name]="lastname" type="text" />
                         </div>
@@ -378,12 +376,12 @@
                     <hr *ngIf="!isEdit">
                     <div class="row pt-4">
                         <div class="col-lg-6">
-                            <p>Firstname</p>
+                            <p>First Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_firstname" [name]="sub_firstname" type="text" />
                         </div>
                         <div class="col-lg-6">
-                            <p>Lastname</p>
+                            <p>Last Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_lastname" [name]="sub_lastname" type="text" />
                         </div>
@@ -472,4 +470,14 @@
         </div>
         <!--/.Content-->
     </div>
+</div>
+
+<div *ngIf="isView">
+
+    <div class="modal-header2 col-lg-12 d-flex">
+        <p class="heading">Merchant Information</p>
+        <button type="button" class="close" aria-label="Close" (click)="isView = false"
+          mdbWavesEffect>x</button>
+      </div>
+
 </div>
