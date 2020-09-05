@@ -1,10 +1,10 @@
 <div *ngIf="!isView" class="col-lg-12">
     <div class="row">
-        <div class="ml-2 px-4 pb-4">
-            <h6 class="header-style">Merchant List</h6>
-            <!-- <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
-              (click)="exportExcel()" mdbWavesEffect>Export
-          </button> -->
+        <div class="ml-2 px-4 pb-4 col-lg-12 d-flex">
+            <h6 class="header-style">{{(isSub)? name : 'Merchant List'}}</h6>
+          
+          <button *ngIf="isSub" type="button" class="close" aria-label="Close" (click)="getMerchants()"
+          mdbWavesEffect>x</button>
         </div>
     </div>
 
@@ -121,11 +121,11 @@
                             </a>
                         </th>
                         <th class="th-md">
-                            <a (click)="sortBy('bio.businessname')">Merchant Name
+                            <a (click)="sortBy('bio.businessname')">{{(merchantU || isSub)? 'Merchant Name' : 'Super Merchant Name'}}
                                 <!-- <i class="fa fa-sort ml-1"></i> -->
                             </a>
                         </th>
-                        <th class="th-md">
+                        <th *ngIf="merchantU || isSub" class="th-md">
                             <a (click)="sortBy('isSuperMerchant')">Super Merchant
                                 <!-- <i class="fa fa-sort ml-1"></i> -->
                             </a>
@@ -176,7 +176,7 @@
 
                         <td>{{serial1 + i}}</td>
                         <td>{{ row.bio.businessname }}</td>
-                        <td>{{ row.isSuperMerchant }}</td>
+                        <td *ngIf="merchantU || isSub">{{ row.isSuperMerchant }}</td>
                         <td>{{row.merchantcode}}</td>
 
                         <td>{{ row.email ? row.email.toString() : 'N/A'}}</td>
@@ -194,10 +194,10 @@
                                     icon="ellipsis-h"></mdb-icon>
 
                                 <div class="dropdown-menu dropdown-menu-style">
-                                    <p (click)="superMerchant = isSuperMerchant; isEdit = true; clear(); onboardModal.show()"
+                                    <p (click)="superMerchant = row.isSuperMerchant; isEdit = true; clear(); onboardModal.show()"
                                         class="dropdown-item">Edit</p>
                                     <p (click)="setDetails(row)" class="dropdown-item">Details</p>
-                                    <!-- <p class="dropdown-item">View</p> -->
+                                    <p *ngIf="super && !isSub" (click)="getMerchants(row.merchantcode); setName(row.bio.businessname)" class="dropdown-item">View</p>
                                 </div>
                             </div>
 
@@ -247,7 +247,7 @@
         <div class="modal-content">
             <!--Header-->
             <div class="modal-header2">
-                <p class="heading">Onboard Merchant</p>
+                <p class="heading text-center">Onboard Merchant</p>
             </div>
             <!--Body-->
             <div class="modal-body">
@@ -364,7 +364,7 @@
 
                        
                         
-                        <div>
+                        <div class="pb-2">
                             <mdb-progress class="mb-3" *ngIf="uploadPercent >= 0" value="{{uploadPercent}}" min="0" max="100" type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100">{{uploadPercent}}%</mdb-progress>
                             
                             <button class="btn btn-ud btn-sm" [disabled]="isUploading || !fileModel || !superMerchantCode2" (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i class="fa "
@@ -373,7 +373,7 @@
                     </form>
 
                     </div>
-                    <hr *ngIf="!isEdit">
+
                     <div class="row pt-4">
                         <div class="col-lg-6">
                             <p>First Name</p>
@@ -416,6 +416,12 @@
                         </div>
                         
                     </div>
+                    <div class="row pt-4">
+                        <div class="col-lg-12 text-right">
+                             <mdb-checkbox [(ngModel)]="same_account_number" name="templateChecked">Account Number same as Super Merchant</mdb-checkbox>
+                         </div>
+                         
+                     </div>
 
                     <div class="row pt-4">
                         <div class="col-lg-5">
@@ -475,9 +481,106 @@
 <div *ngIf="isView">
 
     <div class="modal-header2 col-lg-12 d-flex">
-        <p class="heading">Merchant Information</p>
+        <div class="row" style="align-items: flex-end;">
+        <h5 class="heading">Merchant Information</h5>
+        <img src="../../../assets/img/edit.svg" (click)="superMerchant = details.isSuperMerchant; onboardModal.show()" class="button-asset py-2 pl-3">
+        <img src="../../../assets/img/delete.svg" class="button-asset py-2 pl-3">
+        </div>
+
         <button type="button" class="close" aria-label="Close" (click)="isView = false"
           mdbWavesEffect>x</button>
+      </div>
+
+      <div class="col-lg-6"> 
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">First Name:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.firstname}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">Last Name:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.lastname}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style bold">
+                <p class="col-lg-5">Business Name:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.bio.businessname}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">Email Address:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.email.toString()}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">Mobile Number:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.mobile.toString()}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style bold">
+                <p class="col-lg-5">Merchant Code:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.merchantcode}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">Bank Code:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.accountdetails.bank_code}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">Bank Name:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.accountdetails.bank_name | titlecase}}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">BVN:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.accountdetails.bvn }}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">State:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.bio.state }}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">Address:
+                    
+                </p>
+                <p class="col-lg-7" >{{details.bio.address }}</p>
+            </div>
+        </div>
+       
       </div>
 
 </div>

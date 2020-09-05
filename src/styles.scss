@@ -66,12 +66,21 @@ p:not(.no-change) {
   margin-bottom: 0 !important;
 }
 
+.button-asset{
+  cursor: pointer;
+}
+
 .modal-header2{
   -webkit-box-align: start;
     align-items: flex-start;
     -webkit-box-pack: justify;
     justify-content: space-between;
     padding: 1rem;
+}
+
+.modal-header2 p{
+  font-size: 24px;
+  padding-top: 1rem
 }
 
 .modal-footer2{

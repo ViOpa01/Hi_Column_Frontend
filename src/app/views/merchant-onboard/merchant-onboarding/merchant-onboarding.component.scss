@@ -102,12 +102,11 @@
   
   .dropdown-menu-style{
     left: -116px !important;
-    top: -121px !important;
-    
+    top: -121px !important; 
   } 
+
   .dropdown-menu-style p {
     cursor: pointer;
-
   }
 
   .dropdown-menu-style .dropdown-item:active{
@@ -115,7 +114,6 @@
     background-color: transparent !important;
     color: #16181b !important;
     cursor: pointer;
-
   }
   
   .dropdown-menu-style .dropdown-item:hover{
@@ -123,7 +121,6 @@
     background-color: transparent !important;
     color: #16181b !important;
     cursor: pointer;
-
   }
 
   .form-control.no-change{
@@ -131,6 +128,13 @@
   }
 
   .onboard-style p, .onboard-style span{
-
     font-size: 16px
+  }
+
+  .input-style{
+    font-size: 16px !important
+  }
+
+  .input-style.bold p{
+    font-weight: 600 !important;
   }

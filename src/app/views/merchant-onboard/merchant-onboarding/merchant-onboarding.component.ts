@@ -54,6 +54,10 @@ export class MerchantOnboardingComponent implements OnInit  {
   receiptRowData;
   receiptView: boolean = false;
   merchantU: boolean;
+  super: boolean;
+  isSuper: boolean;
+
+
   bankModel = BankModel
   brandModel = CardModel
 
@@ -87,12 +91,15 @@ export class MerchantOnboardingComponent implements OnInit  {
   sub_bvn: string;
   sub_password: string;
   password: string;
+  same_account_number: boolean;
+  name: string;
 
   isUploading = false;
   file: File;
 
   details: any
-  isView: boolean = true;
+  isView: boolean;
+  isSub: boolean;
 
 
   constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService, private toast: ToastService) {
@@ -103,6 +110,15 @@ export class MerchantOnboardingComponent implements OnInit  {
     if (u && u.role.toLowerCase() == 'merchant') {
 
       this.merchantU = true;
+
+      if(u.isSuperMerchant){
+
+        this.isSuper = true;
+      }
+    }
+    else if (u && u.role.toLowerCase() == 'super admin') {
+
+      this.super = true;
     }
     
     // this.socket.on('trans-history-message').subscribe(data => {
@@ -345,7 +361,11 @@ export class MerchantOnboardingComponent implements OnInit  {
     }
   }
 
-  getMerchants() {
+  setName(name){
+    this.name = name;
+  }
+
+  getMerchants(sub?) {
 
     let page = this.page < 1 ? 1 : this.page
 
@@ -357,10 +377,27 @@ export class MerchantOnboardingComponent implements OnInit  {
       this.to = this.date2
     }
 
-    let user = this.payvueservice.getUser();
-    let merchant = user.merchantcode
+    let user: any
+    let merchant: any
 
-    const apiURL = `:5009/v1/merchants/submerchantforsupermerchant/${merchant}`;
+    if(this.isSuper){
+      user = this.payvueservice.getUser();
+      merchant = user.merchantcode
+
+    } else if(sub){
+     
+      merchant = sub
+    } 
+   
+
+    let apiURL = ``;
+    if(sub || this.isSuper){
+      apiURL = `:5009/v1/merchants/submerchantforsupermerchant/${merchant}`;
+
+    } else if(this.super){
+      apiURL = `:5009/v1/merchants/supermerchant`;
+
+    }
     this.payvueservice.apiCall(apiURL).then(data => {
       if (data.status === 200) {
         if (data.data.length > 0) {
@@ -375,6 +412,12 @@ export class MerchantOnboardingComponent implements OnInit  {
         }
       } else {
         this.isData = false;
+      }
+
+      if(sub){
+        this.isSub = true;
+      } else{
+        this.isSub = false;
       }
       
     }).catch(error => {
