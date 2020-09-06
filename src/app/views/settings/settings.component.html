@@ -415,6 +415,179 @@
       </div>
     </div>
   </mdb-tab>
+  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> MSC and Settlement Time">
+    <div class="row">
+      <div class="col-12 p-0">
+
+        <section>
+          <!--Top Table UI-->
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+          'mb-4 mt-0 pt-4': true}">
+            <div class="px-4">
+              <h5><strong>Super Merchant MSC Configuration</strong></h5>
+              <span class="text-danger">{{errorMSCSuper}}</span>
+            </div>
+  
+            <div class="table-responsive px-4">
+              <form #form2=ngForm (submit)="saveMSC()">
+                <table class="table table-borderless">
+                  <tr class="row mx-0 no-change">
+                    <td class="col-lg-4">
+                      <p class="noWrap">Super Merchant ID:</p>
+                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super_merchant_code">
+                    </td>
+                    <td class="col-lg-4">
+                      <p class="noWrap">MSC Fee:</p>
+                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_msc">
+                    </td>
+                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                      <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                        [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
+                          [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+
+
+            <div class="p-4">
+              <h5><strong>Super Merchant Time Configuration</strong></h5>
+              <span class="text-danger">{{errorMSCSuper}}</span>
+            </div>
+
+            <div class="table-responsive px-4">
+              <form #form2=ngForm (submit)="saveMSC()">
+                <table class="table table-borderless">
+                  <tr class="row mx-0 no-change">
+                    <td class="col-lg-4">
+                      <p class="noWrap">Super Merchant ID:</p>
+                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super_merchant_code">
+                    </td>
+                    <td class="col-lg-4">
+                      <p class="noWrap">Settlement Time:</p>
+                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_time">
+                    </td>
+                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                      <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                        [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
+                          [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </div>
+
+          <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+        'mb-4 mt-0 pt-4': true}">
+          <div class="px-4">
+            <h5><strong>Sub Merchant MSC Configuration</strong></h5>
+            <span class="text-danger">{{errorMSCSuper}}</span>
+          </div>
+
+          <div class="row onboard-style py-4" style="align-items: center;">
+            <div class="row col-lg-4 form-check">
+                <input [checked]="allMSC" (change)="allMSC = true" type="radio"
+                    class="form-check-input" id="materialUncheckedR" name="allMSC">
+                <label class="form-check-label v-m" for="materialUncheckedR" style="height: 1rem;"></label>
+                <span>All Sub Merchants</span>
+            </div>
+            <div class="row col-lg-4 form-check">
+                <input [checked]="!allMSC" (change)="allMSC = false" type="radio"
+                    class="form-check-input" id="materialUncheckedK" name="allMSC">
+                <label class="form-check-label v-m" for="materialUncheckedK" style="height: 1rem;"></label>
+                <span>Single Sub Merchant</span>
+            </div>
+
+        </div>
+
+          <div class="table-responsive px-4">
+            <form #form2=ngForm (submit)="saveMSC()">
+              <table class="table table-borderless">
+                <tr *ngIf="allMSC" class="row mx-0 no-change">
+                  <td class="col-lg-4">
+                    <p class="noWrap">Super Merchant ID:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
+                  </td>
+                  <td class="col-lg-4">
+                    <p class="noWrap">Sub Merchant MSC Fee:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="sub_msc">
+                  </td>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                  </td>
+                </tr>
+
+                <tr *ngIf="!allMSC" class="row mx-0 no-change">
+                  <td class="col-lg-4">
+                    <p class="noWrap">Sub Merchant ID:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="sub_merchant_code">
+                  </td>
+                  <td class="col-lg-4">
+                    <p class="noWrap">Sub Merchant MSC Fee:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number"  [(ngModel)]="sub_msc">
+                  </td>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+
+          <div class="p-4">
+            <h5><strong>Sub Merchant Time Configuration</strong></h5>
+            <span class="text-danger">{{errorMSCSuper}}</span>
+          </div>
+
+          <div class="table-responsive px-4">
+            <form #form2=ngForm (submit)="saveMSC()">
+              <table class="table table-borderless">
+                <tr *ngIf="allMSC" class="row mx-0 no-change">
+                  <td class="col-lg-4">
+                    <p class="noWrap">Super Merchant ID:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
+                  </td>
+                  <td class="col-lg-4">
+                    <p class="noWrap">Sub Merchant Time:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="sub_msc">
+                  </td>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                  </td>
+                </tr>
+
+                <tr *ngIf="!allMSC" class="row mx-0 no-change">
+                  <td class="col-lg-4">
+                    <p class="noWrap">Sub Merchant ID:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="sub_merchant_code">
+                  </td>
+                  <td class="col-lg-4">
+                    <p class="noWrap">Sub Merchant Time:</p>
+                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number"  [(ngModel)]="sub_msc">
+                  </td>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
+                      [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
+                        [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        </section>
+      </div>
+    </div>
+  </mdb-tab>
   <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Settlement Switch">
     <div class="row">
       <div class="col-12 p-0">

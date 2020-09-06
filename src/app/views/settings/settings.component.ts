@@ -26,7 +26,7 @@ export class SettingsComponent implements OnInit {
   switchesDisputeData: any[] = [];
   terminalFilesData: any[] = [];
 
-
+  allMSC: boolean;
   switchDetail: any;
   switchDetailDispute: any;
   terminalFileDetail: any;
@@ -368,6 +368,10 @@ export class SettingsComponent implements OnInit {
         this.nDays = null;
       }
     }
+  }
+
+  saveMSC(){
+    
   }
 
   autoSupport() {
