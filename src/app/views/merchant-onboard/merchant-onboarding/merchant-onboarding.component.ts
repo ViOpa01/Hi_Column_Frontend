@@ -91,7 +91,7 @@ export class MerchantOnboardingComponent implements OnInit  {
   sub_bvn: string;
   sub_password: string;
   password: string;
-  same_account_number: boolean;
+  same_account_details: boolean;
   name: string;
 
   isUploading = false;
@@ -265,21 +265,43 @@ export class MerchantOnboardingComponent implements OnInit  {
       const check = confirm('Do you wish to save this Sub Merchant?');
       if (!check) return;
 
-      let datas = {
-        email: this.sub_email,
-        mobile: this.sub_mobile_number,
-        firstname: this.sub_firstname,
-        lastname: this.sub_lastname,
-        password: this.sub_password,
-        businessname: this.sub_business_name,
-        address: this.sub_address,
-        state: this.sub_state,
-        bank_code: this.sub_bank_code,
-        account_number: this.sub_account_number,
-        bvn: this.sub_bvn,
-        superMerchantCode: this.superMerchantCode
+      let datas : any
 
-    }
+      if(this.same_account_details){
+        datas = {
+          email: this.sub_email,
+          mobile: this.sub_mobile_number,
+          firstname: this.sub_firstname,
+          lastname: this.sub_lastname,
+          password: this.sub_password,
+          businessname: this.sub_business_name,
+          address: this.sub_address,
+          state: this.sub_state,
+          superMerchantCode: this.superMerchantCode,
+          same_account_details : this.same_account_details
+
+      }
+        
+  
+      } else {
+        datas = {
+          email: this.sub_email,
+          mobile: this.sub_mobile_number,
+          firstname: this.sub_firstname,
+          lastname: this.sub_lastname,
+          password: this.sub_password,
+          businessname: this.sub_business_name,
+          address: this.sub_address,
+          state: this.sub_state,
+          bank_code: this.sub_bank_code,
+          account_number: this.sub_account_number,
+          bvn: this.sub_bvn,
+          superMerchantCode: this.superMerchantCode
+  
+      }
+      }
+
+     
     const apiURL = `:5009/v1/merchants/create/submerchant`;
     this.payvueservice.apiCall(apiURL, 'post', datas ).then(data => {
 
