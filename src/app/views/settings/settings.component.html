@@ -1,5 +1,5 @@
 <p class="p-style">Configuration</p>
-<mdb-tabset #staticTabss [vertical]="true" [buttonClass]="'flex-column tabs-3 mb-30'"
+<mdb-tabset #staticTabss [vertical]="false" [buttonClass]="'flex-row tabs-3 mb-30'"
   class="icon-changer mt-less new-size">
 
   <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Dashboard">
@@ -31,7 +31,7 @@
                     <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
                       max="59" placeholder="ss" [(ngModel)]="seconds">
                   </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
@@ -74,7 +74,7 @@
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="secondsActive">
                   </td>
 
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="activeSaving==true || (!daysActive && !hoursActive && !minutesActive && !secondsActive)">{{activeSaving? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':activeSaving==true}"></i></button>
@@ -99,14 +99,14 @@
           <div class="table-responsive px-4">
             <table class="table table-borderless">
               <tr class="row mx-0 no-change">
-                <td [ngClass]="{'col-lg-11 col-sm-9': admin || super, 'col-lg-12': user}">
+                <td [ngClass]="{'col-lg-11 col-sm-9': admin || super || isSuperMerchant, 'col-lg-12': user}">
                   <p>Email:</p>
                   <input [disabled]="user" class="form-control my-0 py-0" name="email"
                     [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="email[2]" type="email"
                     placeholder="Email(s) separated by comma">
                 </td>
 
-                <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                   <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="saveEmail('support')"
                     [disabled]="emailSaving[2]==true || !email[2]">{{emailSaving[2]? 'Saving' : 'Save' }}<i class="fa "
                       [ngClass]="{'spinner-border spinner-border-sm':emailSaving[2]==true}"></i></button>
@@ -126,7 +126,7 @@
                 <tbody>
                   <tr  *ngFor="let email of emails">
                     <td *ngIf="email.type == 'support'">{{email.email}}</td>
-                    <td *ngIf="(admin || super) && email.type == 'support'"><button
+                    <td *ngIf="(admin || super || isSuperMerchant) && email.type == 'support'"><button
                         class="btn btn-sm btn-ud waves-light m-0" (click)="deleteEmail(email.email,'support')"
                         [disabled]="email.deletingStatus==true">{{email.deletingStatus? 'Deleting' : 'Delete' }}<i
                           class="fa "
@@ -181,7 +181,7 @@
                       placeholder="No of Days" [(ngModel)]="nDays">
                   </div>
                 </td>
-                <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                   <button class="btn btn-sm btn-uc waves-light mt-1" (click)="autoSupport()"
                     [disabled]="this.supportSave==true || (lastSeen && !nDays)">{{this.supportSave ? 'Saving' : 'Save' }}<i
                       class="fa " [ngClass]="{'spinner-border spinner-border-sm':this.supportSave==true}"></i></button>
@@ -211,14 +211,14 @@
               <form #form=ngForm (submit)="saveAccount()">
                 <table class="table table-borderless">
                   <tr class="row mx-0 no-change">
-                    <td [ngClass]="{'col-lg-11 col-sm-9': admin || super, 'col-lg-12': user}">
+                    <td [ngClass]="{'col-lg-11 col-sm-9': admin || super || isSuperMerchant, 'col-lg-12': user}">
                       <p>Account No:</p>
                       <input [disabled]="user" class="form-control my-0 py-0" name="account"
                         [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="account" type="text"
                         placeholder="{{config ? config.settlement_bank_account_no : 'Provide account no'}}">
                     </td>
 
-                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                       <button class="btn btn-sm btn-uc waves-light mt-1-2"
                         [disabled]="accountSaving==true || !account">{{accountSaving? 'Saving' : 'Save' }}<i class="fa "
                           [ngClass]="{'spinner-border spinner-border-sm':accountSaving==true}"></i></button>
@@ -238,14 +238,14 @@
             <div class="table-responsive px-4">
               <table class="table table-borderless">
                 <tr class="row mx-0 no-change">
-                  <td [ngClass]="{'col-lg-11 col-sm-9': admin || super, 'col-lg-12': user}">
+                  <td [ngClass]="{'col-lg-11 col-sm-9': admin || super || isSuperMerchant, 'col-lg-12': user}">
                     <p>Email:</p>
                     <input [disabled]="user" class="form-control my-0 py-0" name="email"
                       [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="email[0]" type="email"
                       placeholder="Email(s) separated by comma">
                   </td>
 
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="saveEmail('same-day')"
                       [disabled]="emailSaving[0]==true || !email[0]">{{emailSaving[0]? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':emailSaving[0]==true}"></i></button>
@@ -266,7 +266,7 @@
                     <tr  *ngFor="let email of emails">
 
                       <td *ngIf="email.type == 'same-day'">{{email.email}}</td>
-                      <td *ngIf="(admin || super) && email.type == 'same-day'"><button
+                      <td *ngIf="(admin || super || isSuperMerchant) && email.type == 'same-day'"><button
                           class="btn btn-sm btn-ud waves-light m-0" (click)="deleteEmail(email.email, 'same-day')"
                           [disabled]="email.deletingStatus==true">{{email.deletingStatus? 'Deleting' : 'Delete' }}<i
                             class="fa "
@@ -340,7 +340,7 @@
                 <!--Bottom Table UI-->
               </mdb-tab>
               <!--Panel 2-->
-              <mdb-tab *ngIf='admin || super' heading="New Configuation">
+              <mdb-tab *ngIf='admin || super || isSuperMerchant' heading="New Configuation">
                 <div>
                   <table class="table table-borderless">
                     <tr class="row mx-0 no-change">
@@ -440,7 +440,7 @@
                       <p class="noWrap">MSC Fee:</p>
                       <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_msc">
                     </td>
-                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                       <button class="btn btn-sm btn-uc waves-light mt-1-2"
                         [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
                           [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
@@ -468,7 +468,7 @@
                       <p class="noWrap">Settlement Time:</p>
                       <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_time">
                     </td>
-                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                       <button class="btn btn-sm btn-uc waves-light mt-1-2"
                         [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
                           [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
@@ -514,7 +514,7 @@
                     <p class="noWrap">Sub Merchant MSC Fee:</p>
                     <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="sub_msc">
                   </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
@@ -530,7 +530,7 @@
                     <p class="noWrap">Sub Merchant MSC Fee:</p>
                     <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number"  [(ngModel)]="sub_msc">
                   </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
@@ -541,7 +541,7 @@
           </div>
 
           <div class="p-4">
-            <h5><strong>Sub Merchant Time Configuration</strong></h5>
+            <h5><strong>Settlement Time Configuration</strong></h5>
             <span class="text-danger">{{errorMSCSuper}}</span>
           </div>
 
@@ -554,10 +554,12 @@
                     <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
                   </td>
                   <td class="col-lg-4">
-                    <p class="noWrap">Sub Merchant Time:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="sub_msc">
+                    <p class="noWrap">Settlement Time:</p>
+                    
+                      <input type="time" id="input" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)] ="sub_time">
+                   
                   </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
@@ -571,9 +573,10 @@
                   </td>
                   <td class="col-lg-4">
                     <p class="noWrap">Sub Merchant Time:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number"  [(ngModel)]="sub_msc">
+                    <input type="time" id="input" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)] ="sub_time">
+                    
                   </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
@@ -724,7 +727,7 @@
                           </select>
                         </td>
 
-                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                           <button class="btn btn-sm btn-uc waves-light mt-1-2"
                             [disabled]="switchSaving==true">{{switchSaving? 'Saving' : 'Save' }}<i class="fa "
                               [ngClass]="{'spinner-border spinner-border-sm':switchSaving==true}"></i></button>
@@ -850,12 +853,12 @@
                         </select>
                       </td>
 
-                      <td *ngIf='admin || super'>
+                      <td *ngIf='admin || super || isSuperMerchant'>
                         <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateSwitch()"
                           [disabled]="switchUpdating==true">{{switchUpdating? 'Updating' : 'Update' }}<i class="fa "
                             [ngClass]="{'spinner-border spinner-border-sm':switchUpdating==true}"></i></button>
                       </td>
-                      <td *ngIf='admin || super'>
+                      <td *ngIf='admin || super || isSuperMerchant'>
                         <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteSwitch()"
                           [disabled]="switchDeleting==true">{{switchDeleting? 'Deleting' : 'Delete' }}<i class="fa "
                             [ngClass]="{'spinner-border spinner-border-sm':switchDeleting==true}"></i></button>
@@ -984,7 +987,7 @@
                           </select>
                         </td>
 
-                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                           <button class="btn btn-sm btn-uc waves-light mt-1-2"
                             [disabled]="switchSavingDispute==true">{{switchSavingDispute? 'Saving' : 'Save' }}<i
                               class="fa "
@@ -1087,13 +1090,13 @@
                         </select>
                       </td>
 
-                      <td *ngIf='admin || super'>
+                      <td *ngIf='admin || super || isSuperMerchant'>
                         <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateDisputeSwitch()"
                           [disabled]="switchUpdatingDispute==true">{{switchUpdatingDispute? 'Updating' : 'Update' }}<i
                             class="fa "
                             [ngClass]="{'spinner-border spinner-border-sm':switchUpdatingDispute==true}"></i></button>
                       </td>
-                      <td *ngIf='admin || super'>
+                      <td *ngIf='admin || super || isSuperMerchant'>
                         <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteDisputeSwitch()"
                           [disabled]="switchDisputeDeleting==true">{{switchDisputeDeleting? 'Deleting' : 'Delete' }}<i
                             class="fa "
@@ -1259,7 +1262,7 @@
                           </select>
                         </td>
 
-                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                           <button class="btn btn-sm btn-uc waves-light mt-1-2"
                             [disabled]="switchSaving==true">{{switchSaving? 'Saving' : 'Save' }}<i class="fa "
                               [ngClass]="{'spinner-border spinner-border-sm':switchSaving==true}"></i></button>
@@ -1385,12 +1388,12 @@
                         </select>
                       </td>
 
-                      <td *ngIf='admin || super'>
+                      <td *ngIf='admin || super || isSuperMerchant'>
                         <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateSwitch()"
                           [disabled]="switchUpdating==true">{{switchUpdating? 'Updating' : 'Update' }}<i class="fa "
                             [ngClass]="{'spinner-border spinner-border-sm':switchUpdating==true}"></i></button>
                       </td>
-                      <td *ngIf='admin || super'>
+                      <td *ngIf='admin || super || isSuperMerchant'>
                         <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteSwitch()"
                           [disabled]="switchDeleting==true">{{switchDeleting? 'Deleting' : 'Delete' }}<i class="fa "
                             [ngClass]="{'spinner-border spinner-border-sm':switchDeleting==true}"></i></button>
@@ -1430,7 +1433,7 @@
                     <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
                       max="99" placeholder="%" [(ngModel)]="bLess">
                   </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="this.savingPOS[0]==true || !bLess">{{this.savingPOS[0]? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':this.savingPOS[0]==true}"></i></button>
@@ -1458,7 +1461,7 @@
                     <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
                       max="99" placeholder="%" [(ngModel)]="nLess">
                   </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="this.savingPOS[1]==true || !nLess">{{this.savingPOS[1]? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':this.savingPOS[1]==true}"></i></button>
@@ -1743,7 +1746,7 @@
                     </select>
                   </td>
 
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super'>
+                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
                       [disabled]="terminalSaving==true">{{terminalSaving? 'Saving' : 'Save' }}<i class="fa "
                         [ngClass]="{'spinner-border spinner-border-sm':terminalSaving==true}"></i></button>
@@ -1987,12 +1990,12 @@
                   </select>
                 </td>
 
-                <td *ngIf='admin || super'>
+                <td *ngIf='admin || super || isSuperMerchant'>
                   <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateTerminalFile()"
                     [disabled]="terminalUpdating==true">{{terminalUpdating? 'Updating' : 'Update' }}<i class="fa "
                       [ngClass]="{'spinner-border spinner-border-sm':terminalUpdating==true}"></i></button>
                 </td>
-                <td *ngIf='admin || super'>
+                <td *ngIf='admin || super || isSuperMerchant'>
                   <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteTerminalFile()"
                     [disabled]="terminalDeleting==true">{{terminalDeleting? 'Deleting' : 'Delete' }}<i class="fa "
                       [ngClass]="{'spinner-border spinner-border-sm':terminalDeleting==true}"></i></button>

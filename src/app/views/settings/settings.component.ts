@@ -122,6 +122,7 @@ export class SettingsComponent implements OnInit {
   private EXCEL_EXTENSION = 'xlsx';
 
   merchantU: boolean;
+  isSuperMerchant: boolean;
   user: boolean;
   admin: boolean;
   super: boolean;
@@ -310,6 +311,11 @@ export class SettingsComponent implements OnInit {
     if (u && u.role.toLowerCase() == 'merchant') {
 
       this.merchantU = false;
+
+      if(u && u.isSuperMerchant) {
+
+        this.isSuperMerchant = true
+      }
     } else if (u && u.role.toLowerCase() == '') {
 
       this.user = true;
