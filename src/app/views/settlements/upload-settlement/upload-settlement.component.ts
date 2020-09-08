@@ -53,7 +53,11 @@ export class UploadSettlementComponent implements OnInit {
   terminal: string = "";
   receiptRowData;
   receiptView: boolean = false;
+
   merchantU: boolean;
+  isSuper: boolean;
+  super: boolean;
+  
   bankModel = BankModel
   brandModel = CardModel
 
@@ -76,6 +80,13 @@ export class UploadSettlementComponent implements OnInit {
     if (u && u.role.toLowerCase() == 'merchant') {
 
       this.merchantU = true;
+
+      if(u && u.isSuperMerchant){
+        this.isSuper = true;
+      }
+    }
+    else if (u && u.isSuperAdmin){
+      this.super = true;
     }
     
     // this.socket.on('trans-history-message').subscribe(data => {
@@ -286,7 +297,19 @@ export class UploadSettlementComponent implements OnInit {
       this.to = this.date2
     }
 
-    const apiURL = `:5010/webpay/v1/journals/gettransactions?startdate=${this.from}&enddate=${this.to}&download=false&issettlement=false&merchantcode=&page=${page}&order=desc&orderBy=transactionID`;
+    let apiURL = ''
+
+    if(this.isSuper){
+      const user = this.payvueservice.getUser();
+      let merchant = user.merchantcode
+      
+      apiURL = `:5010/webpay/v1/journals/gettransactions?startdate=${this.from}&enddate=${this.to}&download=false&issettlement=false&merchantcode=${merchant}&page=${page}&order=desc&orderBy=transactionID`;
+
+    } else if(this.super){
+      apiURL = `:5010/webpay/v1/journals/gettransactions?startdate=${this.from}&enddate=${this.to}&download=false&issettlement=false&merchantcode=&page=${page}&order=desc&orderBy=transactionID`;
+
+    }
+
     this.payvueservice.apiCall(apiURL, 'get', {}, false, false, true).then(data => {
       if (data.status === 200) {
         if (data.data.length > 0) {

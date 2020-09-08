@@ -433,12 +433,12 @@
 
                         <div class="col-lg-2">
                             <p>Bank Code</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_bank_code" [name]="sub_bank_code" type="text" />
                         </div>
                         <div class="col-lg-5">
                             <p>Account Number</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_account_number" [name]="sub_account_number"
                                 type="text" />
                         </div>
@@ -458,7 +458,7 @@
                         </div>
                         <div class="col-lg-5">
                             <p>BVN</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_bvn" [name]="sub_bvn" type="text" />
                         </div>
 
