@@ -1,8 +1,16 @@
-<p class="p-style">Configuration</p>
-<mdb-tabset #staticTabss [vertical]="false" [buttonClass]="'flex-row tabs-3 mb-30'"
-  class="icon-changer mt-less new-size">
+<div class="row">
+  <div class="ml-2 px-4 pb-4">
+    <h6 class="header-style">Configuration</h6>
+      <!-- <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
+          (click)="exportExcel()" mdbWavesEffect>Export
+      </button> -->
+  </div>
+</div>
+<!-- <mdb-tabset #staticTabss [vertical]="false" [buttonClass]="'flex-row tabs-3 mb-30'"
+  class="icon-changer mt-less new-size"> -->
+  <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-3 mb-30'" class='tabs-wrapper'>
 
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Dashboard">
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Dashboard">
     <div class="row">
       <div class="col-12 p-0">
         <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
@@ -18,17 +26,17 @@
                 <tr class="row mx-0 no-change">
                   <td class="col-lg-4">
                     <p class="noWrap">Hours:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
                       max="23" placeholder="HH" [(ngModel)]="hours">
                   </td>
                   <td class="col-lg-4">
                     <p class="noWrap">Minutes:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
                       max="59" placeholder="mm" [(ngModel)]="minutes">
                   </td>
                   <td class="col-lg-4">
                     <p class="noWrap">Seconds:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="0"
                       max="59" placeholder="ss" [(ngModel)]="seconds">
                   </td>
                   <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
@@ -55,22 +63,22 @@
                 <tr class="row mx-0 no-change">
                   <td class="col-lg-3">
                     <p class="noWrap">Days:</p>
-                    <input class="form-control my-0 py-0" type="number" min="0" max="7" placeholder="dd"
+                    <input class="form-control no-change my-0 py-0" type="number" min="0" max="7" placeholder="dd"
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="daysActive">
                   </td>
                   <td class="col-lg-3">
                     <p class="noWrap">Hours:</p>
-                    <input class="form-control my-0 py-0" type="number" min="0" max="23" placeholder="HH"
+                    <input class="form-control no-change my-0 py-0" type="number" min="0" max="23" placeholder="HH"
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="hoursActive">
                   </td>
                   <td class="col-lg-3">
                     <p class="noWrap">Minutes:</p>
-                    <input class="form-control my-0 py-0" type="number" min="0" max="59" placeholder="mm"
+                    <input class="form-control no-change my-0 py-0" type="number" min="0" max="59" placeholder="mm"
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="minutesActive">
                   </td>
                   <td class="col-lg-3">
                     <p class="noWrap">Seconds:</p>
-                    <input class="form-control my-0 py-0" type="number" min="0" max="59" placeholder="ss"
+                    <input class="form-control no-change my-0 py-0" type="number" min="0" max="59" placeholder="ss"
                       [ngModelOptions]="{standalone: true}" [(ngModel)]="secondsActive">
                   </td>
 
@@ -86,8 +94,8 @@
         </div>
       </div>
     </div>
-  </mdb-tab>
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Support">
+  </mdb-tab> -->
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Support">
     <div class="row">
       <div class="col-12 p-0">
         <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
@@ -101,7 +109,7 @@
               <tr class="row mx-0 no-change">
                 <td [ngClass]="{'col-lg-11 col-sm-9': admin || super || isSuperMerchant, 'col-lg-12': user}">
                   <p>Email:</p>
-                  <input [disabled]="user" class="form-control my-0 py-0" name="email"
+                  <input [disabled]="user" class="form-control no-change my-0 py-0" name="email"
                     [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="email[2]" type="email"
                     placeholder="Email(s) separated by comma">
                 </td>
@@ -177,7 +185,7 @@
                   </div>
                   <div *ngIf="lastSeen" class="ml-3">
                     <p class="noWrap">No of Days:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
                       placeholder="No of Days" [(ngModel)]="nDays">
                   </div>
                 </td>
@@ -194,13 +202,12 @@
 
       </div>
     </div>
-  </mdb-tab>
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Same-Day">
+  </mdb-tab> -->
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Same-Day">
     <div class="row">
       <div class="col-12 p-0">
 
         <section>
-          <!--Top Table UI-->
           <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
           'mb-4 mt-0 pt-4': true}">
             <div class="px-4">
@@ -213,7 +220,7 @@
                   <tr class="row mx-0 no-change">
                     <td [ngClass]="{'col-lg-11 col-sm-9': admin || super || isSuperMerchant, 'col-lg-12': user}">
                       <p>Account No:</p>
-                      <input [disabled]="user" class="form-control my-0 py-0" name="account"
+                      <input [disabled]="user" class="form-control no-change my-0 py-0" name="account"
                         [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="account" type="text"
                         placeholder="{{config ? config.settlement_bank_account_no : 'Provide account no'}}">
                     </td>
@@ -240,7 +247,7 @@
                 <tr class="row mx-0 no-change">
                   <td [ngClass]="{'col-lg-11 col-sm-9': admin || super || isSuperMerchant, 'col-lg-12': user}">
                     <p>Email:</p>
-                    <input [disabled]="user" class="form-control my-0 py-0" name="email"
+                    <input [disabled]="user" class="form-control no-change my-0 py-0" name="email"
                       [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="email[0]" type="email"
                       placeholder="Email(s) separated by comma">
                   </td>
@@ -287,9 +294,8 @@
               <h5><strong>Merchant Same-Day Configuration</strong></h5>
             </div>
 
-            <!-- Nav tabs -->
+    
             <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'">
-              <!--Panel 1-->
               <mdb-tab heading="Merchant Same-Day Configuration">
                 <div class="table-responsive">
                   <table class="table no-header border-space">
@@ -323,9 +329,7 @@
                 </div>
                 <hr class="my-0 smaller-width">
 
-                <!--Bottom Table UI-->
                 <div class="d-flex justify-content-between px-4" style="overflow:auto;">
-                  <!--Pagination -->
                   <nav class="my-4">
                     <div class="row">
                       <div class="col-xs-12 col-12">
@@ -335,31 +339,28 @@
                       </div>
                     </div>
                   </nav>
-                  <!--/Pagination -->
                 </div>
-                <!--Bottom Table UI-->
               </mdb-tab>
-              <!--Panel 2-->
               <mdb-tab *ngIf='admin || super || isSuperMerchant' heading="New Configuation">
                 <div>
                   <table class="table table-borderless">
                     <tr class="row mx-0 no-change">
                       <td class="col-lg-5">
                         <p>Merchant ID:</p>
-                        <input class="form-control my-0 py-0" name="merchant" [ngModelOptions]="{standalone: true}"
+                        <input class="form-control no-change my-0 py-0" name="merchant" [ngModelOptions]="{standalone: true}"
                           ngDefaultControl [(ngModel)]="merchant" type="text"
                           placeholder="Merchant ID(s) separated by space">
                       </td>
                       <td class="col-lg-4">
                         <p>Account No (optional):</p>
-                        <input [disabled]="user" class="form-control my-0 py-0" name="mAccount"
+                        <input [disabled]="user" class="form-control no-change my-0 py-0" name="mAccount"
                           [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="mAccount" type="text"
                           placeholder="Provide account no">
                       </td>
                       <td class="col-lg-2 no-wrap">
                         <p class="noWrap">Frequency:</p>
                         <select ngDefaultControl [(ngModel)]="frequency" [ngModelOptions]="{standalone: true}"
-                          class="browser-default custom-select d-block" mdbTooltip="How many times in a 24hr period"
+                          class="browser-default custom-select no-change d-block" mdbTooltip="How many times in a 24hr period"
                           placement="top">
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -414,31 +415,31 @@
         </section>
       </div>
     </div>
-  </mdb-tab>
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> MSC and Settlement Time">
+  </mdb-tab> -->
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> MSC and Settlement Time"> -->
+    <mdb-tab heading="MSC and Settlement Time">
     <div class="row">
       <div class="col-12 p-0">
 
         <section>
-          <!--Top Table UI-->
           <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
-          'mb-4 mt-0 pt-4': true}">
-            <div class="px-4">
+          'mb-4 mt-0 pt-4 px-4': true}">
+            <div class="col-padding">
               <h5><strong>Super Merchant MSC Configuration</strong></h5>
               <span class="text-danger">{{errorMSCSuper}}</span>
             </div>
   
-            <div class="table-responsive px-4">
+            <div class="table-responsive pt-4">
               <form #form2=ngForm (submit)="saveMSC()">
                 <table class="table table-borderless">
                   <tr class="row mx-0 no-change">
                     <td class="col-lg-4">
                       <p class="noWrap">Super Merchant ID:</p>
-                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super_merchant_code">
+                      <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super_merchant_code">
                     </td>
                     <td class="col-lg-4">
                       <p class="noWrap">MSC Fee:</p>
-                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_msc">
+                      <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_msc">
                     </td>
                     <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                       <button class="btn btn-sm btn-uc waves-light mt-1-2"
@@ -450,50 +451,23 @@
               </form>
             </div>
 
-
-            <div class="p-4">
-              <h5><strong>Super Merchant Time Configuration</strong></h5>
-              <span class="text-danger">{{errorMSCSuper}}</span>
-            </div>
-
-            <div class="table-responsive px-4">
-              <form #form2=ngForm (submit)="saveMSC()">
-                <table class="table table-borderless">
-                  <tr class="row mx-0 no-change">
-                    <td class="col-lg-4">
-                      <p class="noWrap">Super Merchant ID:</p>
-                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super_merchant_code">
-                    </td>
-                    <td class="col-lg-4">
-                      <p class="noWrap">Settlement Time:</p>
-                      <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_time">
-                    </td>
-                    <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
-                      <button class="btn btn-sm btn-uc waves-light mt-1-2"
-                        [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
-                          [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
-                    </td>
-                  </tr>
-                </table>
-              </form>
-            </div>
           </div>
 
           <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
-        'mb-4 mt-0 pt-4': true}">
-          <div class="px-4">
+        'mb-4 mt-0 pt-4 px-4': true}">
+          <div class="col-padding">
             <h5><strong>Sub Merchant MSC Configuration</strong></h5>
             <span class="text-danger">{{errorMSCSuper}}</span>
           </div>
 
-          <div class="row onboard-style py-4" style="align-items: center;">
-            <div class="row col-lg-4 form-check">
+          <div class="row onboard-style pt-4 pb-1" style="align-items: center;">
+            <div class="row col-lg-2 pl-2 form-check">
                 <input [checked]="allMSC" (change)="allMSC = true" type="radio"
                     class="form-check-input" id="materialUncheckedR" name="allMSC">
                 <label class="form-check-label v-m" for="materialUncheckedR" style="height: 1rem;"></label>
                 <span>All Sub Merchants</span>
             </div>
-            <div class="row col-lg-4 form-check">
+            <div class="row col-lg-2 form-check">
                 <input [checked]="!allMSC" (change)="allMSC = false" type="radio"
                     class="form-check-input" id="materialUncheckedK" name="allMSC">
                 <label class="form-check-label v-m" for="materialUncheckedK" style="height: 1rem;"></label>
@@ -502,17 +476,17 @@
 
         </div>
 
-          <div class="table-responsive px-4">
+          <div class="table-responsive">
             <form #form2=ngForm (submit)="saveMSC()">
               <table class="table table-borderless">
                 <tr *ngIf="allMSC" class="row mx-0 no-change">
                   <td class="col-lg-4">
                     <p class="noWrap">Super Merchant ID:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
                   </td>
                   <td class="col-lg-4">
                     <p class="noWrap">Sub Merchant MSC Fee:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="sub_msc">
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="sub_msc">
                   </td>
                   <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
@@ -524,11 +498,11 @@
                 <tr *ngIf="!allMSC" class="row mx-0 no-change">
                   <td class="col-lg-4">
                     <p class="noWrap">Sub Merchant ID:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="sub_merchant_code">
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="sub_merchant_code">
                   </td>
                   <td class="col-lg-4">
                     <p class="noWrap">Sub Merchant MSC Fee:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number"  [(ngModel)]="sub_msc">
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number"  [(ngModel)]="sub_msc">
                   </td>
                   <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                     <button class="btn btn-sm btn-uc waves-light mt-1-2"
@@ -540,23 +514,29 @@
             </form>
           </div>
 
-          <div class="p-4">
+        </div>
+
+
+        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
+        'mb-4 mt-0 pt-4 px-4': true}">
+
+          <div class="col-padding">
             <h5><strong>Settlement Time Configuration</strong></h5>
             <span class="text-danger">{{errorMSCSuper}}</span>
           </div>
 
-          <div class="table-responsive px-4">
+          <div class="table-responsive pt-4">
             <form #form2=ngForm (submit)="saveMSC()">
               <table class="table table-borderless">
-                <tr *ngIf="allMSC" class="row mx-0 no-change">
+                <tr class="row mx-0 no-change">
                   <td class="col-lg-4">
                     <p class="noWrap">Super Merchant ID:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
                   </td>
                   <td class="col-lg-4">
                     <p class="noWrap">Settlement Time:</p>
                     
-                      <input type="time" id="input" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)] ="sub_time">
+                      <input type="time" id="input" class="form-control no-change" [ngModelOptions]="{standalone: true}" [(ngModel)] ="sub_time">
                    
                   </td>
                   <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
@@ -566,22 +546,7 @@
                   </td>
                 </tr>
 
-                <tr *ngIf="!allMSC" class="row mx-0 no-change">
-                  <td class="col-lg-4">
-                    <p class="noWrap">Sub Merchant ID:</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="sub_merchant_code">
-                  </td>
-                  <td class="col-lg-4">
-                    <p class="noWrap">Sub Merchant Time:</p>
-                    <input type="time" id="input" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)] ="sub_time">
-                    
-                  </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
-                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
-                      [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
-                        [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
-                  </td>
-                </tr>
+
               </table>
             </form>
           </div>
@@ -591,18 +556,20 @@
       </div>
     </div>
   </mdb-tab>
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Settlement Switch">
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Settlement Switch"> -->
+    <mdb-tab heading="Settlement Switch">
     <div class="row">
       <div class="col-12 p-0">
         <section>
           <!--Top Table UI-->
           <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
-          'mt-0 pt-4': true}">
-            <div class="px-4">
-              <h5><strong>Settlement Switch Configuration</strong></h5>
-            </div>
+          'mt-0 py-4': true}">
+             <div class="col-padding pb-4">
+            <h5><strong class="px-3">Settlement Switch Configuration</strong></h5>
+            <span class="text-danger">{{errorMSCSuper}}</span>
+          </div>
 
-            <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'">
+            <mdb-tabset #staticTabs [buttonClass]="'md-tabs tabs-4 mb-2'" class="sub-tab">
               <mdb-tab heading="New Switch Configuation">
                 <span class="text-danger">{{errorSwitch}}</span>
 
@@ -610,124 +577,124 @@
                   <form #form=ngForm (submit)="saveSwitch()">
                     <table class="table table-borderless">
                       <tr class="row mx-0 no-change">
-                        <td class="col-lg-3">
+                        <td class="col-lg-3 pt-4">
                           <p>Switch Name:<span class='text-danger'>*</span></p>
-                          <input [disabled]="user" class="form-control my-0 py-0" name="switchName"
+                          <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchName"
                             [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchName" type="text"
                             placeholder="Provide Switch Name">
                         </td>
 
-                        <td class="col-lg-2">
+                        <td class="col-lg-2 pt-4">
                           <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                               title="Row Number where headers start" class="fa fa-question-circle ml-05"
                               aria-hidden="true"></i></p>
-                          <input [disabled]="user" class="form-control my-0 py-0" name="switchStart"
+                          <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchStart"
                             [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchStart"
                             type="number">
                         </td>
 
-                        <td class="col-12">
+                        <td class="col-12 pt-4">
                           <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                          <textarea class="form-control no-change my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
                             ngDefaultControl [(ngModel)]="switchHeaders" placeholder="Seperated by comma"
                             name="switchHeaders" (keyup)="headersArray = splitHeaders(switchHeaders)"></textarea>
 
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='merchantHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='merchantHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='terminalHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='terminalHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='dateHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='dateHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <select [(ngModel)]='rrnHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='rrnHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Merchant Name:</p>
-                          <select [(ngModel)]='nameHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='nameHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Merchant Acct No:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='accountHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='accountHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <select [(ngModel)]='panHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='panHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='transHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='transHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Settlement Amount:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='settlementHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='settlementHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-4">
+                        <td class="col-lg-4 pt-4">
                           <p class="noWrap">Charge:</p>
-                          <select [(ngModel)]='chargeHeader' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='chargeHeader' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArray" [value]="header">{{header}}</option>
                           </select>
                         </td>
 
-                        <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
+                        <td class="col-lg-1 col-sm-2 pt-4" *ngIf='admin || super || isSuperMerchant'>
                           <button class="btn btn-sm btn-uc waves-light mt-1-2"
                             [disabled]="switchSaving==true">{{switchSaving? 'Saving' : 'Save' }}<i class="fa "
                               [ngClass]="{'spinner-border spinner-border-sm':switchSaving==true}"></i></button>
@@ -737,7 +704,7 @@
                   </form>
                 </div>
 
-                <span>NB:(<span class="text-danger">*</span>) required field</span>
+                <span class="col-lg-12">NB:(<span class="text-danger">*</span>) required field</span>
               </mdb-tab>
               <mdb-tab heading="Edit Switch Configuation">
                 <span class="text-danger">{{errorSwitchEdit}}</span>
@@ -745,120 +712,120 @@
                 <div class="table-responsive">
                   <table class="table table-borderless">
                     <tr class="row mx-0 no-change">
-                      <td class="col-lg-3">
+                      <td class="col-lg-3 pt-4">
                         <p>Switch Name:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]="switchNameEdit" class="browser-default custom-select d-block"
+                        <select [(ngModel)]="switchNameEdit" class="browser-default custom-select no-change d-block"
                           (change)="getSwitchDetails(switchNameEdit);headersArrayEdit = splitHeaders(switchHeadersEdit)">
                           <option value="" selected>Select switch</option>
                           <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-2">
+                      <td class="col-lg-2 pt-4">
                         <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                             title="Row Number where headers start" class="fa fa-question-circle ml-05"
                             aria-hidden="true"></i></p>
-                        <input [disabled]="user" class="form-control my-0 py-0" name="switchStartEdit" ngDefaultControl
+                        <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchStartEdit" ngDefaultControl
                           [(ngModel)]="switchStartEdit" type="number">
                       </td>
 
-                      <td class="col-12">
+                      <td class="col-12 pt-4">
                         <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <textarea class="form-control my-0 py-0" rows="5" ngDefaultControl
+                        <textarea class="form-control no-change my-0 py-0" rows="5" ngDefaultControl
                           [(ngModel)]="switchHeadersEdit" placeholder="Seperated by comma" name="switchHeaders"
                           (keyup)="headersArrayEdit = splitHeaders(switchHeadersEdit)"></textarea>
 
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='merchantHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='merchantHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='terminalHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='terminalHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='dateHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='dateHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <select [(ngModel)]='rrnHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='rrnHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Merchant Name:</p>
-                        <select [(ngModel)]='nameHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='nameHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Merchant Acct No:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='accountHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='accountHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <select [(ngModel)]='panHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='panHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='transHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='transHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Settlement Amount:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='settlementHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='settlementHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td class="col-lg-4">
+                      <td class="col-lg-4 pt-4">
                         <p class="noWrap">Charge:</p>
-                        <select [(ngModel)]='chargeHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='chargeHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
                       </td>
 
-                      <td *ngIf='admin || super || isSuperMerchant'>
+                      <td *ngIf='admin || super || isSuperMerchant' class="pt-4">
                         <button class="btn btn-sm btn-uc waves-light mt-1-2" (click)="updateSwitch()"
                           [disabled]="switchUpdating==true">{{switchUpdating? 'Updating' : 'Update' }}<i class="fa "
                             [ngClass]="{'spinner-border spinner-border-sm':switchUpdating==true}"></i></button>
                       </td>
-                      <td *ngIf='admin || super || isSuperMerchant'>
+                      <td *ngIf='admin || super || isSuperMerchant' class="pt-4">
                         <button class="btn btn-sm btn-danger waves-light mt-1-2" (click)="deleteSwitch()"
                           [disabled]="switchDeleting==true">{{switchDeleting? 'Deleting' : 'Delete' }}<i class="fa "
                             [ngClass]="{'spinner-border spinner-border-sm':switchDeleting==true}"></i></button>
@@ -868,7 +835,7 @@
                   </table>
                 </div>
 
-                <span>NB:(<span class="text-danger">*</span>) required field</span>
+                <span class="col-lg-12">NB:(<span class="text-danger">*</span>) required field</span>
               </mdb-tab>
             </mdb-tabset>
 
@@ -878,7 +845,7 @@
       </div>
     </div>
   </mdb-tab>
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Dispute Switch">
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Dispute Switch">
     <div class="row">
       <div class="col-12 p-0">
         <section>
@@ -898,7 +865,7 @@
                       <tr class="row mx-0 no-change">
                         <td class="col-lg-3">
                           <p>Switch Name:<span class='text-danger'>*</span></p>
-                          <input [disabled]="user" class="form-control my-0 py-0" name="switchNameDispute"
+                          <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchNameDispute"
                             [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchNameDispute"
                             type="text" placeholder="Provide Switch Name">
                         </td>
@@ -907,7 +874,7 @@
                           <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                               title="Row Number where headers start" class="fa fa-question-circle ml-05"
                               aria-hidden="true"></i></p>
-                          <input [disabled]="user" class="form-control my-0 py-0" name="switchStartDispute"
+                          <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchStartDispute"
                             [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchStartDispute"
                             type="number">
                         </td>
@@ -915,7 +882,7 @@
                         <td class="col-12">
                           <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                          <textarea class="form-control no-change my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
                             ngDefaultControl [(ngModel)]="switchHeadersDispute" placeholder="Seperated by comma"
                             name="switchHeadersDispute"
                             (keyup)="headersArrayDispute = splitHeaders(switchHeadersDispute)"></textarea>
@@ -924,7 +891,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Merchant ID:</p>
-                          <select [(ngModel)]='merchantHeaderDispute' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='merchantHeaderDispute' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
@@ -933,7 +900,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='terminalHeaderDispute' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='terminalHeaderDispute' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
@@ -942,7 +909,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='dateHeaderDispute' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='dateHeaderDispute' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
@@ -952,7 +919,7 @@
                         <td class="col-lg-4">
                           <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <select [(ngModel)]='rrnHeaderDispute' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='rrnHeaderDispute' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
@@ -961,7 +928,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">STAN:</p>
-                          <select [(ngModel)]='stanHeaderDispute' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='stanHeaderDispute' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
@@ -971,7 +938,7 @@
                         <td class="col-lg-4">
                           <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <select [(ngModel)]='panHeaderDispute' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='panHeaderDispute' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
@@ -980,7 +947,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='transHeaderDispute' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='transHeaderDispute' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayDispute" [value]="header">{{header}}</option>
@@ -1008,7 +975,7 @@
                     <tr class="row mx-0 no-change">
                       <td class="col-lg-3">
                         <p>Switch Name:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]="switchNameEditDispute" class="browser-default custom-select d-block"
+                        <select [(ngModel)]="switchNameEditDispute" class="browser-default custom-select no-change d-block"
                           (change)="getDisputeSwitchDetails(switchNameEditDispute);headersArrayEditDispute = splitHeaders(switchHeadersEditDispute)">
                           <option value="" selected>Select switch</option>
                           <option *ngFor="let name of switchesDisputeData" [value]="name.name">{{name.name}}</option>
@@ -1019,14 +986,14 @@
                         <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                             title="Row Number where headers start" class="fa fa-question-circle ml-05"
                             aria-hidden="true"></i></p>
-                        <input [disabled]="user" class="form-control my-0 py-0" name="switchStartEditDispute"
+                        <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchStartEditDispute"
                           ngDefaultControl [(ngModel)]="switchStartEditDispute" type="number">
                       </td>
 
                       <td class="col-12">
                         <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <textarea class="form-control my-0 py-0" rows="5" ngDefaultControl
+                        <textarea class="form-control no-change my-0 py-0" rows="5" ngDefaultControl
                           [(ngModel)]="switchHeadersEditDispute" placeholder="Seperated by comma" name="switchHeaders"
                           (keyup)="headersArrayEditDispute = splitHeaders(switchHeadersEditDispute)"></textarea>
 
@@ -1034,7 +1001,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Merchant ID:</p>
-                        <select [(ngModel)]='merchantHeaderEditDispute' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='merchantHeaderEditDispute' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
                         </select>
@@ -1042,7 +1009,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='terminalHeaderEditDispute' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='terminalHeaderEditDispute' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
                         </select>
@@ -1050,7 +1017,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='dateHeaderEditDispute' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='dateHeaderEditDispute' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
                         </select>
@@ -1059,7 +1026,7 @@
                       <td class="col-lg-4">
                         <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <select [(ngModel)]='rrnHeaderEditDispute' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='rrnHeaderEditDispute' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
                         </select>
@@ -1067,7 +1034,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">STAN:</p>
-                        <select [(ngModel)]='stanHeaderEditDispute' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='stanHeaderEditDispute' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
                         </select>
@@ -1076,7 +1043,7 @@
                       <td class="col-lg-4">
                         <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <select [(ngModel)]='panHeaderEditDispute' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='panHeaderEditDispute' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
                         </select>
@@ -1084,7 +1051,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='transHeaderEditDispute' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='transHeaderEditDispute' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEditDispute" [value]="header">{{header}}</option>
                         </select>
@@ -1116,7 +1083,7 @@
         </section>
       </div>
     </div>
-  </mdb-tab>
+  </mdb-tab> -->
   <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Transaction">
     <div class="row">
       <div class="col-12 p-0">
@@ -1137,7 +1104,7 @@
                       <tr class="row mx-0 no-change">
                         <td class="col-lg-3">
                           <p>Switch Name:<span class='text-danger'>*</span></p>
-                          <input [disabled]="user" class="form-control my-0 py-0" name="switchNameTrans"
+                          <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchNameTrans"
                             [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchNameTrans"
                             type="text" placeholder="Provide Switch Name">
                         </td>
@@ -1146,7 +1113,7 @@
                           <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                               title="Row Number where headers start" class="fa fa-question-circle ml-05"
                               aria-hidden="true"></i></p>
-                          <input [disabled]="user" class="form-control my-0 py-0" name="switchStartTrans"
+                          <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchStartTrans"
                             [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="switchStartTrans"
                             type="number">
                         </td>
@@ -1154,7 +1121,7 @@
                         <td class="col-12">
                           <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                          <textarea class="form-control no-change my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
                             ngDefaultControl [(ngModel)]="switchHeadersTrans" placeholder="Seperated by comma"
                             name="switchHeadersTrans"
                             (keyup)="headersArrayTrans = splitHeaders(switchHeadersTrans)"></textarea>
@@ -1163,7 +1130,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='merchantHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='merchantHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1172,7 +1139,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='terminalHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='terminalHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1181,7 +1148,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='dateHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='dateHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1191,7 +1158,7 @@
                         <td class="col-lg-4">
                           <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <select [(ngModel)]='rrnHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='rrnHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1200,7 +1167,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Merchant Name:</p>
-                          <select [(ngModel)]='nameHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='nameHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1210,7 +1177,7 @@
                         <td class="col-lg-4">
                           <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
                               class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                          <select [(ngModel)]='panHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='panHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1219,7 +1186,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='transHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='transHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1228,7 +1195,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Stan:<span class='text-danger'>*</span></p>
-                          <select [(ngModel)]='stanHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='stanHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1237,7 +1204,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Reason Message:</p>
-                          <select [(ngModel)]='reasonHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='reasonHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1246,7 +1213,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Responce Code:</p>
-                          <select [(ngModel)]='responseHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='responseHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1255,7 +1222,7 @@
 
                         <td class="col-lg-4">
                           <p class="noWrap">Address:</p>
-                          <select [(ngModel)]='addressHeaderTrans' class="browser-default custom-select d-block"
+                          <select [(ngModel)]='addressHeaderTrans' class="browser-default custom-select no-change d-block"
                             [ngModelOptions]="{standalone: true}">
                             <option value="" selected>Select header</option>
                             <option *ngFor="let header of headersArrayTrans" [value]="header">{{header}}</option>
@@ -1282,7 +1249,7 @@
                     <tr class="row mx-0 no-change">
                       <td class="col-lg-3">
                         <p>Switch Name:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]="switchNameEdit" class="browser-default custom-select d-block"
+                        <select [(ngModel)]="switchNameEdit" class="browser-default custom-select no-change d-block"
                           (change)="getSwitchDetails(switchNameEdit);headersArrayEdit = splitHeaders(switchHeadersEdit)">
                           <option value="" selected>Select switch</option>
                           <option *ngFor="let name of switchesData" [value]="name.name">{{name.name}}</option>
@@ -1293,14 +1260,14 @@
                         <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                             title="Row Number where headers start" class="fa fa-question-circle ml-05"
                             aria-hidden="true"></i></p>
-                        <input [disabled]="user" class="form-control my-0 py-0" name="switchStartEdit" ngDefaultControl
+                        <input [disabled]="user" class="form-control no-change my-0 py-0" name="switchStartEdit" ngDefaultControl
                           [(ngModel)]="switchStartEdit" type="number">
                       </td>
 
                       <td class="col-12">
                         <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <textarea class="form-control my-0 py-0" rows="5" ngDefaultControl
+                        <textarea class="form-control no-change my-0 py-0" rows="5" ngDefaultControl
                           [(ngModel)]="switchHeadersEdit" placeholder="Seperated by comma" name="switchHeaders"
                           (keyup)="headersArrayEdit = splitHeaders(switchHeadersEdit)"></textarea>
 
@@ -1308,7 +1275,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='merchantHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='merchantHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1316,7 +1283,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='terminalHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='terminalHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1324,7 +1291,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Transaction Date:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='dateHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='dateHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1333,7 +1300,7 @@
                       <td class="col-lg-4">
                         <p class="noWrap">RRN:<span class='text-danger'>*</span><i title="Retrieval Reference Number"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <select [(ngModel)]='rrnHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='rrnHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1341,7 +1308,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Merchant Name:</p>
-                        <select [(ngModel)]='nameHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='nameHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1349,7 +1316,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Merchant Acct No:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='accountHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='accountHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1358,7 +1325,7 @@
                       <td class="col-lg-4">
                         <p class="noWrap">PAN:<span class='text-danger'>*</span><i title="Card PAN/Number"
                             class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                        <select [(ngModel)]='panHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='panHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1366,7 +1333,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Transaction Amount:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='transHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='transHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1374,7 +1341,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Settlement Amount:<span class='text-danger'>*</span></p>
-                        <select [(ngModel)]='settlementHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='settlementHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1382,7 +1349,7 @@
 
                       <td class="col-lg-4">
                         <p class="noWrap">Charge:</p>
-                        <select [(ngModel)]='chargeHeaderEdit' class="browser-default custom-select d-block">
+                        <select [(ngModel)]='chargeHeaderEdit' class="browser-default custom-select no-change d-block">
                           <option value="" selected>Select header</option>
                           <option *ngFor="let header of headersArrayEdit" [value]="header">{{header}}</option>
                         </select>
@@ -1413,7 +1380,7 @@
       </div>
     </div>
   </mdb-tab> -->
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> POS Analysis">
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> POS Analysis">
     <div class="row">
       <div class="col-12 p-0">
         <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
@@ -1430,7 +1397,7 @@
                 <tr class="row mx-0 no-change">
                   <td class="col-lg-6">
                     <p class="noWrap">Less Than or Equal To (%):</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
                       max="99" placeholder="%" [(ngModel)]="bLess">
                   </td>
                   <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
@@ -1458,7 +1425,7 @@
                 <tr class="row mx-0 no-change">
                   <td class="col-lg-6">
                     <p class="noWrap">Less Than or Equal To (%):</p>
-                    <input class="form-control my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
+                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" min="1"
                       max="99" placeholder="%" [(ngModel)]="nLess">
                   </td>
                   <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
@@ -1473,8 +1440,8 @@
         </div>
       </div>
     </div>
-  </mdb-tab>
-  <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Terminal">
+  </mdb-tab> -->
+  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Terminal">
     <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
     'mt-0 pt-4 px-4': true}">
       <div>
@@ -1491,7 +1458,7 @@
         <div class="col-lg-3 col-sm-4 p-0 mb-3 pl-1">
           <p>Terminal File Name:</p>
           <select [disabled]="isUploading || !fileModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="fileType"
-            class="browser-default custom-select d-block">
+            class="browser-default custom-select no-change d-block">
             <option value="" selected>Select Terminal File Name</option>
             <option *ngFor="let name of terminalFilesData" [value]="name.name">{{name.name}}</option>
           </select>
@@ -1524,7 +1491,7 @@
                 <tr class="row mx-0 no-change">
                   <td class="col-lg-3">
                     <p>Terminal File Name:<span class='text-danger'>*</span></p>
-                    <input [disabled]="user" class="form-control my-0 py-0" name="terminalFile"
+                    <input [disabled]="user" class="form-control no-change my-0 py-0" name="terminalFile"
                       [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="terminalFile" type="text"
                       placeholder="Merchant File Name">
                   </td>
@@ -1533,7 +1500,7 @@
                     <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                         title="Row Number where headers start" class="fa fa-question-circle ml-05"
                         aria-hidden="true"></i></p>
-                    <input [disabled]="user" class="form-control my-0 py-0" name="terminalFileStart"
+                    <input [disabled]="user" class="form-control no-change my-0 py-0" name="terminalFileStart"
                       [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="terminalFileStart"
                       type="number">
                   </td>
@@ -1541,7 +1508,7 @@
                   <td class="col-12">
                     <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                         class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                    <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                    <textarea class="form-control no-change my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
                       ngDefaultControl [(ngModel)]="terminalFileHeaders" placeholder="Seperated by comma"
                       name="terminalFileHeaders"
                       (keyup)="terminalFileHeadersArray = splitHeaders(terminalFileHeaders)"></textarea>
@@ -1550,7 +1517,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='merchantHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='merchantHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1559,7 +1526,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Merchant Name:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='nameHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='nameHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1568,7 +1535,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='terminalHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='terminalHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1577,7 +1544,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Contact:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='contactHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='contactHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1586,7 +1553,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Phone:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='phoneHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='phoneHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1595,7 +1562,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Email:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='emailHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='emailHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1604,7 +1571,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Address:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='addressHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='addressHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1613,7 +1580,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Account No:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='accountHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='accountHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1622,7 +1589,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Account Name:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='accountNameHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='accountNameHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1631,7 +1598,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">PTSP:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='ptspHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='ptspHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1640,7 +1607,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Device Type:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='dTypeHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='dTypeHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1649,7 +1616,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Device Name:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='dNameHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='dNameHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1658,7 +1625,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Device Serial:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='dSerialHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='dSerialHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1667,7 +1634,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">App Name:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='appNameHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='appNameHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1676,7 +1643,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">App Version:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='appVersionHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='appVersionHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1685,7 +1652,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Network Type:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='networkHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='networkHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1694,7 +1661,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Bank Code:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='bankCodeHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='bankCodeHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1703,7 +1670,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Bank Branch:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='branchHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='branchHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1712,7 +1679,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">MCC:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='mccHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='mccHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1721,7 +1688,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">State Code:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='stateCodeHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='stateCodeHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1730,7 +1697,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">LGA:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='lgaHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='lgaHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1739,7 +1706,7 @@
 
                   <td class="col-lg-4">
                     <p class="noWrap">Category:<span class='text-danger'>*</span></p>
-                    <select [(ngModel)]='categoryHeaderTerminalFile' class="browser-default custom-select d-block"
+                    <select [(ngModel)]='categoryHeaderTerminalFile' class="browser-default custom-select no-change d-block"
                       [ngModelOptions]="{standalone: true}">
                       <option value="" selected>Select header</option>
                       <option *ngFor="let header of terminalFileHeadersArray" [value]="header">{{header}}</option>
@@ -1766,7 +1733,7 @@
               <tr class="row mx-0 no-change">
                 <td class="col-lg-3">
                   <p>Terminal File Name:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]="terminalFileEdit" class="browser-default custom-select d-block"
+                  <select [(ngModel)]="terminalFileEdit" class="browser-default custom-select no-change d-block"
                     (change)="getTerminalsDetails(terminalFileEdit);terminalFileHeadersArrayEdit = splitHeaders(terminalFileHeadersEdit)">
                     <option value="" selected>Select Terminal File Name</option>
                     <option *ngFor="let name of terminalFilesData" [value]="name.name">{{name.name}}</option>
@@ -1777,7 +1744,7 @@
                   <p class="noWrap">Header Row No:<span class='text-danger'>*</span><i
                       title="Row Number where headers start" class="fa fa-question-circle ml-05" aria-hidden="true"></i>
                   </p>
-                  <input [disabled]="user" class="form-control my-0 py-0" name="terminalFileStartEdit"
+                  <input [disabled]="user" class="form-control no-change my-0 py-0" name="terminalFileStartEdit"
                     [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="terminalFileStartEdit"
                     type="number">
                 </td>
@@ -1785,7 +1752,7 @@
                 <td class="col-12">
                   <p>Headers:<span class='text-danger'>*</span><i title="Headers available in file"
                       class="fa fa-question-circle ml-05" aria-hidden="true"></i></p>
-                  <textarea class="form-control my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
+                  <textarea class="form-control no-change my-0 py-0" rows="5" [ngModelOptions]="{standalone: true}"
                     ngDefaultControl [(ngModel)]="terminalFileHeadersEdit" placeholder="Seperated by comma"
                     name="terminalFileHeadersEdit"
                     (keyup)="terminalFileHeadersArrayEdit = splitHeaders(terminalFileHeadersEdit)"></textarea>
@@ -1794,7 +1761,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Merchant ID:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='merchantHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='merchantHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1803,7 +1770,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Merchant Name:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='nameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='nameHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1812,7 +1779,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Terminal ID:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='terminalHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='terminalHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1821,7 +1788,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Contact:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='contactHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='contactHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1830,7 +1797,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Phone:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='phoneHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='phoneHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1839,7 +1806,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Email:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='emailHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='emailHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1848,7 +1815,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Address:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='addressHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='addressHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1857,7 +1824,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Account No:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='accountHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='accountHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1866,7 +1833,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Account Name:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='accountNameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='accountNameHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1875,7 +1842,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">PTSP:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='ptspHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='ptspHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1884,7 +1851,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Device Type:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='dTypeHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='dTypeHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1893,7 +1860,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Device Name:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='dNameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='dNameHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1902,7 +1869,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Device Serial:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='dSerialHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='dSerialHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1911,7 +1878,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">App Name:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='appNameHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='appNameHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1920,7 +1887,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">App Version:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='appVersionHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='appVersionHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1929,7 +1896,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Network Type:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='networkHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='networkHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1938,7 +1905,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Bank Code:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='bankCodeHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='bankCodeHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1947,7 +1914,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Bank Branch:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='branchHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='branchHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1956,7 +1923,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">MCC:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='mccHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='mccHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1965,7 +1932,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">State Code:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='stateCodeHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='stateCodeHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1974,7 +1941,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">LGA:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='lgaHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='lgaHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -1983,7 +1950,7 @@
 
                 <td class="col-lg-4">
                   <p class="noWrap">Category:<span class='text-danger'>*</span></p>
-                  <select [(ngModel)]='categoryHeaderTerminalFileEdit' class="browser-default custom-select d-block"
+                  <select [(ngModel)]='categoryHeaderTerminalFileEdit' class="browser-default custom-select no-change d-block"
                     [ngModelOptions]="{standalone: true}">
                     <option value="" selected>Select header</option>
                     <option *ngFor="let header of terminalFileHeadersArrayEdit" [value]="header">{{header}}</option>
@@ -2009,7 +1976,7 @@
         </mdb-tab>
       </mdb-tabset>
     </div>
-  </mdb-tab>
+  </mdb-tab> -->
 </mdb-tabset>
 
 <div mdbModal #frame="mdbModal" class="modal fade" style=" overflow: auto" id="frameModalTop" tabindex="-1"

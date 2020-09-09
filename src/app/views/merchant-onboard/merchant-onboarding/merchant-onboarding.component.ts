@@ -101,6 +101,9 @@ export class MerchantOnboardingComponent implements OnInit  {
   isView: boolean;
   isSub: boolean;
 
+  error = true;
+  errors: any = {};
+
 
   constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService, private toast: ToastService) {
     this.merchantU = false;
@@ -190,6 +193,10 @@ export class MerchantOnboardingComponent implements OnInit  {
 
 
   clear(){
+    this.error = false;
+    this.errors = {}
+    this.same_account_details = false;
+
     this.superMerchant = undefined;
     this.firstname = '';
     this.lastname = '';
@@ -223,15 +230,210 @@ export class MerchantOnboardingComponent implements OnInit  {
   }
 
 
-  check(){ 
+  check(type?){ 
+
+    if(type == 'check'){
+      if(this.errors.sub_account_number){
+        this.errors.sub_account_number = ""
+      }
+
+      if(this.errors.sub_bank_code){
+        this.errors.sub_bank_code = ""
+      }
+      
+      if(this.errors.sub_bvn){
+        this.errors.sub_bvn = ""
+      }
+
+      return
+    }
+
+
+    const isPhone = /^(0|234|\+234)[0-9]{10}$/
+    const isEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    const isName = /^[a-zA-Z]+$/
+    const isNumber = /^[0-9]*$/
     // this will check user input
+
+    this.error = false;
+
+    if(this.superMerchant){
+
+      this.errors = {
+
+        email: !this.email ? "Email is required" : "",
+          mobile: !this.mobile_number ? "Mobile is required" : "",
+          firstname: !this.firstname ? "First Name is required" : "",
+          lastname: !this.lastname ? "Last Name is required" : "",
+          password: !this.password ? "Password is required" : "",
+          businessname: !this.business_name ? "Business Name is required" : "",
+          address: !this.address ? "Address is required" : "",
+          state: !this.state ? "State is required" : "",
+          bank_code: !this.bank_code ? "Bank Code is required" : "",
+          account_number: !this.account_number ? "Account Number is required" : "",
+          bvn: !this.bvn ? "BVN is required" : "",
+
+      }
+
+      if (!this.errors.mobile && !isPhone.test(this.mobile_number)) {
+        this.errors.mobile = 'Invalid Phone Format'
+        this.error = true
+      }
+
+      if (!this.errors.email && !isEmail.test(this.email)) {
+        this.errors.email = 'Invalid Email Format'
+        this.error = true
+      }
+
+      if (!this.errors.firstname && !isName.test(this.firstname)) {
+        this.errors.firstname = 'Invalid Name Format'
+        this.error = true
+      }
+
+      if (!this.errors.lastname && !isName.test(this.lastname)) {
+        this.errors.lastname = 'Invalid Name Format'
+        this.error = true
+      }
+
+      if (!this.errors.account_number && !isNumber.test(this.account_number)) {
+        this.errors.account_number = 'Invalid Account Format'
+        this.error = true
+      }
+
+      if(!this.email) this.error = true
+      if(!this.mobile_number) this.error = true
+      if(!this.firstname) this.error = true
+      if(!this.lastname) this.error = true
+      if(!this.password) this.error = true
+      if(!this.business_name) this.error = true
+      if(!this.address) this.error = true
+      if(!this.state) this.error = true
+      if(!this.bank_code) this.error = true
+      if(!this.account_number) this.error = true
+      if(!this.bvn) this.error = true
+
+    } else if(!this.superMerchant) {
+
+      if(this.same_account_details){
+
+        this.errors = {
+
+          sub_email: !this.sub_email ? "Email is required" : "",
+          sub_mobile: !this.sub_mobile_number ? "Mobile is required" : "",
+          sub_firstname: !this.sub_firstname ? "First Name is required" : "",
+          sub_lastname: !this.sub_lastname ? "Last Name is required" : "",
+          sub_password: !this.sub_password ? "Password is required" : "",
+          sub_businessname: !this.sub_business_name ? "Business Name is required" : "",
+          sub_address: !this.sub_address ? "Address is required" : "",
+          sub_state: !this.sub_state ? "State is required" : "",
+          superMerchantCode: !this.superMerchantCode ? "Super Merchant Code is required" : ""
+  
+        }
+
+        if (!this.errors.sub_mobile && !isPhone.test(this.sub_mobile_number)) {
+          this.errors.sub_mobile = 'Invalid Phone Format'
+          this.error = true
+        }
+
+        if (!this.errors.sub_email && !isEmail.test(this.sub_email)) {
+          this.errors.sub_email = 'Invalid Email Format'
+          this.error = true
+        }
+
+        if (!this.errors.sub_firstname && !isName.test(this.sub_firstname)) {
+          this.errors.sub_firstname = 'Invalid Name Format'
+          this.error = true
+        }
+
+        if (!this.errors.sub_lastname && !isName.test(this.sub_lastname)) {
+          this.errors.sub_lastname = 'Invalid Name Format'
+          this.error = true
+        }
+
+
+
+      if(!this.sub_email) this.error = true
+      if(!this.sub_mobile_number) this.error = true
+      if(!this.sub_firstname) this.error = true
+      if(!this.sub_lastname) this.error = true
+      if(!this.sub_password) this.error = true
+      if(!this.sub_business_name) this.error = true
+      if(!this.sub_address) this.error = true
+      if(!this.sub_state) this.error = true
+      if(!this.superMerchantCode) this.error = true
+
+      } else {
+
+        this.errors = {
+
+          sub_email: !!this.sub_email ? "Email is required" : "",
+          sub_mobile: !this.sub_mobile_number ? "Mobile is required" : "",
+          sub_firstname: !this.sub_firstname ? "First Name is required" : "",
+          sub_lastname: !this.sub_lastname ? "Last Name is required" : "",
+          sub_password: !this.sub_password ? "Password is required" : "",
+          sub_businessname: !this.sub_business_name ? "Business Name is required" : "",
+          sub_address: !this.sub_address ? "Address is required" : "",
+          sub_state: !this.sub_state ? "State is required" : "",
+          sub_bank_code: !this.sub_bank_code ? "Bank Code is required" : "",
+          sub_account_number: !this.sub_account_number ? "Account Number is required" : "",
+          sub_bvn: !this.sub_bvn ? "BVN is required" : "",
+          superMerchantCode: !this.superMerchantCode ? "Super Merchant Code is required" : ""
+        }
+
+        if (!this.errors.sub_mobile && !isPhone.test(this.sub_mobile_number)) {
+          this.errors.sub_mobile = 'Invalid Phone Format'
+          this.error = true
+        }
+
+        if (!this.errors.sub_email && !isEmail.test(this.sub_email)) {
+          this.errors.sub_email = 'Invalid Email Format'
+          this.error = true
+        }
+
+        if (!this.errors.sub_firstname && !isName.test(this.sub_firstname)) {
+          this.errors.sub_firstname = 'Invalid Name Format'
+          this.error = true
+        }
+
+        if (!this.errors.sub_lastname && !isName.test(this.sub_lastname)) {
+          this.errors.sub_lastname = 'Invalid Name Format'
+          this.error = true
+        }
+
+        if (!this.errors.sub_account_number && !isNumber.test(this.sub_account_number)) {
+          this.errors.sub_account_number = 'Invalid Account Format'
+          this.error = true
+        }
+
+        if(!this.sub_email) this.error = true
+        if(!this.sub_mobile_number) this.error = true
+        if(!this.sub_firstname) this.error = true
+        if(!this.sub_lastname) this.error = true
+        if(!this.sub_password) this.error = true
+        if(!this.sub_business_name) this.error = true
+        if(!this.sub_address) this.error = true
+        if(!this.sub_state) this.error = true
+        if(!this.sub_bank_code) this.error = true
+        if(!this.sub_account_number) this.error = true
+        if(!this.sub_bvn) this.error = true
+        if(!this.superMerchantCode) this.error = true
+      }
+
+    }
+
   }
 
   saveMerchant(){
-    if(this.superMerchant){
-      // this.check()
+    this.check()
 
-      // if(this.error) return;
+    if(this.error){
+      this.toast.error('Please Check Errors')
+      return;
+    }
+
+
+    if(this.superMerchant){
+     
       const check = confirm('Do you wish to save this Super Merchant?');
       if (!check) return;
 

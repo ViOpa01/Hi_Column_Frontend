@@ -27,13 +27,13 @@
                     <ul class="collapsible collapsible-accordion">
                         <mdb-squeezebox [multiple]="false" aria-multiselectable="false">
 
-                            <mdb-item *ngIf='admin || super || user || merchant' class="no-collase">
+                            <!-- <mdb-item *ngIf='admin || super || user || merchant' class="no-collase">
                                 <mdb-item-head routerLinkActive="active" routerLink="dashboard"> Dashboard
                                 </mdb-item-head>
                                 <mdb-item-body>
 
                                 </mdb-item-body>
-                            </mdb-item>
+                            </mdb-item> -->
                             <mdb-item *ngIf='admin || super || isSuperMerchant' class="no-collase">
                                 <mdb-item-head routerLinkActive="active" routerLink="onboarding"> Onboard Merchant
                                 </mdb-item-head>

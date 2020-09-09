@@ -1,0 +1,12 @@
+.form-control.no-change:disabled {
+    background-color: #e9ecef !important;
+    opacity: 1;
+  }
+
+  .form-control.no-change:not(disabled) {
+    background-color: #f8f9fa !important;
+  }
+  
+  .custom-select.no-change{
+    border: 1px solid #ced4da !important;
+}

@@ -2,9 +2,9 @@
     <div class="row">
         <div class="ml-2 px-4 pb-4 col-lg-12 d-flex">
             <h6 class="header-style">{{(isSub)? name : 'Merchant List'}}</h6>
-          
-          <button *ngIf="isSub" type="button" class="close" aria-label="Close" (click)="getMerchants()"
-          mdbWavesEffect>x</button>
+
+            <button *ngIf="isSub" type="button" class="close" aria-label="Close" (click)="getMerchants()"
+                mdbWavesEffect>x</button>
         </div>
     </div>
 
@@ -77,8 +77,8 @@
                 </td>
 
                 <td class="col-lg-1 col-sm-2">
-                    <button type="button" class="btn btn-ud btn-sm waves-light" (click)="isEdit = false; clear(); superMerchant = true; onboardModal.show();"
-                        mdbWavesEffect>
+                    <button type="button" class="btn btn-ud btn-sm waves-light"
+                        (click)="isEdit = false; clear(); superMerchant = true; onboardModal.show();" mdbWavesEffect>
                         <mdb-icon fas icon="plus"></mdb-icon> Add Merchant
                     </button>
 
@@ -197,7 +197,9 @@
                                     <p (click)="superMerchant = row.isSuperMerchant; isEdit = true; clear(); onboardModal.show()"
                                         class="dropdown-item">Edit</p>
                                     <p (click)="setDetails(row)" class="dropdown-item">Details</p>
-                                    <p *ngIf="super && !isSub" (click)="getMerchants(row.merchantcode); setName(row.bio.businessname)" class="dropdown-item">View</p>
+                                    <p *ngIf="super && !isSub"
+                                        (click)="getMerchants(row.merchantcode); setName(row.bio.businessname)"
+                                        class="dropdown-item">View</p>
                                 </div>
                             </div>
 
@@ -273,11 +275,13 @@
                             <p>First Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="firstname" [name]="firstname" type="text" />
+                            <span *ngIf="errors.firstname" class="text-danger error-style">{{errors.firstname}}</span>
                         </div>
                         <div class="col-lg-6">
                             <p>Last Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="lastname" [name]="lastname" type="text" />
+                            <span *ngIf="errors.lastname" class="text-danger error-style">{{errors.lastname}}</span>
                         </div>
                     </div>
 
@@ -286,25 +290,30 @@
                             <p>Merchant Business Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="business_name" [name]="business_name" type="text" />
+                            <span *ngIf="errors.businessname"
+                                class="text-danger error-style">{{errors.businessname}}</span>
                         </div>
                         <div class="col-lg-6">
                             <p>Mobile Number</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="mobile_number" [name]="mobile_number" type="phone" />
+                            <span *ngIf="errors.mobile" class="text-danger error-style">{{errors.mobile}}</span>
                         </div>
                     </div>
 
                     <div class="row pt-4">
-                       
+
                         <div class="col-lg-6">
                             <p>Email</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="email" [name]="email" type="email" />
+                            <span *ngIf="errors.email" class="text-danger error-style">{{errors.email}}</span>
                         </div>
                         <div class="col-lg-6">
                             <p>Password</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="password" [name]="password" type="password" />
+                            <span *ngIf="errors.password" class="text-danger error-style">{{errors.password}}</span>
                         </div>
 
                     </div>
@@ -314,12 +323,14 @@
                             <p>Bank Code</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="bank_code" [name]="bank_code" type="text" />
+                            <span *ngIf="errors.bank_code" class="text-danger error-style">{{errors.bank_code}}</span>
                         </div>
                         <div class="col-lg-6">
                             <p>Account Number</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="account_number" [name]="account_number" type="text" />
-
+                            <span *ngIf="errors.account_number"
+                                class="text-danger error-style">{{errors.account_number}}</span>
                         </div>
 
                     </div>
@@ -329,16 +340,19 @@
                             <p>Address</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="address" [name]="address" type="text" />
+                            <span *ngIf="errors.address" class="text-danger error-style">{{errors.address}}</span>
                         </div>
                         <div class="col-lg-2">
                             <p>State</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="state" [name]="state" type="text" />
+                            <span *ngIf="errors.state" class="text-danger error-style">{{errors.state}}</span>
                         </div>
                         <div class="col-lg-5">
                             <p>BVN</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="bvn" [name]="bvn" type="text" />
+                            <span *ngIf="errors.bvn" class="text-danger error-style">{{errors.bvn}}</span>
                         </div>
 
                     </div>
@@ -346,31 +360,36 @@
 
                 <div *ngIf="!superMerchant" class="onboard-style">
 
-                    <div  *ngIf="!isEdit" class="pt-5 col-lg-6">
-                    <p>Bulk Upload</p>
-                    <form #form = ngForm>
-                        
-                       
-                        <div class="file-path-wrapper pt-2">
-                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="fileModel" [disabled]="uploading" type="file"
-                              (change)="checkFile($event);" />
-                          </div>
+                    <div *ngIf="!isEdit" class="pt-5 col-lg-6">
+                        <p>Bulk Upload</p>
+                        <form #form=ngForm>
 
-                        <div class="py-2">
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="superMerchantCode2" placeholder="Super Merchant Code" [name]="superMerchantCode1"
-                                type="text" />
-                        </div>
 
-                       
-                        
-                        <div class="pb-2">
-                            <mdb-progress class="mb-3" *ngIf="uploadPercent >= 0" value="{{uploadPercent}}" min="0" max="100" type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100">{{uploadPercent}}%</mdb-progress>
-                            
-                            <button class="btn btn-ud btn-sm" [disabled]="isUploading || !fileModel || !superMerchantCode2" (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i class="fa "
-                              [ngClass]="{'spinner-border spinner-border-sm':isUploading==true}"></i></button>
-                        </div>
-                    </form>
+                            <div class="file-path-wrapper pt-2">
+                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="fileModel"
+                                    [disabled]="uploading" type="file" (change)="checkFile($event);" />
+                            </div>
+
+                            <div class="py-2">
+                                <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                    ngDefaultControl [(ngModel)]="superMerchantCode2" placeholder="Super Merchant Code"
+                                    [name]="superMerchantCode1" type="text" />
+                            </div>
+
+
+
+                            <div class="pb-2">
+                                <mdb-progress class="mb-3" *ngIf="uploadPercent >= 0" value="{{uploadPercent}}" min="0"
+                                    max="100" type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0"
+                                    aria-valuemax="100">{{uploadPercent}}%</mdb-progress>
+
+                                <button class="btn btn-ud btn-sm"
+                                    [disabled]="isUploading || !fileModel || !superMerchantCode2"
+                                    (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i
+                                        class="fa "
+                                        [ngClass]="{'spinner-border spinner-border-sm':isUploading==true}"></i></button>
+                            </div>
+                        </form>
 
                     </div>
 
@@ -379,11 +398,15 @@
                             <p>First Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_firstname" [name]="sub_firstname" type="text" />
+                            <span *ngIf="errors.sub_firstname"
+                                class="text-danger error-style">{{errors.sub_firstname}}</span>
                         </div>
                         <div class="col-lg-6">
                             <p>Last Name</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_lastname" [name]="sub_lastname" type="text" />
+                            <span *ngIf="errors.sub_lastname"
+                                class="text-danger error-style">{{errors.sub_lastname}}</span>
                         </div>
                     </div>
 
@@ -393,35 +416,44 @@
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_business_name" [name]="sub_business_name"
                                 type="text" />
+                            <span *ngIf="errors.sub_businessname"
+                                class="text-danger error-style">{{errors.sub_businessname}}</span>
                         </div>
                         <div class="col-lg-6">
                             <p>Mobile Number</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_mobile_number" [name]="sub_mobile_number"
                                 type="phone" />
+
+                            <span *ngIf="errors.sub_mobile" class="text-danger error-style">{{errors.sub_mobile}}</span>
                         </div>
-                        
+
                     </div>
 
                     <div class="row pt-4">
-                       <div class="col-lg-6">
+                        <div class="col-lg-6">
                             <p>Email</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_email" [name]="sub_email" type="email" />
+                            <span *ngIf="errors.sub_email" class="text-danger error-style">{{errors.sub_email}}</span>
                         </div>
                         <div class="col-lg-6">
                             <p>Password</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="sub_password" [name]="sub_password" type="password" />
+                            <span *ngIf="errors.sub_password"
+                                class="text-danger error-style">{{errors.sub_password}}</span>
                         </div>
-                        
+
                     </div>
                     <div class="row pt-4">
                         <div class="col-lg-12 text-right">
-                             <mdb-checkbox [(ngModel)]="same_account_details" name="templateChecked">Account details same as Super Merchant</mdb-checkbox>
-                         </div>
-                         
-                     </div>
+                            <mdb-checkbox [(ngModel)]="same_account_details" (click)="check('check')"
+                                name="templateChecked">Account details same
+                                as Super Merchant</mdb-checkbox>
+                        </div>
+
+                    </div>
 
                     <div class="row pt-4">
                         <div class="col-lg-5">
@@ -429,52 +461,69 @@
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="superMerchantCode" [name]="superMerchantCode"
                                 type="text" />
+                            <span *ngIf="errors.superMerchantCode"
+                                class="text-danger error-style">{{errors.superMerchantCode}}</span>
                         </div>
 
                         <div class="col-lg-2">
-                            <p>Bank Code</p>
-                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_bank_code" [name]="sub_bank_code" type="text" />
+                            <p>State</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_state" [name]="sub_state" type="text" />
+                            <span *ngIf="errors.sub_state" class="text-danger error-style">{{errors.sub_state}}</span>
                         </div>
+
                         <div class="col-lg-5">
-                            <p>Account Number</p>
-                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_account_number" [name]="sub_account_number"
-                                type="text" />
+                            <p>Address</p>
+                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_address" [name]="sub_address" type="text" />
+                            <span *ngIf="errors.sub_address"
+                                class="text-danger error-style">{{errors.sub_address}}</span>
                         </div>
 
                     </div>
 
                     <div class="row pt-4">
+
                         <div class="col-lg-5">
-                            <p>Address</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_address" [name]="sub_address" type="text" />
+                            <p>Account Number</p>
+                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
+                                [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="sub_account_number"
+                                [name]="sub_account_number" type="text" />
+                            <span *ngIf="errors.sub_account_number"
+                                class="text-danger error-style">{{errors.sub_account_number}}</span>
                         </div>
+
                         <div class="col-lg-2">
-                            <p>State</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_state" [name]="sub_state" type="text" />
+                            <p>Bank Code</p>
+                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
+                                [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="sub_bank_code"
+                                [name]="sub_bank_code" type="text" />
+                            <span *ngIf="errors.sub_bank_code"
+                                class="text-danger error-style">{{errors.sub_bank_code}}</span>
                         </div>
+
                         <div class="col-lg-5">
                             <p>BVN</p>
-                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_bvn" [name]="sub_bvn" type="text" />
+                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
+                                [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="sub_bvn"
+                                [name]="sub_bvn" type="text" />
+                            <span *ngIf="errors.sub_bvn" class="text-danger error-style">{{errors.sub_bvn}}</span>
                         </div>
 
+
                     </div>
+
                 </div>
 
-            </div>
 
-
-            <!--Footer-->
-            <div class="modal-footer2 row" style="justify-content: center;">
-                <button type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
-                    (click)="saveMerchant()" mdbWavesEffect>Save Merchant</button>
+                <!--Footer-->
+                <div class="modal-footer2 row" style="justify-content: center;">
+                    <button type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
+                        (click)="saveMerchant()" mdbWavesEffect>Save Merchant</button>
+                </div>
             </div>
+            <!--/.Content-->
         </div>
-        <!--/.Content-->
     </div>
 </div>
 
@@ -482,105 +531,105 @@
 
     <div class="modal-header2 col-lg-12 d-flex">
         <div class="row" style="align-items: flex-end;">
-        <h5 class="heading">Merchant Information</h5>
-        <img src="../../../assets/img/edit.svg" (click)="superMerchant = details.isSuperMerchant; onboardModal.show()" class="button-asset py-2 pl-3">
-        <img src="../../../assets/img/delete.svg" class="button-asset py-2 pl-3">
+            <h5 class="heading">Merchant Information</h5>
+            <img src="../../../assets/img/edit.svg"
+                (click)="isEdit= true; superMerchant = details.isSuperMerchant; onboardModal.show()" class="button-asset py-2 pl-3">
+            <img src="../../../assets/img/delete.svg" class="button-asset py-2 pl-3">
         </div>
 
-        <button type="button" class="close" aria-label="Close" (click)="isView = false"
-          mdbWavesEffect>x</button>
-      </div>
+        <button type="button" class="close" aria-label="Close" (click)="isView = false" mdbWavesEffect>x</button>
+    </div>
 
-      <div class="col-lg-6"> 
+    <div class="col-lg-6">
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">First Name:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.firstname}}</p>
+                <p class="col-lg-7">{{details.firstname}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">Last Name:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.lastname}}</p>
+                <p class="col-lg-7">{{details.lastname}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style bold">
                 <p class="col-lg-5">Business Name:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.bio.businessname}}</p>
+                <p class="col-lg-7">{{details.bio.businessname}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">Email Address:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.email.toString()}}</p>
+                <p class="col-lg-7">{{details.email.toString()}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">Mobile Number:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.mobile.toString()}}</p>
+                <p class="col-lg-7">{{details.mobile.toString()}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style bold">
                 <p class="col-lg-5">Merchant Code:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.merchantcode}}</p>
+                <p class="col-lg-7">{{details.merchantcode}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">Bank Code:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.accountdetails.bank_code}}</p>
+                <p class="col-lg-7">{{details.accountdetails.bank_code}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">Bank Name:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.accountdetails.bank_name | titlecase}}</p>
+                <p class="col-lg-7">{{details.accountdetails.bank_name | titlecase}}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">BVN:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.accountdetails.bvn }}</p>
+                <p class="col-lg-7">{{details.accountdetails.bvn }}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">State:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.bio.state }}</p>
+                <p class="col-lg-7">{{details.bio.state }}</p>
             </div>
         </div>
         <div class="py-3">
             <div class="row input-style">
                 <p class="col-lg-5">Address:
-                    
+
                 </p>
-                <p class="col-lg-7" >{{details.bio.address }}</p>
+                <p class="col-lg-7">{{details.bio.address }}</p>
             </div>
         </div>
-       
-      </div>
+
+    </div>
 
 </div>

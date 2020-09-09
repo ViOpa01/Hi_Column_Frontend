@@ -51,3 +51,22 @@
 .switch label input[type=checkbox]:checked + .lever {
     background-color: #07cc5782 !important;
 }
+
+.form-control.no-change:not(disabled), .custom-select.no-change{
+    background-color: #f8f9fa !important;
+}
+
+
+.form-control.no-change:disabled {
+    background-color: #e9ecef !important;
+    opacity: 1;
+}
+
+.custom-select.no-change{
+    border: 1px solid #ced4da !important;
+}
+
+table td, td{
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}

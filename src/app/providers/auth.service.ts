@@ -54,9 +54,10 @@ export class AuthService {
     console.log(err);
     let status = false;
 
-    if(err.status == 400 ){
-      for(let i = 0; i < err.errors.length; i++){
-        if(err.errors[i] == "Invalid Authorization Token"){
+    if(err.error.status == 400 ){
+
+      for(let i = 0; i < err.error.errors.length; i++){
+        if(err.error.errors[i] == "Invalid Authorization Token"){
           localStorage.setItem('intendedURL',location.pathname);
           this.logout();
           status = true;

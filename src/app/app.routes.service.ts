@@ -10,20 +10,30 @@ import { DashboardComponent } from './views/dashboards/dashboard/dashboard.compo
 import { AuthGuard } from './shared/guards/authGuard';
 import { RoleGuard } from './shared/guards/roleGuard';
 import { LoginComponent } from './views/auth/login/login.component';
+import { TransactionsComponent } from './views/transactions/transactions/transactions.component';
 
 
 
 const routes: Route[] = [
+  // {path: 'login', component: LoginComponent },
+  // {
+  //   path: '', component: DashboardComponent, canActivate: [AuthGuard, RoleGuard], data: {
+  //     allowedRoles: ['admin', 'super', '', 'merchant']
+  //   }, 
+  //   children: [
+  //     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, RoleGuard], data: {
+  //       allowedRoles: ['admin', 'super', '', 'merchant']
+  //     } }
+  //   ]
+  // },
+
   {path: 'login', component: LoginComponent },
   {
-    path: '', component: DashboardComponent, canActivate: [AuthGuard, RoleGuard], data: {
-      allowedRoles: ['admin', 'super', '', 'merchant']
-    }, 
-    children: [
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, RoleGuard], data: {
-        allowedRoles: ['admin', 'super', '', 'merchant']
-      } }
-    ]
+
+      path: '',
+      redirectTo: 'transaction/history',
+      pathMatch: 'full'
+
   },
   {path: 'dispute', loadChildren:  './views/disputes/disputes.module#DisputesModule'},
   {path: 'transaction', loadChildren:  './views/transactions/transactions.module#TransactionsModule'},

@@ -93,13 +93,23 @@ p:not(.no-change) {
   padding: 1rem;
 }
 
-.form-control:not(.no-change) {
+
+.form-control.no-change:not(textarea){
+  height: calc(2.64rem + 2px) !important;
+}
+
+.custom-select.no-change{
+  height: calc(2.64rem + 2px) !important;
+}
+
+.form-control:not(.no-change):not(disabled) {
   // background-color: #F2F2F2
   background-color: transparent;
   border-top: unset !important;
   border-left: unset !important;
   border-right: unset !important;
 }
+
 
 .modal-full-height.modal-bottom > .modal-content {
   position: absolute !important;
@@ -122,6 +132,15 @@ p:not(.no-change) {
 .md-tabs .nav-link.active, .md-tabs .nav-item.open .nav-link {
   background-color: $base-color !important;
 }
+
+mdb-tabset.sub-tab .md-tabs {
+  background-color: #f8f9fa !important;
+  padding: 0.7rem !important;
+}
+
+.sub-tab .tab-content{
+  padding: 0 !important;
+}
 // .md-form {
 //   margin-bottom: 0 !important;
 // }
@@ -130,9 +149,14 @@ p:not(.no-change) {
   background-color: #2465d0 !important;
 }
 
+.form-check-input[type="radio"]:not(:checked) + label:before{
+  border: 2px solid #5a5a5a8a !important;
+}
+
 .btn {
   border-radius: 5px!important;
-  text-transform: unset !important
+  text-transform: unset !important;
+  box-shadow: unset !important;
 }
 
 .need-header {
@@ -243,7 +267,21 @@ mdb-item-head a h5 {
 
 .md-tabs .nav-link {
   color: #272525 !important;
+  padding: 0.7rem !important;
+  font-size: 13px !important;
 
+}
+
+.col-padding{
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+mdb-tabset div.container-fluid{
+  padding-right: unset !important;
+  padding-left: unset !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }
 
 .md-tabs .nav-link:hover {

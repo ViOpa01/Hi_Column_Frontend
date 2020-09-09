@@ -67,7 +67,7 @@ export class PayVueApiService {
           resolve(event.body || event)
         }
       }, error => {
-        // this.authservice.checkSession(error)
+        this.authservice.checkSession(error)
         console.log(error, 'errors are happening')
         reject(error);
       })
