@@ -25,6 +25,11 @@ body {
   // font-family: "Futura"
 }
 
+.onboard-style p,
+.onboard-style span {
+  font-size: 16px;
+}
+
 
 
 .card.card-cascade .view.gradient-card-header {
@@ -46,13 +51,21 @@ body {
 
 
 .btn.btn-sm {
-  padding: 0.84rem 2.14rem;;
+  padding: 0.84rem 1.14rem;;
   font-size: 0.64rem;
   // max-width: 160px;
   min-width: 100%;
-  width: 148px;
+  width: 143px;
   margin: 0;
   font-size: 12px;
+}
+
+.modal-footer2 .btn.btn-sm{
+  min-width: unset !important
+}
+
+.nested .btn.btn-sm{
+  width: unset !important;
 }
 
 p:not(.no-change) {
@@ -143,6 +156,10 @@ mdb-tabset.sub-tab .md-tabs {
 .sub-tab .tab-content{
   padding: 0 !important;
 }
+
+// .sub-tab .col-lg-12{
+//   padding: 0;
+// }
 // .md-form {
 //   margin-bottom: 0 !important;
 // }
@@ -451,7 +468,7 @@ table th {
 }
 
 .special-div{
-  border-radius: 5px;
+  // border-radius: 5px;
   border-bottom: 1px solid #ced4da;
 }
 

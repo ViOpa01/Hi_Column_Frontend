@@ -236,6 +236,8 @@ export class MerchantOnboardingComponent implements OnInit {
 
   check(type?) {
 
+    this.error = false;
+
     const isPhone = /^(0|234|\+234)[0-9]{10}$/
     const isEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     const isName = /^[a-zA-Z]+$/
@@ -394,7 +396,7 @@ export class MerchantOnboardingComponent implements OnInit {
     }
     // this will check user input
 
-    this.error = false;
+  
 
     if (this.superMerchant) {
 

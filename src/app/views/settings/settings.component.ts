@@ -12,6 +12,8 @@ import { EXCEL_HEADERS } from 'app/providers/excel-json-script';
 import { WebworkerService } from "app/providers/webworker.service";
 import eventsService from 'app/providers/events.service';
 import { ThrowStmt } from '@angular/compiler';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-settings',
@@ -25,6 +27,7 @@ export class SettingsComponent implements OnInit {
   switchesData: any[] = [];
   switchesDisputeData: any[] = [];
   terminalFilesData: any[] = [];
+  mscDetails: any[] = [];
 
   allMSC: boolean;
   switchDetail: any;
@@ -307,8 +310,18 @@ export class SettingsComponent implements OnInit {
 
   nDays: number;
   supportSave: boolean;
-  super_merchant_code: any;
+  super_merchant_code: string;
+  super_msc: number;
+  settle_time: any;
+  settle_day: any;
   errorMSC: string;
+
+  errors = {}
+  error: boolean;
+  isEdit: boolean;
+
+  details: any
+
 
   constructor(private payvueservice: PayVueApiService, private webWorkerService: WebworkerService, private toast: ToastService) {
     const userStr = localStorage.getItem('user');
@@ -359,12 +372,196 @@ export class SettingsComponent implements OnInit {
       this.email[i] = "";
     }
 
-    this.getNotification()
+    // this.getNotification()
     this.getConfig();
     // this.getSwitch();
     // this.getDisputeSwitch();
     // this.getTerminalFile();
   }
+
+  clear() {
+    this.error = false;
+    this.errors = {}
+    this.super_merchant_code = '';
+
+    this.super_msc = undefined;
+    this.settle_time = undefined;
+  }
+
+  setDetails(row) {
+    this.details = row;
+
+    this.super_merchant_code = this.details.supermerchantcode
+  }
+
+  getConfig() {
+    const apiURL = `:5010/webpay/v1/settlements/getAll`;
+    this.payvueservice.apiCall(apiURL).then(data => {
+
+      if (data.data.length > 0) {
+        this.mscDetails = data.data;
+
+        this.isData = true
+      }else{
+        this.isData = false;
+      }
+
+    }).catch(error => {
+      if (error.error) {
+        if (typeof error.error.message == 'string') {
+          this.toast.error(error.error.message)
+
+
+        } else {
+          this.toast.error(error.error.message.toString())
+
+        }
+      } else {
+        this.toast.error(error.message)
+      }
+      console.error(error);
+      this.isData = false
+
+    });
+  }
+
+  check2(type?){
+    if (type == 'isEmpty') {
+
+      if(!this.super_msc && !this.settle_day && !this.settle_time){
+        this.error = true;
+      }
+
+      return
+    }
+
+    this.errors = {
+
+      super_merchant_code: !this.super_merchant_code ? "Super Merchant Code required" : "",
+      super_msc: !this.super_msc ? "MSC is required" : "",
+      settle_time: !this.settle_time ? "Settlement Time is required" : "",
+
+    }
+  
+    if(!this.super_merchant_code) this.error = true;
+    if(!this.super_msc) this.error = true;
+    if(!this.settle_time) this.error = true;
+  }
+
+  saveMSC(){
+    this.error = false;
+
+    this.check2()
+
+    if (this.error) {
+      this.toast.error('Please Check Errors')
+      return;
+    }
+
+    this.mscSaving = true;
+
+
+    let date = moment(this.settle_time, ["hh:mm"]).format(('hh:mmA'));
+
+    const apiURL = `:5010/webpay/v1/settlements/create`;
+
+    this.payvueservice.apiCall(apiURL, 'post', { supermerchantcode: this.super_merchant_code, supermerchantcharge: this.super_msc, settlementtime: date}).then(data => {
+      this.toast.success(data.message);
+      this.mscSaving = false;
+      this.getConfig();
+    }).catch(error => {
+      if (error.error) {
+        if (typeof error.error.message == 'string') {
+          this.toast.error(error.error.message)
+
+
+        } else {
+          this.toast.error(error.error.message.toString())
+
+        }
+      } else {
+        this.toast.error(error.message)
+      }
+      this.mscSaving = undefined;
+    })
+  }
+
+  editMSC(){
+
+    this.check2('isEmpty')
+
+    if (this.error) {
+      this.toast.error('Please Make A Change')
+      return;
+    }
+
+    const check = confirm('Do you wish to save this edit?');
+    if (!check) return;
+
+    this.mscSaving = true;
+
+    let datas: any = {}
+    let date: any = {}
+
+    if(this.settle_time){
+      date = moment(this.settle_time, ["hh:mm"]).format(('hh:mmA'));
+    }
+
+    if(this.settle_time) datas.settlementtime = date;
+    if(this.super_msc) datas.supermerchantcharge = this.super_msc;
+    if(this.super_msc) datas.settlementday = this.settle_day;
+
+    
+
+    const apiURL = `:5010/webpay/v1/settlements/edit/${this.super_merchant_code}`;
+
+
+    this.payvueservice.apiCall(apiURL, 'patch', datas).then(data => {
+      this.toast.success(data.message);
+      this.mscSaving = false;
+      this.getConfig();
+    }).catch(error => {
+      if (error.error) {
+        if (typeof error.error.message == 'string') {
+          this.toast.error(error.error.message)
+
+
+        } else {
+          this.toast.error(error.error.message.toString())
+
+        }
+      } else {
+        this.toast.error(error.message)
+      }
+      this.mscSaving = undefined;
+    })
+  }
+
+  deleteMSC(){
+    const apiURL = `:5010/webpay/v1/settlements/delete/${this.details.supermerchantcode}`;
+    this.payvueservice.apiCall(apiURL, 'delete').then(data => {
+
+      this.toast.success(data.message)
+      this.getConfig();
+
+    }).catch(error => {
+      if (error.error) {
+        if (typeof error.error.message == 'string') {
+          this.toast.error(error.error.message)
+
+
+        } else {
+          this.toast.error(error.error.message.toString())
+
+        }
+      } else {
+        this.toast.error(error.message)
+      }
+      console.error(error);
+    });
+  }
+
+
 
   delete(index: number) {
     this.organisedArray.splice(index, 1);
@@ -382,7 +579,6 @@ export class SettingsComponent implements OnInit {
       }
     }
   }
-
 
   autoSupport() {
     this.supportSave = true;
@@ -420,51 +616,53 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  getConfig() {
-    const apiURL = `config`;
-    this.emails = [];
-    this.payvueservice.apiCall(apiURL).then(data => {
-      this.config = data.data
+  // getConfig() {
+  //   const apiURL = `config`;
+  //   this.emails = [];
+  //   this.payvueservice.apiCall(apiURL).then(data => {
+  //     this.config = data.data
 
-      let online = this.formatConverter(this.config.online_terminal_seconds);
-      this.hours = online.h;
-      this.minutes = online.m;
-      this.seconds = online.s;
+  //     let online = this.formatConverter(this.config.online_terminal_seconds);
+  //     this.hours = online.h;
+  //     this.minutes = online.m;
+  //     this.seconds = online.s;
 
-      let active = this.formatConverter(this.config.active_terminal_seconds);
-      this.daysActive = active.d;
-      this.hoursActive = active.h;
-      this.minutesActive = active.m;
-      this.secondsActive = active.s;
+  //     let active = this.formatConverter(this.config.active_terminal_seconds);
+  //     this.daysActive = active.d;
+  //     this.hoursActive = active.h;
+  //     this.minutesActive = active.m;
+  //     this.secondsActive = active.s;
 
-      this.emailArray[0] = this.config.sd_advice_emails || [];
-      this.emailArray[1] = [];
-      this.emailArray[2] = this.config['pos_support'] || [];
+  //     this.emailArray[0] = this.config.sd_advice_emails || [];
+  //     this.emailArray[1] = [];
+  //     this.emailArray[2] = this.config['pos_support'] || [];
 
-      this.bLess = this.config.low_battery_level
-      this.nLess = this.config.low_network_level
+  //     this.bLess = this.config.low_battery_level
+  //     this.nLess = this.config.low_network_level
 
-      this.printer = this.config.notify_bad_printer
-      this.lastSeen = this.config.notify_inactive_terminal
-      this.nDays = this.config.notify_inactive_terminal_days
+  //     this.printer = this.config.notify_bad_printer
+  //     this.lastSeen = this.config.notify_inactive_terminal
+  //     this.nDays = this.config.notify_inactive_terminal_days
 
-      const dis = this;
+  //     const dis = this;
 
-      this.emailArray[0].forEach(email => {
-        dis.emails.push({ email: email, deletingStatus: undefined, type: 'same-day' })
-      })
+  //     this.emailArray[0].forEach(email => {
+  //       dis.emails.push({ email: email, deletingStatus: undefined, type: 'same-day' })
+  //     })
 
-      this.emailArray[1].forEach(email => {
-        dis.emails.push({ email: email, deletingStatus: undefined, type: 'merchant' })
-      })
+  //     this.emailArray[1].forEach(email => {
+  //       dis.emails.push({ email: email, deletingStatus: undefined, type: 'merchant' })
+  //     })
 
-      this.emailArray[2].forEach(email => {
-        dis.emails.push({ email: email, deletingStatus: undefined, type: 'support' })
-      })
-    }).catch(error => {
-      console.log(error)
-    })
-  }
+  //     this.emailArray[2].forEach(email => {
+  //       dis.emails.push({ email: email, deletingStatus: undefined, type: 'support' })
+  //     })
+  //   }).catch(error => {
+  //     console.log(error)
+  //   })
+  // }
+
+
 
   getSwitch() {
     const apiURL = `config/switch/settlement`;
@@ -899,23 +1097,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  saveMSC(){
-    this.mscSaving = true;
-    if(!this.super_merchant_code) {this.onlineSaving = false; return this.errorMSC = "Merchant Code is Required"}
 
-    this.errorOnline = '';
-    const apiURL = `http://localhost:8000/webpay/v1/settlements/create
-    `
-    this.payvueservice.apiCall(apiURL, 'post', { }).then(data => {
-      this.toast.success(data.message);
-      this.onlineSaving = false;
-      this.getConfig();
-    }).catch(error => {
-      let errorBody = error.error
-      this.toast.error(errorBody.error)
-      this.onlineSaving = undefined;
-    })
-  }
 
   deleteEmail(email, type) {
     this.emails.map(x => {
