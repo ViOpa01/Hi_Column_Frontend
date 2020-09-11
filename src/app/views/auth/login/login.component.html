@@ -1,4 +1,4 @@
-<header>
+<!-- <header>
 	<section class="view intro intro-2 ">
 	  <div class="full-bg-img mask flex-center">
 	    <div class="container">
@@ -44,24 +44,82 @@
 	    </div>
 	  </div>
 	</section>
-</header>
+</header> -->
 
-<!-- <header>
+<header>
 	<section class="view intro ">
 		<div class="split left">
+
 			<div class="centered">
 
-			<div class="hexagon">
+				<div class="hex">
+					<h3 class="text-center">Hi</h3>
+				</div>
+				<!-- <div class="centered">
+				<h3>HI Column Merchant</h3>
+			</div> -->
+				<h3 class="text-centered">Hi Column Merchant</h3>
 			</div>
-
-		</div>
 
 
 		</div>
 		<div class="split2 right">
 
+			<div class="container flex-center">
+				<div class="row">
+					<div>
+						<div class="wow fadeIn mb-3" data-wow-delay="0.3s"
+							style="animation-name: none; visibility: visible;">
+							<form #form=ngForm (submit)="signIn()">
+								<div class="login-style">
+
+									<div class="pb-15">
+										<p class="img-fluid mx-auto text-center">Merchant Login</p>
+									</div>
+									<form [formGroup]="userDetails">
+										<div class="md-form" style="margin-bottom: 42px;">
+											<input ngDefaultControl [ngModelOptions]="{standalone: true}" type="email"
+												id="orangeForm-email" class="form-control"
+												placeholder="Email Address" formControlName="email">
+											<span class="text-danger">{{errors.email_detail}} {{errors.email}}</span>
+										</div>
+
+
+										<div class="md-form mb-1">
+											<input ngDefaultControl [ngModelOptions]="{standalone: true}"
+												[(ngModel)]="password" type="password" id="orangeForm-pass"
+												class="form-control" placeholder="Password">
+											<span class="text-danger">{{errors.password}}
+												{{errors.password_length}}</span>
+
+										</div>
+									</form>
+
+									<div class="text-left mt-2 float-right mb-5"><a routerLink="/auth/reset"
+											class="nav-link d-inline text-ud">Forgot Password?</a></div>
+
+
+
+									<div class="text-center pb-30">
+										<button
+											class="btn btn-style d-block w-100 waves-effect waves-light"
+											mdbWavesEffect>
+											Login
+											<i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+										</button>
+
+									</div>
+
+								</div>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 	</section>
 
-</header> -->
+</header>
