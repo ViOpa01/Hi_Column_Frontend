@@ -18,6 +18,7 @@
 					placeholder="Your email"  autocomplete="false">
 					<span class="text-danger">{{errors.email_detail}} {{errors.email}}</span>
 			</div>
+			
 			</form>
 
 			<div class="md-form">
@@ -25,7 +26,15 @@
 					placeholder="Your password"  autocomplete="false">
 					<span class="text-danger">{{errors.password}} {{errors.length}}</span>
 			</div>
+
 			<div class="md-form">
+				<input ngDefaultControl  [(ngModel)]="phone" type="text" id="orangeForm-phone" class="form-control"
+					placeholder="Your phone"  autocomplete="false">
+					<span class="text-danger">{{errors.phone_detail}} {{errors.phone}}</span>
+			</div>
+
+			
+			<!-- <div class="md-form">
 				<div class="row">
 					<div class="col-md-6 p-0">
 						<mdb-select ngDefaultControl [(ngModel)]="role" [options]="optionsSelect" placeholder="Choose your role">
@@ -33,7 +42,7 @@
 						<span class="text-danger">{{errors.role}}</span>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="text-center">
 				<button class="btn blue-gradient btn-md waves-effect waves-light" mdbWavesEffect (click)="register()">
 					Register New User

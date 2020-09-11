@@ -136,9 +136,9 @@
                         <i class="fa fa-user"></i> Account
                     </a>
                     <div class="dropdown-menu dropdown-primary dropdown-menu-right" role="menu">
-                        <a *ngIf='super' routerLink="/auth/register" class="dropdown-item">Create User</a>
-                        <a *ngIf='super' routerLink="/auth/users" class="dropdown-item">Manage Users</a>
-                        <a routerLink="/auth/new-password" class="dropdown-item">Change Password</a>
+                        <a *ngIf='admin' routerLink="/auth/register" class="dropdown-item">Create User</a>
+                        <!-- <a *ngIf='admin' routerLink="/auth/users" class="dropdown-item">Manage Users</a> -->
+                        <!-- <a routerLink="/auth/new-password" class="dropdown-item">Change Password</a> -->
                         <a (click)="signOut()" class="dropdown-item">Log Out</a>
                     </div>
                 </li>

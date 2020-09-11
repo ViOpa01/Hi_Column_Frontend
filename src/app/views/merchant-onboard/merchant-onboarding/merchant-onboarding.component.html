@@ -14,9 +14,12 @@
                 <td class="col-lg-7 col-sm-10">
                     <div class="md-form special-div m-0">
                         <!-- <mdb-icon fas icon="search" class="prefix"> </mdb-icon> -->
+                       
+                        <form autocomplete="off">
                         <img src="../../../assets/img/Shape.svg" class="prefix py-2 pl-3">
-                        <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="search"
-                            ngDefaultControl [(ngModel)]="search" type="text" placeholder="Search">
+                        <input class="form-control my-0 py-0 special-border" (keyup)="checkKey($event)" name="2234"
+                            ngDefaultControl [(ngModel)]="search" type="text" id="1234" placeholder="Search">
+                        </form>
                     </div>
 
                 </td>
@@ -194,10 +197,10 @@
                                     icon="ellipsis-h"></mdb-icon>
 
                                 <div class="dropdown-menu dropdown-menu-style">
-                                    <p (click)="superMerchant = row.isSuperMerchant; isEdit = true; clear(); onboardModal.show()"
+                                    <p (click)="setDetails(row, true); superMerchant = row.isSuperMerchant; isEdit = true; clear(); onboardModal.show()"
                                         class="dropdown-item">Edit</p>
                                     <p (click)="setDetails(row)" class="dropdown-item">Details</p>
-                                    <p *ngIf="super && !isSub"
+                                    <p *ngIf="admin && !isSub"
                                         (click)="getMerchants(row.merchantcode); setName(row.bio.businessname)"
                                         class="dropdown-item">View</p>
                                 </div>
@@ -456,7 +459,7 @@
                     </div>
 
                     <div class="row pt-4">
-                        <div class="col-lg-5">
+                        <div *ngIf='!isEdit' class="col-lg-5">
                             <p>Super Merchant Code</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="superMerchantCode" [name]="superMerchantCode"
@@ -518,8 +521,10 @@
 
                 <!--Footer-->
                 <div class="modal-footer2 row" style="justify-content: center;">
-                    <button type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
+                    <button *ngIf="!isEdit" type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
                         (click)="saveMerchant()" mdbWavesEffect>Save Merchant</button>
+                        <button *ngIf="isEdit" type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
+                        (click)="editMerchant(onboardModal)" mdbWavesEffect>Save Edit</button>
                 </div>
             </div>
             <!--/.Content-->
@@ -533,8 +538,8 @@
         <div class="row" style="align-items: flex-end;">
             <h5 class="heading">Merchant Information</h5>
             <img src="../../../assets/img/edit.svg"
-                (click)="isEdit= true; superMerchant = details.isSuperMerchant; onboardModal.show()" class="button-asset py-2 pl-3">
-            <img src="../../../assets/img/delete.svg" class="button-asset py-2 pl-3">
+                (click)="isEdit= true; superMerchant = details.isSuperMerchant; onboardModal.show()" class="button-asset py-2 px-3">
+            <img (click)="deleteMerchant()"src="../../../assets/img/delete.svg" class="button-asset py-2">
         </div>
 
         <button type="button" class="close" aria-label="Close" (click)="isView = false" mdbWavesEffect>x</button>
@@ -627,6 +632,14 @@
 
                 </p>
                 <p class="col-lg-7">{{details.bio.address }}</p>
+            </div>
+        </div>
+        <div class="py-3">
+            <div class="row input-style">
+                <p class="col-lg-5">Registered Date:
+
+                </p>
+                <p class="col-lg-7">{{details.dateOnboarded | date : 'longDate'}}</p>
             </div>
         </div>
 

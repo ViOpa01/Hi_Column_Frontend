@@ -121,7 +121,7 @@ export class UsersComponent implements OnInit {
         const dis = this;
 
         this.users.forEach(id => {
-          if (id.role == 'Super Admin') {
+          if (id.role == 'Admin') {
             dis.count++;
           }
           dis.users_data.push({ id: id._id, edit: undefined })

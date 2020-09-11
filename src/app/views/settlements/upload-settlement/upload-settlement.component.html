@@ -77,7 +77,7 @@
                 </td>
 
                 <td class="col-lg-1 col-sm-2">
-                    <button type="button" class="btn btn-ud btn-sm waves-light" (click)="upload.show()"
+                    <button [disabled]="!super && !admin && !isSuper" type="button" class="btn btn-ud btn-sm waves-light" (click)="upload.show()"
                         mdbWavesEffect>Import
                     </button>
 

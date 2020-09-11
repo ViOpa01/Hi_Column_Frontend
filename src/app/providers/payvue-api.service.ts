@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { environment } from 'environments/environment';
 import 'rxjs/add/operator/catch';
 import { throwError } from 'rxjs';
+import { ToastService } from 'ng-uikit-pro-standard';
 
 
 @Injectable()
@@ -15,9 +16,9 @@ export class PayVueApiService {
   uploadPercent = new EventEmitter();
   isDone = new EventEmitter();
   constructor(private http: HttpClient,
-    private authservice: AuthService
+    private authservice: AuthService,
     // private socket: Socket,
-    // private toast: ToastService
+    private toast: ToastService
   ) { }
 
   getUser(): any {
@@ -68,6 +69,14 @@ export class PayVueApiService {
         }
       }, error => {
         this.authservice.checkSession(error)
+        if(typeof error.message == 'string'){
+          this.toast.error(error.message)
+
+
+        }else{
+          this.toast.error(error.message.toString())
+
+        }
         console.log(error, 'errors are happening')
         reject(error);
       })

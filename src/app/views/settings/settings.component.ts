@@ -43,15 +43,20 @@ export class SettingsComponent implements OnInit {
   accountSaving: boolean;
   onlineSaving: boolean;
   activeSaving: boolean;
+  mscSaving: boolean
+
   switchSaving: boolean;
   switchUpdating: boolean;
   switchDeleting: boolean;
+
   switchSavingDispute: boolean;
   switchUpdatingDispute: boolean;
   switchDeletingDispute: boolean;
+
   switchSavingTrans: boolean;
   switchUpdatingTrans: boolean;
   switchDeletingTrans: boolean;
+
   terminalSaving: boolean
   terminalUpdating: boolean
   terminalDeleting: boolean
@@ -302,6 +307,8 @@ export class SettingsComponent implements OnInit {
 
   nDays: number;
   supportSave: boolean;
+  super_merchant_code: any;
+  errorMSC: string;
 
   constructor(private payvueservice: PayVueApiService, private webWorkerService: WebworkerService, private toast: ToastService) {
     const userStr = localStorage.getItem('user');
@@ -354,9 +361,9 @@ export class SettingsComponent implements OnInit {
 
     this.getNotification()
     this.getConfig();
-    this.getSwitch();
-    this.getDisputeSwitch();
-    this.getTerminalFile();
+    // this.getSwitch();
+    // this.getDisputeSwitch();
+    // this.getTerminalFile();
   }
 
   delete(index: number) {
@@ -376,9 +383,6 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  saveMSC(){
-    
-  }
 
   autoSupport() {
     this.supportSave = true;
@@ -729,6 +733,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+
   saveOnline() {
     this.onlineSaving = true;
     let time = this.timeConverter(this.hours, this.minutes, this.seconds)
@@ -892,6 +897,24 @@ export class SettingsComponent implements OnInit {
         this.emailSaving[2] = undefined;
       })
     }
+  }
+
+  saveMSC(){
+    this.mscSaving = true;
+    if(!this.super_merchant_code) {this.onlineSaving = false; return this.errorMSC = "Merchant Code is Required"}
+
+    this.errorOnline = '';
+    const apiURL = `http://localhost:8000/webpay/v1/settlements/create
+    `
+    this.payvueservice.apiCall(apiURL, 'post', { }).then(data => {
+      this.toast.success(data.message);
+      this.onlineSaving = false;
+      this.getConfig();
+    }).catch(error => {
+      let errorBody = error.error
+      this.toast.error(errorBody.error)
+      this.onlineSaving = undefined;
+    })
   }
 
   deleteEmail(email, type) {

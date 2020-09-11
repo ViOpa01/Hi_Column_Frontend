@@ -36,24 +36,24 @@
 									<tr  *ngFor="let row of users; let i = index">
 										<td>{{ serial + i }}</td>
 										<td class="text-center">
-											<button *ngIf="row.role != 'Super Admin'" class="btn btn-sm btn-ud waves-light m-0"
+											<button *ngIf="row.role != 'Admin'" class="btn btn-sm btn-ud waves-light m-0"
 												(click)="delete(row._id)">Delete</button>
-											<button *ngIf="row.role == 'Super Admin'" [disabled]="count < 2" class="btn btn-sm btn-ud waves-light m-0"
+											<button *ngIf="row.role == 'Admin'" [disabled]="count < 2" class="btn btn-sm btn-ud waves-light m-0"
 												(click)="delete(row._id)">Delete</button>
 										</td>
 										<td>{{ row.firstname}}</td>
 										<td>{{ row.lastname}}</td>
 										<td>{{ row.email || row.merchant_email}}</td>
-										<td *ngIf="(users_data[i].edit != true) && (row.role == 'Super Admin' && count < 2)">{{row.role}}</td>
+										<td *ngIf="(users_data[i].edit != true) && (row.role == 'Admin' && count < 2)">{{row.role}}</td>
 										<td [id]="'pointer-'+i" class="pointer" (click)="(users_data[i].edit = true);"
-											*ngIf="(users_data[i].edit != true) && (row.role == 'Super Admin' && count >= 2)"><i class="fa fa-pencil"></i>
+											*ngIf="(users_data[i].edit != true) && (row.role == 'Admin' && count >= 2)"><i class="fa fa-pencil"></i>
 											{{ row.role }}</td>
-										<td class="pointee" *ngIf="(users_data[i].edit == true) && (row.role == 'Super Admin' && count >= 2)">
+										<td class="pointee" *ngIf="(users_data[i].edit == true) && (row.role == 'Admin' && count >= 2)">
 											<select (clickOutside)="onClickedOutside($event, i)"
 												(change)="editRole(i, $event);" value="admin"
 												class="browser-default custom-select d-block">
 												<option value="">Select Role</option>
-												<option value="">Staff</option>
+												<!-- <option value="">Staff</option> -->
 												<!-- <option value="account_rel_manager">Account Relationship Manager
 												</option>
 												<option value="branch_op_manager">Branch Operations Manager</option>
@@ -61,7 +61,7 @@
 												<option value="internal_control">Internal Control</option>
 												<option value="head_office">Head Office</option> -->
 												<option value="admin">Admin</option>
-												<option value="super admin">Super Admin</option>
+												<!-- <option value="super admin">Super Admin</option> -->
 											</select>
 										</td>
 										<td [id]="'pointer-'+i" class="pointer" (click)="(users_data[i].edit = true);"
@@ -72,7 +72,7 @@
 												(change)="editRole(i, $event);" value="admin"
 												class="browser-default custom-select d-block">
 												<option value="">Select Role</option>
-												<option value="">Staff</option>
+												<!-- <option value="">Staff</option> -->
 												<!-- <option value="account_rel_manager">Account Relationship Manager
 												</option>
 												<option value="branch_op_manager">Branch Operations Manager</option>
@@ -80,7 +80,7 @@
 												<option value="internal_control">Internal Control</option>
 												<option value="head_office">Head Office</option> -->
 												<option value="admin">Admin</option>
-												<option value="super admin">Super Admin</option>
+												<!-- <option value="super admin">Super Admin</option> -->
 											</select>
 										</td>
 										<td>{{ row.createdAt | date : 'yyyy-MM-dd HH:mm:ss'}}</td>

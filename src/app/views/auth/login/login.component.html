@@ -4,17 +4,13 @@
 	    <div class="container">
 	      <div class="row">
 	        <div class="col-xl-5 col-lg-6 col-md-10 col-sm-12 mx-auto mt-lg-5 mb-5">
-
-	          <!--Form with header-->
 						<div class="card wow fadeIn mb-3" data-wow-delay="0.3s" style="animation-name: none; visibility: visible;">
 							<form #form = ngForm (submit)="signIn()">
 	            <div class="card-body">
 
 								<div class="pb-15">
-									<!-- uba-red -->
-									<img src="../../../../assets/img/trackmoney.png" class="img-fluid mx-auto">
+									<h1 class="img-fluid mx-auto text-center">LOGIN</h1>
 							</div>
-				  <!--Body-->
 				  <form [formGroup]="userDetails">
 	              <div class="md-form">
 					<input  ngDefaultControl [ngModelOptions]="{standalone: true}" type="email" id="orangeForm-email" class="form-control" placeholder="Your email or merchant ID" formControlName="email">
@@ -42,7 +38,6 @@
 							</div>
 							</form>
 	          </div>
-	          <!--/Form with header-->
 
 	        </div>
 	      </div>
@@ -50,3 +45,23 @@
 	  </div>
 	</section>
 </header>
+
+<!-- <header>
+	<section class="view intro ">
+		<div class="split left">
+			<div class="centered">
+
+			<div class="hexagon">
+			</div>
+
+		</div>
+
+
+		</div>
+		<div class="split2 right">
+
+		</div>
+
+	</section>
+
+</header> -->

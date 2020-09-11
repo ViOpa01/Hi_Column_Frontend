@@ -51,6 +51,7 @@ export class TransactionsComponent implements OnInit  {
   merchantU: boolean;
   isSuper: boolean;
   super: boolean;
+  admin: boolean;
 
   bankModel = BankModel
   brandModel = CardModel
@@ -74,8 +75,8 @@ export class TransactionsComponent implements OnInit  {
         this.isSuper = true;
       }
     }
-    else if (u && u.isSuperAdmin){
-      this.super = true;
+    else if (u && u.role.toLowerCase == 'admin'){
+      this.admin = true;
     }
     // this.socket.on('trans-history-message').subscribe(data => {
     //   if (!data) return;
@@ -208,7 +209,7 @@ export class TransactionsComponent implements OnInit  {
       
       apiURL = `:5010/webpay/v1/journals/gettransactions?startdate=${this.from}&enddate=${this.to}&download=false&issettlement=false&merchantcode=${merchant}&page=${page}&order=desc&orderBy=transactionID`;
 
-    } else if(this.super){
+    } else if(this.admin){
       apiURL = `:5010/webpay/v1/journals/gettransactions?startdate=${this.from}&enddate=${this.to}&download=false&issettlement=false&merchantcode=&page=${page}&order=desc&orderBy=transactionID`;
 
     }

@@ -4,7 +4,6 @@ import { WebworkerService } from 'app/providers/webworker.service';
 import { formatDate } from '@angular/common';
 import { EXCEL_EXPORT } from 'app/providers/excel-export-script';
 import * as filesaver from 'file-saver';
-import { DatePipe } from '@angular/common';
 import eventsService from 'app/providers/events.service';
 
 @Component({

@@ -35,7 +35,8 @@ export class AuthService {
       this.router.navigateByUrl(intendedURL);
       return;
     }
-    this.router.navigate(['/dashboard']);
+    // this.router.navigate(['/dashboard']);
+    this.router.navigate(['/']);
     // if(u && u.role.toLowerCase() == 'merchant'){
     //   this.router.navigate(['dispute/merchant'])
     // }
@@ -51,21 +52,23 @@ export class AuthService {
   }
 
   checkSession(err) {
-    console.log(err);
     let status = false;
 
     if(err.error.status == 400 ){
 
-      for(let i = 0; i < err.error.errors.length; i++){
-        if(err.error.errors[i] == "Invalid Authorization Token"){
-          localStorage.setItem('intendedURL',location.pathname);
-          this.logout();
-          status = true;
+      if(err.error.errors){
 
-          return;
+        for(let i = 0; i < err.error.errors.length; i++){
+          if(err.error.errors[i] == "Invalid Authorization Token"){
+            localStorage.setItem('intendedURL',location.pathname);
+            this.logout();
+            status = true;
+  
+            return;
+          }
         }
-      }
 
+      }
       return status;
     }
   //   if (err.status == 401 || err.status == 403) {

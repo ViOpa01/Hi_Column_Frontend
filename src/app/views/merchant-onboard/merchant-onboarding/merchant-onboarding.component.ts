@@ -6,8 +6,8 @@ import eventsService from 'app/providers/events.service';
 import { EXCEL_EXPORT } from "app/providers/excel-export-script";
 import * as filesaver from 'file-saver';
 import { WebworkerService } from 'app/providers/webworker.service';
-import  BankModel  from 'app/Models/bank-image.model';
-import  CardModel  from 'app/Models/card.model';
+import BankModel from 'app/Models/bank-image.model';
+import CardModel from 'app/Models/card.model';
 import { ToastService } from 'ng-uikit-pro-standard';
 
 
@@ -17,7 +17,7 @@ import { ToastService } from 'ng-uikit-pro-standard';
   styleUrls: ['./merchant-onboarding.component.scss']
 })
 
-export class MerchantOnboardingComponent implements OnInit  {
+export class MerchantOnboardingComponent implements OnInit {
 
   @Input() shadows = false
   @Input('mid') mid: string = "";
@@ -56,6 +56,7 @@ export class MerchantOnboardingComponent implements OnInit  {
   merchantU: boolean;
   super: boolean;
   isSuper: boolean;
+  admin:boolean;
 
 
   bankModel = BankModel
@@ -114,16 +115,16 @@ export class MerchantOnboardingComponent implements OnInit  {
 
       this.merchantU = true;
 
-      if(u.isSuperMerchant){
+      if (u.isSuperMerchant) {
 
         this.isSuper = true;
       }
     }
-    else if (u && u.role.toLowerCase() == 'super admin') {
+    else if (u && u.role.toLowerCase() == 'admin') {
 
-      this.super = true;
+      this.admin = true;
     }
-    
+
     // this.socket.on('trans-history-message').subscribe(data => {
     //   if (!data) return;
     //   if (this.page == 1 && !this.search && !this.mid && !this.source && !this.status &&
@@ -159,11 +160,11 @@ export class MerchantOnboardingComponent implements OnInit  {
     eventsService.getEvent('MerchListPage').subscribe(page => {
       this.page = page;
       this.getMerchants();
-      
+
       // if(this.show) {
       //   this.getFailureReason();
       // }
-      
+
     })
   }
 
@@ -171,18 +172,18 @@ export class MerchantOnboardingComponent implements OnInit  {
     localStorage.setItem('xfile', 'true');
     this.isUploading = true
     const formData = new FormData();
-    formData.append('file',this.file);
+    formData.append('file', this.file);
     const apiURL = `:5009/v1/merchants/create/bulksubmerchants/${this.superMerchantCode2}`;
-    
+
 
     this.payvueservice.apiCall(apiURL, 'post', formData, true, true).then(data => {
       console.log(data);
 
       let isProcessing = true;
       this.superMerchantCode2 = '';
-      
+
       eventsService.getEvent('upload-processing').emit(isProcessing);
-      
+
       localStorage.removeItem('xfile');
     }).catch(error => {
       this.isUploading = false;
@@ -192,7 +193,7 @@ export class MerchantOnboardingComponent implements OnInit  {
   }
 
 
-  clear(){
+  clear() {
     this.error = false;
     this.errors = {}
     this.same_account_details = false;
@@ -224,54 +225,192 @@ export class MerchantOnboardingComponent implements OnInit  {
     this.sub_password = '';
   }
 
-  setDetails(row){
+  setDetails(row, status?) {
     this.details = row;
-    this.isView = true;
+
+    if (!status) {
+      this.isView = true;
+    }
   }
 
 
-  check(type?){ 
+  check(type?) {
 
-    if(type == 'check'){
-      if(this.errors.sub_account_number){
+    const isPhone = /^(0|234|\+234)[0-9]{10}$/
+    const isEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    const isName = /^[a-zA-Z]+$/
+    const isNumber = /^[0-9]*$/
+
+    if (type == 'check') {
+      if (this.errors.sub_account_number) {
         this.errors.sub_account_number = ""
       }
 
-      if(this.errors.sub_bank_code){
+      if (this.errors.sub_bank_code) {
         this.errors.sub_bank_code = ""
       }
-      
-      if(this.errors.sub_bvn){
+
+      if (this.errors.sub_bvn) {
         this.errors.sub_bvn = ""
       }
 
       return
     }
 
+    if (type == 'isEmpty') {
 
-    const isPhone = /^(0|234|\+234)[0-9]{10}$/
-    const isEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-    const isName = /^[a-zA-Z]+$/
-    const isNumber = /^[0-9]*$/
+      if (this.superMerchant) {
+        if (!this.email && !this.mobile_number && !this.firstname && !this.lastname && !this.password && !this.business_name && !this.address && !this.state && !this.bank_code && !this.bvn && !this.account_number) {
+          this.error = true;
+        }
+
+      } else if (!this.superMerchant) {
+
+        if (this.same_account_details) {
+
+          if (!this.sub_email && !this.sub_mobile_number && !this.sub_firstname && !this.sub_lastname && !this.sub_password && !this.sub_business_name && !this.sub_address && !this.sub_state) {
+            this.error = true;
+          }
+
+        } else {
+          if (!this.sub_email && !this.sub_mobile_number && !this.sub_firstname && !this.sub_lastname && !this.sub_password && !this.sub_business_name && !this.sub_address && !this.sub_state && !this.sub_bank_code && !this.sub_bvn && !this.sub_account_number) {
+            this.error = true;
+          }
+        }
+
+        return;
+      }
+    }
+
+    if (type == 'isEdit') {
+
+      if (this.superMerchant) {
+
+        this.errors = {}
+
+        if (this.mobile_number) {
+          if (!isPhone.test(this.mobile_number)) {
+            this.errors.mobile = 'Invalid Phone Format'
+            this.error = true
+          }
+        }
+        if (this.email) {
+          if (!isEmail.test(this.email)) {
+            this.errors.email = 'Invalid Email Format'
+            this.error = true
+          }
+        }
+        if (this.firstname) {
+          if (!isName.test(this.firstname)) {
+            this.errors.firstname = 'Invalid Name Format'
+            this.error = true
+          }
+        }
+        if (this.lastname) {
+          if (!isName.test(this.lastname)) {
+            this.errors.lastname = 'Invalid Name Format'
+            this.error = true
+          }
+        }
+        if (this.account_number) {
+          if (!isNumber.test(this.account_number)) {
+            this.errors.account_number = 'Invalid Account Format'
+            this.error = true
+          }
+        }
+
+
+      } else if (!this.superMerchant) {
+
+        if (this.same_account_details) {
+
+          this.errors = {}
+
+          if (this.sub_mobile_number) {
+            if (!isPhone.test(this.sub_mobile_number)) {
+              this.errors.sub_mobile = 'Invalid Phone Format'
+              this.error = true
+            }
+          }
+          if (this.sub_email) {
+            if (!isEmail.test(this.sub_email)) {
+              this.errors.sub_email = 'Invalid Email Format'
+              this.error = true
+            }
+          }
+          if (this.sub_firstname) {
+            if (!isName.test(this.sub_firstname)) {
+              this.errors.sub_firstname = 'Invalid Name Format'
+              this.error = true
+            }
+          }
+          if (this.sub_lastname) {
+            if (!isName.test(this.sub_lastname)) {
+              this.errors.sub_lastname = 'Invalid Name Format'
+              this.error = true
+            }
+          }
+        }
+
+      } else {
+
+        this.errors = {}
+
+        if (this.sub_mobile_number) {
+          if (!isPhone.test(this.sub_mobile_number)) {
+            this.errors.sub_mobile = 'Invalid Phone Format'
+            this.error = true
+          }
+        }
+        if (this.sub_email) {
+          if (!isEmail.test(this.sub_email)) {
+            this.errors.sub_email = 'Invalid Email Format'
+            this.error = true
+          }
+        }
+        if (this.sub_firstname) {
+          if (!isName.test(this.sub_firstname)) {
+            this.errors.sub_firstname = 'Invalid Name Format'
+            this.error = true
+          }
+        }
+        if (this.sub_lastname) {
+          if (!isName.test(this.sub_lastname)) {
+            this.errors.sub_lastname = 'Invalid Name Format'
+            this.error = true
+          }
+        }
+        if (this.sub_account_number) {
+          if (!isNumber.test(this.sub_account_number)) {
+            this.errors.sub_account_number = 'Invalid Account Format'
+            this.error = true
+          }
+        }
+
+      }
+
+      return;
+
+    }
     // this will check user input
 
     this.error = false;
 
-    if(this.superMerchant){
+    if (this.superMerchant) {
 
       this.errors = {
 
         email: !this.email ? "Email is required" : "",
-          mobile: !this.mobile_number ? "Mobile is required" : "",
-          firstname: !this.firstname ? "First Name is required" : "",
-          lastname: !this.lastname ? "Last Name is required" : "",
-          password: !this.password ? "Password is required" : "",
-          businessname: !this.business_name ? "Business Name is required" : "",
-          address: !this.address ? "Address is required" : "",
-          state: !this.state ? "State is required" : "",
-          bank_code: !this.bank_code ? "Bank Code is required" : "",
-          account_number: !this.account_number ? "Account Number is required" : "",
-          bvn: !this.bvn ? "BVN is required" : "",
+        mobile: !this.mobile_number ? "Mobile is required" : "",
+        firstname: !this.firstname ? "First Name is required" : "",
+        lastname: !this.lastname ? "Last Name is required" : "",
+        password: !this.password ? "Password is required" : "",
+        businessname: !this.business_name ? "Business Name is required" : "",
+        address: !this.address ? "Address is required" : "",
+        state: !this.state ? "State is required" : "",
+        bank_code: !this.bank_code ? "Bank Code is required" : "",
+        account_number: !this.account_number ? "Account Number is required" : "",
+        bvn: !this.bvn ? "BVN is required" : "",
 
       }
 
@@ -300,21 +439,21 @@ export class MerchantOnboardingComponent implements OnInit  {
         this.error = true
       }
 
-      if(!this.email) this.error = true
-      if(!this.mobile_number) this.error = true
-      if(!this.firstname) this.error = true
-      if(!this.lastname) this.error = true
-      if(!this.password) this.error = true
-      if(!this.business_name) this.error = true
-      if(!this.address) this.error = true
-      if(!this.state) this.error = true
-      if(!this.bank_code) this.error = true
-      if(!this.account_number) this.error = true
-      if(!this.bvn) this.error = true
+      if (!this.email) this.error = true
+      if (!this.mobile_number) this.error = true
+      if (!this.firstname) this.error = true
+      if (!this.lastname) this.error = true
+      if (!this.password) this.error = true
+      if (!this.business_name) this.error = true
+      if (!this.address) this.error = true
+      if (!this.state) this.error = true
+      if (!this.bank_code) this.error = true
+      if (!this.account_number) this.error = true
+      if (!this.bvn) this.error = true
 
-    } else if(!this.superMerchant) {
+    } else if (!this.superMerchant) {
 
-      if(this.same_account_details){
+      if (this.same_account_details) {
 
         this.errors = {
 
@@ -327,7 +466,7 @@ export class MerchantOnboardingComponent implements OnInit  {
           sub_address: !this.sub_address ? "Address is required" : "",
           sub_state: !this.sub_state ? "State is required" : "",
           superMerchantCode: !this.superMerchantCode ? "Super Merchant Code is required" : ""
-  
+
         }
 
         if (!this.errors.sub_mobile && !isPhone.test(this.sub_mobile_number)) {
@@ -352,21 +491,21 @@ export class MerchantOnboardingComponent implements OnInit  {
 
 
 
-      if(!this.sub_email) this.error = true
-      if(!this.sub_mobile_number) this.error = true
-      if(!this.sub_firstname) this.error = true
-      if(!this.sub_lastname) this.error = true
-      if(!this.sub_password) this.error = true
-      if(!this.sub_business_name) this.error = true
-      if(!this.sub_address) this.error = true
-      if(!this.sub_state) this.error = true
-      if(!this.superMerchantCode) this.error = true
+        if (!this.sub_email) this.error = true
+        if (!this.sub_mobile_number) this.error = true
+        if (!this.sub_firstname) this.error = true
+        if (!this.sub_lastname) this.error = true
+        if (!this.sub_password) this.error = true
+        if (!this.sub_business_name) this.error = true
+        if (!this.sub_address) this.error = true
+        if (!this.sub_state) this.error = true
+        if (!this.superMerchantCode) this.error = true
 
       } else {
 
         this.errors = {
 
-          sub_email: !!this.sub_email ? "Email is required" : "",
+          sub_email: !this.sub_email ? "Email is required" : "",
           sub_mobile: !this.sub_mobile_number ? "Mobile is required" : "",
           sub_firstname: !this.sub_firstname ? "First Name is required" : "",
           sub_lastname: !this.sub_lastname ? "Last Name is required" : "",
@@ -405,71 +544,87 @@ export class MerchantOnboardingComponent implements OnInit  {
           this.error = true
         }
 
-        if(!this.sub_email) this.error = true
-        if(!this.sub_mobile_number) this.error = true
-        if(!this.sub_firstname) this.error = true
-        if(!this.sub_lastname) this.error = true
-        if(!this.sub_password) this.error = true
-        if(!this.sub_business_name) this.error = true
-        if(!this.sub_address) this.error = true
-        if(!this.sub_state) this.error = true
-        if(!this.sub_bank_code) this.error = true
-        if(!this.sub_account_number) this.error = true
-        if(!this.sub_bvn) this.error = true
-        if(!this.superMerchantCode) this.error = true
+        if (!this.sub_email) this.error = true
+        if (!this.sub_mobile_number) this.error = true
+        if (!this.sub_firstname) this.error = true
+        if (!this.sub_lastname) this.error = true
+        if (!this.sub_password) this.error = true
+        if (!this.sub_business_name) this.error = true
+        if (!this.sub_address) this.error = true
+        if (!this.sub_state) this.error = true
+        if (!this.sub_bank_code) this.error = true
+        if (!this.sub_account_number) this.error = true
+        if (!this.sub_bvn) this.error = true
+        if (!this.superMerchantCode) this.error = true
       }
 
     }
 
   }
 
-  saveMerchant(){
+  saveMerchant() {
     this.check()
 
-    if(this.error){
+    if (this.error) {
       this.toast.error('Please Check Errors')
       return;
     }
 
 
-    if(this.superMerchant){
-     
+    if (this.superMerchant) {
+
       const check = confirm('Do you wish to save this Super Merchant?');
       if (!check) return;
 
       let datas = {
-          email: this.email,
-          mobile: this.mobile_number,
-          firstname: this.firstname,
-          lastname: this.lastname,
-          password: this.password,
-          businessname: this.business_name,
-          address: this.address,
-          state: this.state,
-          bank_code: this.bank_code,
-          account_number: this.account_number,
-          bvn: this.bvn
-  
+        email: this.email,
+        mobile: this.mobile_number,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        password: this.password,
+        businessname: this.business_name,
+        address: this.address,
+        state: this.state,
+        bank_code: this.bank_code,
+        account_number: this.account_number,
+        bvn: this.bvn
+
       }
       const apiURL = `:5009/v1/merchants/create/supermerchant`;
-      this.payvueservice.apiCall(apiURL, 'post', datas ).then(data => {
+      this.payvueservice.apiCall(apiURL, 'post', datas).then(data => {
 
-          this.toast.success(data.message)
-        
+        this.toast.success(data.message);
+        this.getMerchants();
+
       }).catch(error => {
+
+        if (error.error) {
+          if (typeof error.error.message == 'string') {
+            this.toast.error(error.error.message)
+
+
+          } else {
+            this.toast.error(error.error.message.toString())
+
+          }
+        } else {
+          this.toast.error(error.message)
+        }
+
+
         console.error(error);
         this.isData = false;
       });
-    } else if(!this.superMerchant){
+    } else if (!this.superMerchant) {
 
       // this.check()
       // if(this.error) return;
       const check = confirm('Do you wish to save this Sub Merchant?');
       if (!check) return;
 
-      let datas : any
+      let datas: any
 
-      if(this.same_account_details){
+      if (this.same_account_details) {
         datas = {
           email: this.sub_email,
           mobile: this.sub_mobile_number,
@@ -480,11 +635,11 @@ export class MerchantOnboardingComponent implements OnInit  {
           address: this.sub_address,
           state: this.sub_state,
           superMerchantCode: this.superMerchantCode,
-          same_account_details : this.same_account_details
+          same_account_details: this.same_account_details
 
-      }
-        
-  
+        }
+
+
       } else {
         datas = {
           email: this.sub_email,
@@ -499,21 +654,165 @@ export class MerchantOnboardingComponent implements OnInit  {
           account_number: this.sub_account_number,
           bvn: this.sub_bvn,
           superMerchantCode: this.superMerchantCode
-  
-      }
+
+        }
       }
 
-     
-    const apiURL = `:5009/v1/merchants/create/submerchant`;
-    this.payvueservice.apiCall(apiURL, 'post', datas ).then(data => {
+
+      const apiURL = `:5009/v1/merchants/create/submerchant`;
+      this.payvueservice.apiCall(apiURL, 'post', datas).then(data => {
 
         this.toast.success(data.message)
-      
-    }).catch(error => {
-      console.error(error);
-      this.isData = false;
-    });
+
+        this.getMerchants();
+
+      }).catch(error => {
+
+        if (error.error) {
+          if (typeof error.error.message == 'string') {
+            this.toast.error(error.error.message)
+
+
+          } else {
+            this.toast.error(error.error.message.toString())
+
+          }
+        } else {
+          this.toast.error(error.message)
+        }
+        console.error(error.message);
+      });
     }
+  }
+
+  editMerchant(modal?) {
+    this.check('isEmpty')
+
+    if (this.error) {
+      this.toast.error('Please Make A Change')
+      return;
+    }
+
+    this.check('isEdit')
+
+    if (this.error) {
+      this.toast.error('Please Check Errors')
+      return;
+    }
+
+    let datas: any
+
+
+    if (this.superMerchant) {
+
+      const check = confirm('Do you wish to edit this Super Merchant?');
+      if (!check) return;
+
+      let datas: any = {}
+
+      if (this.email) datas.email = this.email
+      if (this.mobile_number) datas.mobile = this.mobile_number
+      if (this.firstname) datas.firstname = this.firstname
+      if (this.lastname) datas.lastname = this.lastname
+      if (this.password) datas.password = this.password
+      if (this.business_name) datas.businessname = this.business_name
+      if (this.address) datas.address = this.address
+      if (this.state) datas.state = this.state
+      if (this.bank_code) datas.bank_code = this.bank_code
+      if (this.account_number) datas.account_number = this.account_number
+      if (this.bvn) datas.bvn = this.bvn
+
+    } else if (!this.superMerchant) {
+      // this.check()
+      // if(this.error) return;
+      const check = confirm('Do you wish to save this Sub Merchant?');
+      if (!check) return;
+
+
+
+      if (this.same_account_details) {
+        datas = {}
+
+        if (this.sub_email) datas.email = this.sub_email
+        if (this.sub_mobile_number) datas.mobile = this.sub_mobile_number
+        if (this.sub_firstname) datas.firstname = this.sub_firstname
+        if (this.sub_lastname) datas.lastname = this.sub_lastname
+        if (this.sub_password) datas.password = this.sub_password
+        if (this.sub_business_name) datas.businessname = this.sub_business_name
+        if (this.sub_address) datas.address = this.sub_address
+        if (this.sub_state) datas.state = this.sub_state
+        if (this.sub_bank_code) datas.bank_code = this.sub_bank_code
+        if (this.sub_account_number) datas.account_number = this.sub_account_number
+        if (this.sub_bvn) datas.bvn = this.sub_bvn
+
+
+      } else {
+        datas = {}
+
+        if (this.sub_email) datas.email = this.sub_email
+        if (this.sub_mobile_number) datas.mobile = this.sub_mobile_number
+        if (this.sub_firstname) datas.firstname = this.sub_firstname
+        if (this.sub_lastname) datas.lastname = this.sub_lastname
+        if (this.sub_password) datas.password = this.sub_password
+        if (this.sub_business_name) datas.businessname = this.sub_business_name
+        if (this.sub_address) datas.address = this.sub_address
+        if (this.sub_state) datas.state = this.sub_state
+      }
+    }
+
+    const apiURL = `:5009/v1/merchants/edit/${this.details.merchantcode}`;
+    this.payvueservice.apiCall(apiURL, 'patch', datas).then(data => {
+
+      this.toast.success(data.message)
+      this.getMerchants();
+
+      if (modal) {
+        modal.hide()
+      }
+      this.isView = false;
+
+
+    }).catch(error => {
+      if (error.error) {
+        if (typeof error.error.message == 'string') {
+          this.toast.error(error.error.message)
+
+
+        } else {
+          this.toast.error(error.error.message.toString())
+
+        }
+      } else {
+        this.toast.error(error.message)
+      }
+      console.error(error);
+    });
+  }
+
+  deleteMerchant() {
+
+    const apiURL = `:5009/v1/merchants/delete/${this.details.merchantcode}`;
+    this.payvueservice.apiCall(apiURL, 'delete').then(data => {
+
+      this.toast.success(data.message)
+      this.getMerchants();
+      this.isView = false;
+
+    }).catch(error => {
+      if (error.error) {
+        if (typeof error.error.message == 'string') {
+          this.toast.error(error.error.message)
+
+
+        } else {
+          this.toast.error(error.error.message.toString())
+
+        }
+      } else {
+        this.toast.error(error.message)
+      }
+      console.error(error);
+    });
   }
 
   sortBy(by: string | any): void {
@@ -578,14 +877,14 @@ export class MerchantOnboardingComponent implements OnInit  {
     return buf;
   }
 
-  checkKey(event){
+  checkKey(event) {
 
-    if(event && event.key == 'Enter'){
+    if (event && event.key == 'Enter') {
       this.getMerchants();
     }
   }
 
-  setName(name){
+  setName(name) {
     this.name = name;
   }
 
@@ -604,21 +903,21 @@ export class MerchantOnboardingComponent implements OnInit  {
     let user: any
     let merchant: any
 
-    if(this.isSuper){
+    if (this.isSuper) {
       user = this.payvueservice.getUser();
       merchant = user.merchantcode
 
-    } else if(sub){
-     
+    } else if (sub) {
+
       merchant = sub
-    } 
-   
+    }
+
 
     let apiURL = ``;
-    if(sub || this.isSuper){
-      apiURL = `:5009/v1/merchants/submerchantforsupermerchant/${merchant}`;
+    if (sub || this.isSuper) {
+      apiURL = `:5009/v1/merchants/submerchantforsupermerchant?search=${this.search}&supermerchantcode=${merchant}`;
 
-    } else if(this.super){
+    } else if (this.admin) {
       apiURL = `:5009/v1/merchants/supermerchant`;
 
     }
@@ -638,12 +937,12 @@ export class MerchantOnboardingComponent implements OnInit  {
         this.isData = false;
       }
 
-      if(sub){
+      if (sub) {
         this.isSub = true;
-      } else{
+      } else {
         this.isSub = false;
       }
-      
+
     }).catch(error => {
       console.error(error);
       this.isData = false;

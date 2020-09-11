@@ -416,7 +416,6 @@
       </div>
     </div>
   </mdb-tab> -->
-  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> MSC and Settlement Time"> -->
     <mdb-tab heading="MSC and Settlement Time">
     <div class="row">
       <div class="col-12 p-0">
@@ -433,18 +432,24 @@
               <form #form2=ngForm (submit)="saveMSC()">
                 <table class="table table-borderless">
                   <tr class="row mx-0 no-change">
-                    <td class="col-lg-4">
+                    <td class="col-lg-3">
                       <p class="noWrap">Super Merchant ID:</p>
                       <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super_merchant_code">
                     </td>
-                    <td class="col-lg-4">
+                    <td class="col-lg-3">
                       <p class="noWrap">MSC Fee:</p>
                       <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="super_msc">
                     </td>
+                    <td class="col-lg-3">
+                      <p class="noWrap">Settlement Time:</p>
+                      
+                        <input type="time" id="input" class="form-control no-change" [ngModelOptions]="{standalone: true}" [(ngModel)] ="settle_time">
+                     
+                    </td>
                     <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
                       <button class="btn btn-sm btn-uc waves-light mt-1-2"
-                        [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
-                          [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
+                        [disabled]="mscSaving==true || (!hours && !minutes && !seconds)">{{mscSaving? 'Saving' : 'Save' }}<i class="fa "
+                          [ngClass]="{'spinner-border spinner-border-sm':mscSaving==true}"></i></button>
                     </td>
                   </tr>
                 </table>
@@ -516,47 +521,10 @@
 
         </div>
 
-
-        <div [ngClass]="{'card card-cascade narrower': true,'z-depth-0': !shadows, 
-        'mb-4 mt-0 pt-4 px-4': true}">
-
-          <div class="col-padding">
-            <h5><strong>Settlement Time Configuration</strong></h5>
-            <span class="text-danger">{{errorMSCSuper}}</span>
-          </div>
-
-          <div class="table-responsive pt-4">
-            <form #form2=ngForm (submit)="saveMSC()">
-              <table class="table table-borderless">
-                <tr class="row mx-0 no-change">
-                  <td class="col-lg-4">
-                    <p class="noWrap">Super Merchant ID:</p>
-                    <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="super2_merchant_code">
-                  </td>
-                  <td class="col-lg-4">
-                    <p class="noWrap">Settlement Time:</p>
-                    
-                      <input type="time" id="input" class="form-control no-change" [ngModelOptions]="{standalone: true}" [(ngModel)] ="sub_time">
-                   
-                  </td>
-                  <td class="col-lg-1 col-sm-2" *ngIf='admin || super || isSuperMerchant'>
-                    <button class="btn btn-sm btn-uc waves-light mt-1-2"
-                      [disabled]="onlineSaving==true || (!hours && !minutes && !seconds)">{{onlineSaving? 'Saving' : 'Save' }}<i class="fa "
-                        [ngClass]="{'spinner-border spinner-border-sm':onlineSaving==true}"></i></button>
-                  </td>
-                </tr>
-
-
-              </table>
-            </form>
-          </div>
-        </div>
-
         </section>
       </div>
     </div>
   </mdb-tab>
-  <!-- <mdb-tab heading="<i class='fa fa-circle style-fa' aria-hidden='true'></i> Settlement Switch"> -->
     <mdb-tab heading="Settlement Switch">
     <div class="row">
       <div class="col-12 p-0">

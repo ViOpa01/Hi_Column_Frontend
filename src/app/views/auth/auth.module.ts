@@ -20,7 +20,7 @@ const routes: Routes = [  {
     path: '', children:
       [
         { path: 'register', component: RegisterComponent, canActivate: [AuthGuard, RoleGuard], data: {
-          allowedRoles: ['super']
+          allowedRoles: ['admin']
         } },
         { path: 'reset', component: ResetComponent},
         { path: 'verify', component: ResetOutComponent},

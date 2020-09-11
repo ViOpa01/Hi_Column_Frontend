@@ -4,6 +4,73 @@
     background-size: cover;
 }
 
+.hexagon {
+    position: relative;
+    width: 120px; 
+    height: 69.28px;
+    background-color: #ffffff;
+    margin: 34.64px 0;
+  }
+  
+  .hexagon:before,
+  .hexagon:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+  }
+  
+  .hexagon:before {
+    bottom: 100%;
+    border-bottom: 34.64px solid #ffffff;
+  }
+  
+  .hexagon:after {
+    top: 100%;
+    width: 0;
+    border-top: 34.64px solid #ffffff;
+  }
+
+//   .split {
+//     height: 100%;
+//     width: 31%;
+//     position: fixed;
+//     z-index: 1;
+//     top: 0;
+//     overflow-x: hidden;
+//     padding-top: 20px;
+//   }
+
+//   .split2 {
+//     height: 100%;
+//     width: 69%;
+//     position: fixed;
+//     z-index: 1;
+//     top: 0;
+//     overflow-x: hidden;
+//     padding-top: 20px;
+//   }
+  
+  /* Control the left side */
+  .left {
+    left: 0;
+    background-color: #06223F;
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+    background-color: transparent;
+  }
+
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+  }
+
 .card {
     background: linear-gradient(360deg, #e7e4e447 20%, rgba(63, 114, 155, 0) 80%) !important;
 }

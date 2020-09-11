@@ -104,8 +104,18 @@ export class LoginComponent implements OnInit {
         }
       }).catch(error => {
         console.log('failed to login', error)
-        let errorBody = error.error
-        this.toast.error(errorBody.error)
+        if (error.error) {
+          if (typeof error.error.message == 'string') {
+            this.toast.error(error.error.message)
+
+
+          } else {
+            this.toast.error(error.error.message.toString())
+
+          }
+        } else {
+          this.toast.error(error.message)
+        }
         this.loading = false;
       })
     }
