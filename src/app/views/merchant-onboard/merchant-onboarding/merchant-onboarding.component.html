@@ -299,7 +299,7 @@
                         <div class="col-lg-6">
                             <p>Mobile Number</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="mobile_number" [name]="mobile_number" type="phone" />
+                                ngDefaultControl (keyup)="mobile_number = mobile_number.trim()" [(ngModel)]="mobile_number" [name]="mobile_number" type="phone" />
                             <span *ngIf="errors.mobile" class="text-danger error-style">{{errors.mobile}}</span>
                         </div>
                     </div>
@@ -330,8 +330,8 @@
                         </div>
                         <div class="col-lg-6">
                             <p>Account Number</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="account_number" [name]="account_number" type="text" />
+                            <input class="form-control no-change my-0 py-0" (keyup)="account_number = account_number.trim()" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="account_number" [name]="account_number" type="text" maxlength="10"/>
                             <span *ngIf="errors.account_number"
                                 class="text-danger error-style">{{errors.account_number}}</span>
                         </div>
@@ -353,8 +353,8 @@
                         </div>
                         <div class="col-lg-5">
                             <p>BVN</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="bvn" [name]="bvn" type="text" />
+                            <input class="form-control no-change my-0 py-0" (keyup)="bvn = bvn.trim()" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="bvn" [name]="bvn" type="text" maxlength="9"/>
                             <span *ngIf="errors.bvn" class="text-danger error-style">{{errors.bvn}}</span>
                         </div>
 
@@ -425,7 +425,7 @@
                         <div class="col-lg-6">
                             <p>Mobile Number</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_mobile_number" [name]="sub_mobile_number"
+                                ngDefaultControl (keyup)="sub_mobile_number = sub_mobile_number.trim()" [(ngModel)]="sub_mobile_number" [name]="sub_mobile_number"
                                 type="phone" />
 
                             <span *ngIf="errors.sub_mobile" class="text-danger error-style">{{errors.sub_mobile}}</span>
@@ -490,8 +490,8 @@
                         <div class="col-lg-5">
                             <p>Account Number</p>
                             <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
-                                [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="sub_account_number"
-                                [name]="sub_account_number" type="text" />
+                                [ngModelOptions]="{standalone: true}" (keyup)="sub_account_number = sub_account_number.trim()" ngDefaultControl [(ngModel)]="sub_account_number"
+                                [name]="sub_account_number" type="text" maxlength="10"/>
                             <span *ngIf="errors.sub_account_number"
                                 class="text-danger error-style">{{errors.sub_account_number}}</span>
                         </div>
@@ -507,9 +507,9 @@
 
                         <div class="col-lg-5">
                             <p>BVN</p>
-                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
+                            <input [disabled]="same_account_details" (keyup)="sub_bvn = sub_bvn.trim()" class="form-control no-change my-0 py-0"
                                 [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="sub_bvn"
-                                [name]="sub_bvn" type="text" />
+                                [name]="sub_bvn" type="text" maxlength="9"/>
                             <span *ngIf="errors.sub_bvn" class="text-danger error-style">{{errors.sub_bvn}}</span>
                         </div>
 

@@ -243,6 +243,42 @@ export class MerchantOnboardingComponent implements OnInit {
     const isName = /^[a-zA-Z]+$/
     const isNumber = /^[0-9]*$/
 
+    if(this.firstname){
+      this.firstname = this.firstname.trim()
+    }
+
+    if(this.lastname){
+      this.lastname = this.lastname.trim()
+    }
+
+    if(this.sub_firstname){
+      this.sub_firstname = this.sub_firstname.trim()
+    }
+
+    if(this.sub_lastname){
+      this.sub_lastname = this.sub_lastname.trim()
+    }
+
+    if(this.business_name){
+      this.business_name = this.business_name.trim()
+    }
+
+    if(this.sub_business_name){
+      this.sub_business_name = this.sub_business_name.trim()
+    }
+
+    if(this.address){
+      this.address = this.address.trim()
+    }
+
+    if(this.sub_address){
+      this.sub_address = this.sub_address.trim()
+    }
+
+    if(this.superMerchantCode){
+      this.superMerchantCode = this.superMerchantCode.trim()
+    }
+
     if (type == 'check') {
       if (this.errors.sub_account_number) {
         this.errors.sub_account_number = ""
@@ -320,6 +356,12 @@ export class MerchantOnboardingComponent implements OnInit {
             this.error = true
           }
         }
+        if (this.bvn) {
+          if (!isNumber.test(this.bvn)) {
+            this.errors.bvn = 'Invalid BVN Format'
+            this.error = true
+          }
+        }
 
 
       } else if (!this.superMerchant) {
@@ -389,6 +431,13 @@ export class MerchantOnboardingComponent implements OnInit {
           }
         }
 
+        if (this.sub_bvn) {
+          if (!isNumber.test(this.sub_bvn)) {
+            this.errors.sub_bvn = 'Invalid BVN Format'
+            this.error = true
+          }
+        }
+
       }
 
       return;
@@ -438,6 +487,11 @@ export class MerchantOnboardingComponent implements OnInit {
 
       if (!this.errors.account_number && !isNumber.test(this.account_number)) {
         this.errors.account_number = 'Invalid Account Format'
+        this.error = true
+      }
+
+      if (!this.errors.bvn && !isNumber.test(this.bvn)) {
+        this.errors.bvn = 'Invalid BVN Format'
         this.error = true
       }
 
@@ -545,6 +599,12 @@ export class MerchantOnboardingComponent implements OnInit {
           this.errors.sub_account_number = 'Invalid Account Format'
           this.error = true
         }
+
+        if (!this.errors.bvn && !isNumber.test(this.bvn)) {
+          this.errors.bvn = 'Invalid BVN Format'
+          this.error = true
+        }
+
 
         if (!this.sub_email) this.error = true
         if (!this.sub_mobile_number) this.error = true

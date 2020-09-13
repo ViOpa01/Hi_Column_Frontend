@@ -489,7 +489,7 @@
 
                         <td class="text-right" *ngIf="admin">
                           <img src="../../../assets/img/edit.svg"
-                            (click)="isEdit= true; setDetails(msc); mscModal.show()"
+                            (click)="isEdit= true; clear(); setDetails(msc); mscModal.show()"
                             class="button-asset py-2 pr-3">
                           <img (click)="setDetails(msc); deleteMSC()" src="../../../assets/img/delete.svg"
                             class="button-asset py-2">
@@ -2154,7 +2154,7 @@
                         <div class="col-lg-6">
                             <p>MSC Fee</p>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="super_msc" [name]="super_msc" type="number" />
+                                ngDefaultControl [(ngModel)]="super_msc" (keyup)="check2('isEdit')" [name]="super_msc" type="number" min=0 max=100/>
                             <span *ngIf="errors.super_msc" class="text-danger error-style">{{errors.super_msc}}</span>
                         </div>
                         

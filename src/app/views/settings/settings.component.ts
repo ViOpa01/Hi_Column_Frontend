@@ -428,24 +428,37 @@ export class SettingsComponent implements OnInit {
   check2(type?){
     if (type == 'isEmpty') {
 
-      if(!this.super_msc && !this.settle_day && !this.settle_time){
+      if(!this.super_msc && !this.settle_day && !this.settle_time && !this.super_merchant_code){
         this.error = true;
       }
 
       return
     }
 
+    if(type == 'isEdit') {
+      if(this.super_msc < 0){
+        this.super_msc = 0
+      }else if (this.super_msc > 100){
+        this.super_msc = 100
+      }
+
+      return
+    }
+
+
     this.errors = {
 
       super_merchant_code: !this.super_merchant_code ? "Super Merchant Code required" : "",
       super_msc: !this.super_msc ? "MSC is required" : "",
       settle_time: !this.settle_time ? "Settlement Time is required" : "",
+      settle_day: !this.settle_day ? "Settlement Day is required" : "",
 
     }
   
     if(!this.super_merchant_code) this.error = true;
     if(!this.super_msc) this.error = true;
     if(!this.settle_time) this.error = true;
+    if(!this.settle_day) this.error = true;
   }
 
   saveMSC(){
