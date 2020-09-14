@@ -1,36 +1,52 @@
 <section autocomplete="off" class="col-lg-12 col-md-12">
+	<div class="row">
+		<div class="ml-2 px-4 pb-4">
+		  <h6 class="header-style">Register Admin</h6>
+			<!-- <button [disabled]="!tableData.length" type="button" class="btn btn-uc btn-sm waves-light"
+				(click)="exportExcel()" mdbWavesEffect>Export
+			</button> -->
+		</div>
+	  </div>
 	<!--Body-->
-	<div class="card card-cascade narrower pb-3">
+	<div class="card card-cascade narrower pb-3 mx-4">
 		<div class="card-body card-body-cascade pb-0">
-				<form [formGroup]="userDetails">
-			<div class="md-form">
-				<input ngDefaultControl type="text" id="orangeForm-firstname" class="form-control" formControlName="first"
-					placeholder="Your First Name"  autocomplete="false">
+			
+			<div class="row pt-4">
+			<div class="col-lg-4">
+					<p>First Name</p>
+					<input ngDefaultControl type="text" id="orangeForm-firstname" class="form-control no-change" [(ngModel)]="firstname" autocomplete="false">
 				<span class="text-danger">{{errors.first_detail}} {{errors.firstname}}</span>
+				
 			</div>
-			<div class="md-form">
-				<input ngDefaultControl type="text" id="orangeForm-lastname" class="form-control" formControlName="last"
-					placeholder="Your Last Name"  autocomplete="false">
+			<div class="col-lg-4">
+				<p>Last Name</p>
+				<input ngDefaultControl type="text" id="orangeForm-lastname" class="form-control no-change"  [(ngModel)]="lastname"autocomplete="false">
 					<span class="text-danger">{{errors.last_detail}} {{errors.lastname}}</span>
 			</div>
-			<div class="md-form">
-				<input ngDefaultControl type="email" id="orangeForm-email" class="form-control" formControlName="email"
-					placeholder="Your email"  autocomplete="false">
-					<span class="text-danger">{{errors.email_detail}} {{errors.email}}</span>
+			<div class="col-lg-4">
+				<p>Mobile</p>
+				<input ngDefaultControl  [(ngModel)]="phone" type="text" id="orangeForm-phone" class="form-control no-change"
+					 autocomplete="false">
+					<span class="text-danger">{{errors.phone_detail}} {{errors.phone}}</span>
 			</div>
 			
-			</form>
+			</div>
+			
 
-			<div class="md-form">
-				<input ngDefaultControl [(ngModel)]="password" type="password" id="orangeForm-pass" class="form-control"
-					placeholder="Your password"  autocomplete="false">
+			<div class="row pt-4">
+			<div class="col-lg-6">
+				<p>Password</p>
+				<input ngDefaultControl [(ngModel)]="password" type="password" id="orangeForm-pass" class="form-control no-change"
+					 autocomplete="false">
 					<span class="text-danger">{{errors.password}} {{errors.length}}</span>
 			</div>
 
-			<div class="md-form">
-				<input ngDefaultControl  [(ngModel)]="phone" type="text" id="orangeForm-phone" class="form-control"
-					placeholder="Your phone"  autocomplete="false">
-					<span class="text-danger">{{errors.phone_detail}} {{errors.phone}}</span>
+			<div class="col-lg-6">
+				<p>Email Address</p>
+				<input ngDefaultControl type="email" id="orangeForm-email" [(ngModel)]="email"class="form-control no-change"
+					autocomplete="false">
+					<span class="text-danger">{{errors.email_detail}} {{errors.email}}</span>
+			</div>
 			</div>
 
 			
@@ -43,8 +59,8 @@
 					</div>
 				</div>
 			</div> -->
-			<div class="text-center">
-				<button class="btn blue-gradient btn-md waves-effect waves-light" mdbWavesEffect (click)="register()">
+			<div class="text-center pt-4">
+				<button class="btn btn-sm btn-ud normal-width waves-effect waves-light" mdbWavesEffect (click)="register()">
 					Register New User
 					<i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
 				</button>

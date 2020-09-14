@@ -81,7 +81,7 @@
 
                 <td class="col-lg-1 col-sm-2">
                     <button type="button" class="btn btn-ud btn-sm waves-light"
-                        (click)="isEdit = false; clear(); superMerchant = true; onboardModal.show();" mdbWavesEffect>
+                        (click)="isEdit = false; clear(); (admin ? superMerchant = true : superMerchant = false); onboardModal.show();" mdbWavesEffect>
                         <mdb-icon fas icon="plus"></mdb-icon> Add Merchant
                     </button>
 
@@ -256,7 +256,7 @@
             </div>
             <!--Body-->
             <div class="modal-body">
-                <div *ngIf="!isEdit" class="row onboard-style" style="align-items: center;">
+                <div *ngIf="!isEdit && admin" class="row onboard-style" style="align-items: center;">
                     <div class="row col-lg-4 form-check">
                         <input [checked]="superMerchant" (change)="superMerchant = true" type="radio"
                             class="form-check-input" id="materialUncheckedR" name="superMerchant">
@@ -324,9 +324,17 @@
                     <div class="row pt-4">
                         <div class="col-lg-6">
                             <p>Bank Code</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                            <select [(ngModel)]="bank_code"
+                            class="browser-default custom-select no-change d-block">
+                            <option [disabled]=true value="">Select Bankcode</option>
+                            <option *ngFor="let row of bankcodes" [value]="row.value" selected>{{row.label | titlecase}}: {{row.value}}
+                            </option>
+
+                        </select>
+                        <span *ngIf="errors.bank_code" class="text-danger error-style">{{errors.bank_code}}</span>
+                            <!-- <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="bank_code" [name]="bank_code" type="text" />
-                            <span *ngIf="errors.bank_code" class="text-danger error-style">{{errors.bank_code}}</span>
+                            <span *ngIf="errors.bank_code" class="text-danger error-style">{{errors.bank_code}}</span> -->
                         </div>
                         <div class="col-lg-6">
                             <p>Account Number</p>
@@ -347,8 +355,15 @@
                         </div>
                         <div class="col-lg-2">
                             <p>State</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="state" [name]="state" type="text" />
+                            <select [(ngModel)]="state"
+                            class="browser-default custom-select no-change d-block">
+                            <option [disabled]=true value="">Select State</option>
+                            <option *ngFor="let row of statecodes" [value]="row" selected>{{row}}
+                            </option>
+                            </select>
+
+                            <!-- <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="state" [name]="state" type="text" /> -->
                             <span *ngIf="errors.state" class="text-danger error-style">{{errors.state}}</span>
                         </div>
                         <div class="col-lg-5">
@@ -374,7 +389,7 @@
                             </div>
 
                             <div class="py-2">
-                                <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                <input  [disabled]="!admin" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                     ngDefaultControl [(ngModel)]="superMerchantCode2" placeholder="Super Merchant Code"
                                     [name]="superMerchantCode1" type="text" />
                             </div>
@@ -386,9 +401,9 @@
                                     max="100" type="success" aria-valuenow="{{uploadPercent}}" aria-valuemin="0"
                                     aria-valuemax="100">{{uploadPercent}}%</mdb-progress>
 
-                                <button class="btn btn-ud btn-sm"
+                                <button class="btn btn-ud btn-sm normal-width"
                                     [disabled]="isUploading || !fileModel || !superMerchantCode2"
-                                    (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'uploading' : 'upload'}} <i
+                                    (click)="doUpload(); uploadPercent = 0">{{isUploading ? 'Uploading' : 'Upload'}} <i
                                         class="fa "
                                         [ngClass]="{'spinner-border spinner-border-sm':isUploading==true}"></i></button>
                             </div>
@@ -459,9 +474,9 @@
                     </div>
 
                     <div class="row pt-4">
-                        <div *ngIf='!isEdit' class="col-lg-5">
+                        <div class="col-lg-5">
                             <p>Super Merchant Code</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                            <input [disabled]="!admin" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
                                 ngDefaultControl [(ngModel)]="superMerchantCode" [name]="superMerchantCode"
                                 type="text" />
                             <span *ngIf="errors.superMerchantCode"
@@ -470,8 +485,15 @@
 
                         <div class="col-lg-2">
                             <p>State</p>
+                            <select [(ngModel)]="sub_state"
+                            class="browser-default custom-select no-change d-block">
+                            <option [disabled]=true value="">Select State</option>
+                            <option *ngFor="let row of statecodes" [value]="row" selected>{{row}}
+                            </option>
+                            </select>
+                            <!-- </select>
                             <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_state" [name]="sub_state" type="text" />
+                                ngDefaultControl [(ngModel)]="sub_state" [name]="sub_state" type="text" /> -->
                             <span *ngIf="errors.sub_state" class="text-danger error-style">{{errors.sub_state}}</span>
                         </div>
 
@@ -498,9 +520,16 @@
 
                         <div class="col-lg-2">
                             <p>Bank Code</p>
-                            <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
+                            <select [disabled]="same_account_details" [(ngModel)]="sub_bank_code"
+                            class="browser-default custom-select no-change d-block">
+                            <option [disabled]=true value="">Select Bankcode</option>
+                            <option *ngFor="let row of bankcodes" [value]="row.value" selected>{{row.label | titlecase}}: {{row.value}}
+                            </option>
+
+                        </select>
+                            <!-- <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
                                 [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="sub_bank_code"
-                                [name]="sub_bank_code" type="text" />
+                                [name]="sub_bank_code" type="text" /> -->
                             <span *ngIf="errors.sub_bank_code"
                                 class="text-danger error-style">{{errors.sub_bank_code}}</span>
                         </div>

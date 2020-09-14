@@ -28,3 +28,7 @@ $introBg: "http://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img%20(
 .rgba-stylish-strong .mask {
     background-color: rgba(62, 69, 81, .7);
 }
+
+.form-control.no-change:not(disabled), .custom-select.no-change:not(disabled) {
+    background-color: #f8f9fa !important;
+  }

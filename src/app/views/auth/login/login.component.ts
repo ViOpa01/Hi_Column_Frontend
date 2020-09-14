@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       let emailFormat = /^[\w._-]+@[\w]+[-.]?[\w]+\.[\w]+$/; 
       let idFormat = /^\w{15}$/
 
-      return (emailFormat.test(c.value) || idFormat.test(c.value)) ? null : {
+      return (emailFormat.test(c.value)) ? null : {
         validateInput: {
           valid: false
         }
@@ -66,10 +66,10 @@ export class LoginComponent implements OnInit {
 
     this.email = this.userDetails.get('email').value
     this.errors = {
-      email_detail: (!this.userDetails.get('email').valid && this.email) ? "This is not a Valid Email or Merchant ID" : "",
+      email_detail: (!this.userDetails.get('email').valid && this.email) ? "This is not a Valid Email" : "",
       password_length: (this.password && this.password.length < 8) ? "Minimum password length is 8 " : "",
       password: !this.password ? "Password is Required" : "",
-      email: !this.email ? "Email or Merchant ID is required" : ""
+      email: !this.email ? "Email is required" : ""
     }
 
     if((!this.userDetails.get('email').valid && this.email)) this.error = true

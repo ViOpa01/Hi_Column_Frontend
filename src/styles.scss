@@ -49,6 +49,10 @@ body {
   background: linear-gradient(to right, $base-color2 0%, $base-color 100%) !important;
 }
 
+.btn.normal-width{
+  min-width: unset !important;
+}
+
 
 .btn.btn-sm {
   padding: 0.84rem 1.14rem;;
@@ -978,7 +982,7 @@ select {
 
 .progress {
   height: 17px !important;
-  width: 265px !important;
+  // width: 265px !important;
   margin-bottom: 0px !important;
   background-color: #F2F2F2 !important;
 }

@@ -122,8 +122,13 @@
   cursor: pointer;
 }
 
-.form-control.no-change:not(disabled) {
+.form-control.no-change:not(disabled), .custom-select.no-change:not(disabled) {
   background-color: #f8f9fa !important;
+}
+
+.custom-select.no-change{
+  border: 1px solid #ced4da !important;
+  border-radius: 0.25rem !important;
 }
 
 .input-style {
@@ -134,7 +139,7 @@
   font-weight: 600 !important;
 }
 
-.form-control.no-change:disabled {
+.form-control.no-change:disabled, .custom-select.no-change:disabled{
   background-color: #e9ecef !important;
   opacity: 1;
 }

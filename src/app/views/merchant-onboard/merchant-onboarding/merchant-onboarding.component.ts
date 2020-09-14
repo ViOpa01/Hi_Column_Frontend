@@ -104,6 +104,15 @@ export class MerchantOnboardingComponent implements OnInit {
 
   error = true;
   errors: any = {};
+  statecodes: any;
+  bankcodes: any;
+
+  uploadPercent: number;
+  isChecked: boolean;
+  fileModel: any;
+
+
+  
 
 
   constructor(private payvueservice: PayVueApiService, private socket: SocketService, private webWorkerService: WebworkerService, private toast: ToastService) {
@@ -144,6 +153,17 @@ export class MerchantOnboardingComponent implements OnInit {
 
   ngOnInit() {
 
+    this.payvueservice.uploadPercent.subscribe(percent => {
+      this.uploadPercent = percent;
+      if(this.uploadPercent == 100) {
+        this.isUploading = undefined
+      this.fileModel= '';
+      }
+    })
+
+    this.statecodes = JSON.parse(localStorage.getItem('state'))
+  this.bankcodes = JSON.parse(localStorage.getItem('bankcodes'))
+
     this.optionsSelect = [
       { value: '20', label: '20' },
       { value: '50', label: '50' },
@@ -168,6 +188,19 @@ export class MerchantOnboardingComponent implements OnInit {
     })
   }
 
+  checkFile(event:any) {
+    this.uploadPercent = NaN;
+    var mime = event.target.files[0].type
+    if (mime !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' && mime !== 'application/vnd.ms-excel') {
+      this.toast.error("incorrect file type, must be valid excel")
+      this.isChecked = false;
+      return;
+    }
+    localStorage.setItem('xfile', 'true');
+    this.file = event.target.files[0];
+    this.isChecked = true;
+  }
+
   doUpload() {
     localStorage.setItem('xfile', 'true');
     this.isUploading = true
@@ -180,7 +213,9 @@ export class MerchantOnboardingComponent implements OnInit {
       console.log(data);
 
       let isProcessing = true;
-      this.superMerchantCode2 = '';
+      if(!this.admin){
+        this.superMerchantCode2 = '';
+      }
 
       eventsService.getEvent('upload-processing').emit(isProcessing);
 
@@ -223,6 +258,14 @@ export class MerchantOnboardingComponent implements OnInit {
     this.sub_state = '';
     this.sub_bvn = '';
     this.sub_password = '';
+
+    if (this.isSuper) {
+      let user = this.payvueservice.getUser();
+      let merchant = user.merchantcode
+      this.superMerchantCode = merchant
+      this.superMerchantCode2 = merchant
+
+    }
   }
 
   setDetails(row, status?) {
@@ -968,6 +1011,8 @@ export class MerchantOnboardingComponent implements OnInit {
     if (this.isSuper) {
       user = this.payvueservice.getUser();
       merchant = user.merchantcode
+      this.superMerchantCode = merchant
+      this.superMerchantCode2 = merchant
 
     } else if (sub) {
 

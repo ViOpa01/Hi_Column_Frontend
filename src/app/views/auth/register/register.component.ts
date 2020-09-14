@@ -23,8 +23,8 @@ export class RegisterComponent implements OnInit {
   firstname: string;
   firstError: string;
   isFirstError: boolean;
-  emailFormat = '^[\\w._-]+@[\\w]+[-.]?[\\w]+\.[\\w]+$'
-  nameFormat = '^[a-zA-Z]+$'
+  emailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  nameFormat = /^[a-zA-Z]+$/
   phoneFormat = /^(0|234|\+234)[0-9]{10}$/
 
   lastname: string;
@@ -68,32 +68,6 @@ export class RegisterComponent implements OnInit {
       }
     }
 
-    userDetails = new FormGroup({
-      email: new FormControl('', [
-        Validators.required,
-        // Validators.email,
-  
-        Validators.pattern(this.emailFormat)
-      ]),
-      first: new FormControl('', [
-        Validators.required,
-        // Validators.email,
-  
-        Validators.pattern(this.nameFormat)
-      ]),
-      last: new FormControl('', [
-        Validators.required,
-        // Validators.email,
-  
-        Validators.pattern(this.nameFormat)
-      ]),
-      // phone: new FormControl('', [
-      //   Validators.required,
-      //   // Validators.email,
-  
-      //   Validators.pattern(this.nameFormat)
-      // ]),
-    });
   
   
 
@@ -119,20 +93,14 @@ export class RegisterComponent implements OnInit {
     this.isEmailError = false;
     this.isPassError = false;
 
-    this.firstname = this.userDetails.get('first').value
-    this.lastname = this.userDetails.get('last').value
-    this.email = this.userDetails.get('email').value
-    // this.phone = this.userDetails.get('phone').value
-
-
 
     this.errors = {
       firstname: !this.firstname ? "First Name is required" : "",
-      first_detail: (!this.userDetails.get('first').valid && this.firstname) ? "This is not a Valid First Name" : "",
+      first_detail: (!this.nameFormat.test(this.firstname) && this.firstname) ? "This is not a Valid First Name" : "",
       lastname: !this.lastname ? "Last Name is required" : "",
-      last_detail: (!this.userDetails.get('last').valid && this.lastname) ? "This is not a Valid Last Name" : "",
+      last_detail: (!this.nameFormat.test(this.lastname) && this.lastname) ? "This is not a Valid Last Name" : "",
       email: !this.email ? "Email is required" : "",
-      email_detail: (!this.userDetails.get('email').valid && this.email) ? "This is not a Valid Email" : "",
+      email_detail: (!this.emailFormat.test(this.email) && this.email) ? "This is not a Valid Email" : "",
       password: !this.password ? "Password is required" : "",
       length: (this.password && this.password.length < 8) ? "Minimum password length is 8" : "",
       phone: (!this.phone) ? "Phone Number is required" : "",
@@ -142,11 +110,11 @@ export class RegisterComponent implements OnInit {
     }
 
     if(!this.firstname) this.error = true
-    if((!this.userDetails.get('first').valid && this.firstname)) this.error = true
+    if((!this.nameFormat.test(this.firstname) && this.firstname)) this.error = true
     if(!this.lastname) this.error = true
-    if((!this.userDetails.get('last').valid && this.lastname)) this.error = true
+    if((!this.nameFormat.test(this.lastname) && this.lastname)) this.error = true
     if(!this.email) this.error = true
-    if((!this.userDetails.get('email').valid && this.email)) this.error = true
+    if((!this.emailFormat.test(this.email) && this.email)) this.error = true
     if(!this.password) this.error = true
     // if(this.role == undefined) this.error = true
     if(this.password && this.password.length < 8) this.error = true
