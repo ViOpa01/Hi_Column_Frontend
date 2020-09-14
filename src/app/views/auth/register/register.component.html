@@ -13,18 +13,18 @@
 			
 			<div class="row pt-4">
 			<div class="col-lg-4">
-					<p>First Name</p>
+					<p class="new-p-style">First Name</p>
 					<input ngDefaultControl type="text" id="orangeForm-firstname" class="form-control no-change" [(ngModel)]="firstname" autocomplete="false">
 				<span class="text-danger">{{errors.first_detail}} {{errors.firstname}}</span>
 				
 			</div>
 			<div class="col-lg-4">
-				<p>Last Name</p>
+				<p class="new-p-style">Last Name</p>
 				<input ngDefaultControl type="text" id="orangeForm-lastname" class="form-control no-change"  [(ngModel)]="lastname"autocomplete="false">
 					<span class="text-danger">{{errors.last_detail}} {{errors.lastname}}</span>
 			</div>
 			<div class="col-lg-4">
-				<p>Mobile</p>
+				<p class="new-p-style">Mobile</p>
 				<input ngDefaultControl  [(ngModel)]="phone" type="text" id="orangeForm-phone" class="form-control no-change"
 					 autocomplete="false">
 					<span class="text-danger">{{errors.phone_detail}} {{errors.phone}}</span>
@@ -35,14 +35,14 @@
 
 			<div class="row pt-4">
 			<div class="col-lg-6">
-				<p>Password</p>
+				<p class="new-p-style">Password</p>
 				<input ngDefaultControl [(ngModel)]="password" type="password" id="orangeForm-pass" class="form-control no-change"
 					 autocomplete="false">
 					<span class="text-danger">{{errors.password}} {{errors.length}}</span>
 			</div>
 
 			<div class="col-lg-6">
-				<p>Email Address</p>
+				<p class="new-p-style">Email Address</p>
 				<input ngDefaultControl type="email" id="orangeForm-email" [(ngModel)]="email"class="form-control no-change"
 					autocomplete="false">
 					<span class="text-danger">{{errors.email_detail}} {{errors.email}}</span>
