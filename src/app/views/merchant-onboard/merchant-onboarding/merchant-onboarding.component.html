@@ -322,7 +322,7 @@
                     </div>
 
                     <div class="row pt-4">
-                        <div class="col-lg-6">
+                        <div *ngIf="bankcodes" class="col-lg-6">
                             <p>Bank Code</p>
                             <select [(ngModel)]="bank_code"
                             class="browser-default custom-select no-change d-block">
@@ -331,10 +331,12 @@
                             </option>
 
                         </select>
+
+                        <input *ngIf="!bankcodes" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                        ngDefaultControl [(ngModel)]="bank_code" [name]="bank_code" type="text" />
+
                         <span *ngIf="errors.bank_code" class="text-danger error-style">{{errors.bank_code}}</span>
-                            <!-- <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="bank_code" [name]="bank_code" type="text" />
-                            <span *ngIf="errors.bank_code" class="text-danger error-style">{{errors.bank_code}}</span> -->
+                           
                         </div>
                         <div class="col-lg-6">
                             <p>Account Number</p>
@@ -355,15 +357,16 @@
                         </div>
                         <div class="col-lg-2">
                             <p>State</p>
-                            <select [(ngModel)]="state"
+                            <select *ngIf="statecodes" [(ngModel)]="state"
                             class="browser-default custom-select no-change d-block">
                             <option [disabled]=true value="">Select State</option>
                             <option *ngFor="let row of statecodes" [value]="row" selected>{{row}}
                             </option>
                             </select>
 
-                            <!-- <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="state" [name]="state" type="text" /> -->
+                            <input *ngIf="!statecodes" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="state" [name]="state" type="text" />
+
                             <span *ngIf="errors.state" class="text-danger error-style">{{errors.state}}</span>
                         </div>
                         <div class="col-lg-5">
@@ -485,15 +488,15 @@
 
                         <div class="col-lg-2">
                             <p>State</p>
-                            <select [(ngModel)]="sub_state"
+                            <select *ngIf="statecodes" [(ngModel)]="sub_state"
                             class="browser-default custom-select no-change d-block">
                             <option [disabled]=true value="">Select State</option>
                             <option *ngFor="let row of statecodes" [value]="row" selected>{{row}}
                             </option>
                             </select>
-                            <!-- </select>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="sub_state" [name]="sub_state" type="text" /> -->
+
+                            <input *ngIf="!statecodes" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
+                                ngDefaultControl [(ngModel)]="sub_state" [name]="sub_state" type="text" />
                             <span *ngIf="errors.sub_state" class="text-danger error-style">{{errors.sub_state}}</span>
                         </div>
 
@@ -518,7 +521,7 @@
                                 class="text-danger error-style">{{errors.sub_account_number}}</span>
                         </div>
 
-                        <div class="col-lg-2">
+                        <div *ngIf="bankcodes" class="col-lg-2">
                             <p>Bank Code</p>
                             <select [disabled]="same_account_details" [(ngModel)]="sub_bank_code"
                             class="browser-default custom-select no-change d-block">
@@ -527,9 +530,9 @@
                             </option>
 
                         </select>
-                            <!-- <input [disabled]="same_account_details" class="form-control no-change my-0 py-0"
+                            <input *ngIf="!bankcodes" [disabled]="same_account_details" class="form-control no-change my-0 py-0"
                                 [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="sub_bank_code"
-                                [name]="sub_bank_code" type="text" /> -->
+                                [name]="sub_bank_code" type="text" />
                             <span *ngIf="errors.sub_bank_code"
                                 class="text-danger error-style">{{errors.sub_bank_code}}</span>
                         </div>

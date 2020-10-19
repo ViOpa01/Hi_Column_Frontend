@@ -134,6 +134,9 @@ export class MerchantOnboardingComponent implements OnInit {
       this.admin = true;
     }
 
+    this.bankcodes = JSON.parse(localStorage.getItem('bankcodes'));
+    this.statecodes = JSON.parse(localStorage.getItem('state'));
+
     // this.socket.on('trans-history-message').subscribe(data => {
     //   if (!data) return;
     //   if (this.page == 1 && !this.search && !this.mid && !this.source && !this.status &&
