@@ -453,7 +453,7 @@
                         </select>
                       </td>
 
-                      <td *ngIf="admin"class="col-lg-1 col-sm-2 pr-0 nested">
+                      <td *ngIf="admin" class="col-lg-1 col-sm-2 pr-0 nested">
                         <button type="button" class="btn btn-ud btn-sm waves-light"
                           (click)="isEdit = false; clear(); mscModal.show();" mdbWavesEffect>
                           <mdb-icon fas icon="plus"></mdb-icon> Add
@@ -2133,65 +2133,67 @@
     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
     [config]="{backdrop: true, ignoreBackdropClick: false}">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header2">
-                <p class="heading text-center">MSC and Time</p>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                
-
-                <div class="onboard-style">
-                    <div class="row pt-4">
-                        <div class="col-lg-6">
-                            <p>Super Merchant Code</p>
-                            <input [disabled]="isEdit" class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="super_merchant_code" [name]="super_merchant_code" type="text" />
-                            <span *ngIf="errors.super_merchant_code" class="text-danger error-style">{{errors.super_merchant_code}}</span>
-                        </div>
-                        <div class="col-lg-6">
-                            <p>MSC Fee</p>
-                            <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                                ngDefaultControl [(ngModel)]="super_msc" (keyup)="check2('isEdit')" [name]="super_msc" type="number" min=0 max=100/>
-                            <span *ngIf="errors.super_msc" class="text-danger error-style">{{errors.super_msc}}</span>
-                        </div>
-                        
-                    </div>
-
-                    <div class="row pt-4">
-                      <div class="col-lg-6">
-                        <p>Settlement Time</p>
-                        <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}"
-                            ngDefaultControl [(ngModel)]="settle_time" [name]="settle_time" type="time" />
-                        <span *ngIf="errors.settle_time"
-                            class="text-danger error-style">{{errors.settle_time}}</span>
-                      </div>
-                      <div class="col-lg-6">
-                        <p>Settlement Day</p>
-                      <select [(ngModel)]="settle_day" class="browser-default no-change custom-select d-block">
-                          <option disabled=true value="">Day of Settlement</option>
-                          <option value="T">T</option>
-                          <option value="T+1" selected>T+1</option>
-                        </select>
-                        </div>
-                    </div>
-
-
-                <!--Footer-->
-                <div class="modal-footer2 row" style="justify-content: center;">
-                    <button *ngIf="!isEdit" type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
-                        (click)="saveMSC()" mdbWavesEffect>Save</button>
-                        <button *ngIf="isEdit" type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
-                        (click)="editMSC(mscModal)" mdbWavesEffect>Save</button>
-                </div>
-            </div>
-            <!--/.Content-->
+      <!--Content-->
+      <div class="modal-content">
+        <!--Header-->
+        <div class="modal-header2">
+          <p class="heading text-center">MSC and Time</p>
         </div>
+        <!--Body-->
+        <div class="modal-body">
+
+
+          <div class="onboard-style">
+            <div class="row pt-4">
+              <div class="col-lg-6">
+                <p>Super Merchant Code</p>
+                <input [disabled]="isEdit" class="form-control no-change my-0 py-0"
+                  [ngModelOptions]="{standalone: true}" ngDefaultControl [(ngModel)]="super_merchant_code"
+                  [name]="super_merchant_code" type="text" />
+                <span *ngIf="errors.super_merchant_code"
+                  class="text-danger error-style">{{errors.super_merchant_code}}</span>
+              </div>
+              <div class="col-lg-6">
+                <p>MSC Fee</p>
+                <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" ngDefaultControl
+                  [(ngModel)]="super_msc" (keyup)="check2('isEdit')" [name]="super_msc" type="number" min=0 max=100 />
+                <span *ngIf="errors.super_msc" class="text-danger error-style">{{errors.super_msc}}</span>
+              </div>
+
+            </div>
+
+            <div class="row pt-4">
+              <div class="col-lg-6">
+                <p>Settlement Time</p>
+                <input class="form-control no-change my-0 py-0" [ngModelOptions]="{standalone: true}" ngDefaultControl
+                  [(ngModel)]="settle_time" [name]="settle_time" type="time" />
+                <span *ngIf="errors.settle_time" class="text-danger error-style">{{errors.settle_time}}</span>
+              </div>
+              <div class="col-lg-6">
+                <p>Settlement Day</p>
+                <select [(ngModel)]="settle_day" class="browser-default no-change custom-select d-block">
+                  <option disabled=true value="">Day of Settlement</option>
+                  <option value="T">T</option>
+                  <option value="T+1" selected>T+1</option>
+                </select>
+              </div>
+            </div>
+
+
+            <!--Footer-->
+            <div class="modal-footer2 row" style="justify-content: center;">
+              <button *ngIf="!isEdit" type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
+                (click)="saveMSC()" mdbWavesEffect>Save</button>
+              <button *ngIf="isEdit" type="button" class="btn btn-ud btn-sm waves-light" data-dismiss="modal"
+                (click)="editMSC(mscModal)" mdbWavesEffect>Save</button>
+            </div>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
     </div>
+  </div>
+
+
+
 </div>
-
-
-
-  <div>
